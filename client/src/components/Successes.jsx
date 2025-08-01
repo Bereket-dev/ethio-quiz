@@ -34,10 +34,10 @@ function Successes() {
   ]
   return (
     <div className="mx-auto mt-[100px] max-w-6xl px-14">
-      <h2 className="mb-8 text-center text-3xl font-medium tracking-wide">
+      <h2 className="mb-8 text-center text-2xl font-medium md:text-4xl md:tracking-wide">
         Progress and Success
       </h2>
-      <div className="flex justify-center gap-3">
+      <div className="grid w-fit grid-cols-1 gap-3 justify-self-center sm:grid-cols-2 md:grid-cols-4">
         {successList.map((success, index) => (
           <SuccessCard
             key={index}

@@ -7,7 +7,7 @@ function Navbar() {
     { name: 'Leader Board', to: '/leaderboard' },
   ]
   return (
-    <nav className="flex gap-1 text-lg font-medium tracking-wide">
+    <nav className="hidden gap-1 text-lg font-medium tracking-wide md:flex">
       {navList.map((navItem, index) => (
         <Link key={index} to={navItem.to} className="group">
           <span className="group-active:text-primary group-hover:decoration-primary me-2 group-hover:underline last:me-0">

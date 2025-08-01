@@ -19,10 +19,10 @@ function QuizKingdoms({ title }) {
   ]
   return (
     <div className="mx-auto mt-[100px] max-w-6xl px-14">
-      <h2 className="mb-8 text-center text-3xl font-medium tracking-wide">
+      <h2 className="mb-8 text-center text-2xl font-medium md:text-4xl md:tracking-wide">
         {title}
       </h2>
-      <div className="flex justify-center gap-12">
+      <div className="grid w-fit grid-cols-1 gap-x-10 gap-y-12 justify-self-center sm:grid-cols-2">
         {kingdomList.map((kingdom, index) => (
           <QuizKingdomCard
             key={index}

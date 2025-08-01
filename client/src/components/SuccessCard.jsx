@@ -1,7 +1,7 @@
 function SuccessCard({ image, title, value, color }) {
   return (
     <div
-      className="flex h-[69px] w-[174px] items-center gap-2 rounded-md p-2 shadow-lg shadow-white"
+      className="flex h-[69px] w-[165px] items-center gap-2 rounded-md p-2 shadow-lg shadow-white"
       style={{ backgroundColor: color }}
     >
       <img
