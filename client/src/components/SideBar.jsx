@@ -1,4 +1,11 @@
+import { Link } from 'react-router-dom'
+
 function SideBar({ isOpen, onClose, id }) {
+  const navList = [
+    { name: 'Home', to: '/' },
+    { name: 'Quiz', to: '/quiz' },
+    { name: 'Leader Board', to: '/leaderboard' },
+  ]
   return (
     <>
       {/* Overlay */}
@@ -18,27 +25,16 @@ function SideBar({ isOpen, onClose, id }) {
         }`}
       >
         <nav className="mt-16 flex flex-col gap-6 px-6 py-6">
-          <a
-            href="/"
-            className="rounded p-2 transition-colors hover:bg-gray-100"
-            onClick={onClose}
-          >
-            Home
-          </a>
-          <a
-            href="/quiz"
-            className="rounded p-2 transition-colors hover:bg-gray-100"
-            onClick={onClose}
-          >
-            Quiz
-          </a>
-          <a
-            href="/trivia"
-            className="rounded p-2 transition-colors hover:bg-gray-100"
-            onClick={onClose}
-          >
-            Trivia
-          </a>
+          {navList.map((navItem, index) => (
+            <Link
+              key={index}
+              to={navItem.to}
+              className="rounded p-2 transition-colors hover:bg-gray-100"
+              onClick={onClose}
+            >
+              {navItem.name}
+            </Link>
+          ))}
         </nav>
       </div>
     </>
