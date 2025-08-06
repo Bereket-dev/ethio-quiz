@@ -9,12 +9,14 @@ function QuizKingdoms({ title }) {
       title: 'Fresh Man',
       description:
         'Perfect for beginners! Test your basics with fun, easy questions across science, history, and pop culture. Start your quiz journey here!',
+      link: '/freshman',
     },
     {
       image: { src: triviaIcon, label: 'trivia' },
       title: 'Trivia',
       description:
         "Random, surprising, and wildly fun! Test your knowledge of odd facts, pop culture, and 'did-you-know' moments. Perfect for casual players and fact-lovers!",
+      link: '/trivia',
     },
   ]
   return (
@@ -29,6 +31,7 @@ function QuizKingdoms({ title }) {
             image={kingdom.image}
             title={kingdom.title}
             description={kingdom.description}
+            to={kingdom.link}
           />
         ))}
       </div>

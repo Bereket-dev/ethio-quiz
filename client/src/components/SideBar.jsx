@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom'
+import { navList } from '../Data/NavList'
 
 function SideBar({ isOpen, onClose, id }) {
-  const navList = [
-    { name: 'Home', to: '/' },
-    { name: 'Quiz', to: '/quiz' },
-    { name: 'Leader Board', to: '/leaderboard' },
-  ]
   return (
     <>
       {/* Overlay */}

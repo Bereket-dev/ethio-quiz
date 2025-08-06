@@ -1,30 +1,32 @@
 function Banner({ title, description, image, cta = null }) {
   return (
     <div
-      className="mx-auto mt-14 flex h-full flex-col items-center justify-center gap-10 px-14 md:max-w-6xl md:flex-row md:justify-between"
+      className="mx-auto mt-14 flex h-full flex-col items-center justify-center gap-8 px-6 md:max-w-6xl md:flex-row md:justify-between md:gap-14 md:px-14"
       style={
         image.direction === 'left'
-          ? {
-              flexDirection: 'row-reverse',
-            }
+          ? { flexDirection: 'row-reverse' }
           : undefined
       }
     >
-      <div className="flex flex-col items-center text-center md:block md:w-xl md:text-start">
-        <h1 className="pb-3 text-[18px] font-bold md:text-4xl md:tracking-wider">
+      <div className="animate-fade-up flex flex-col items-center text-center md:block md:w-[55%] md:text-start">
+        <h1 className="pb-3 text-xl leading-snug font-semibold md:text-4xl md:tracking-wide">
           {title}
         </h1>
-        <p className="text-[16px] font-normal text-gray-500 md:text-xl">
+        <p className="text-base font-normal text-gray-600 md:text-lg">
           {description}
         </p>
         {cta && (
-          <button className="bg-primary mt-2 rounded-lg px-3 py-2 text-[12px] font-medium tracking-wide text-white md:text-[16px]">
+          <button className="bg-primary hover:bg-primary-dark mt-4 rounded-lg px-5 py-2 text-sm font-medium text-white transition md:text-base">
             {cta}
           </button>
         )}
       </div>
-      <div className="">
-        <img src={image.src} alt={image.alt} className="w-[316px]" />
+      <div className="animate-fade-up delay-100">
+        <img
+          src={image.src}
+          alt={image.alt}
+          className="w-[250px] object-contain md:h-[400px] md:w-auto"
+        />
       </div>
     </div>
   )
