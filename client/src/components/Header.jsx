@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
 import logo_black from '../assets/icons/ethioquiz_logo.svg'
 import SideBar from './SideBar'
+import { Link } from 'react-router-dom'
 
 function Header() {
   const [isSidebarOpen, setSidebarOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen)
@@ -13,6 +15,11 @@ function Header() {
   const closeSidebar = () => {
     setSidebarOpen(false)
   }
+
+  useEffect(() => {
+    const user = localStorage.getItem('user')
+    if (user) setIsLoggedIn(true)
+  }, [])
 
   return (
     <header className="z-10 mx-auto flex max-w-6xl items-center justify-between px-6 py-6 md:px-14">
@@ -25,10 +32,23 @@ function Header() {
       {/* Navbar visible only on medium and up */}
       <Navbar className="hidden md:flex" />
 
-      {/* Signup button hidden on small screens */}
-      <button className="bg-primary hover:bg-primary-dark hidden rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors md:block">
-        Sign Up
-      </button>
+      {/* Signup or logout button hidden on small screens */}
+
+      {isLoggedIn ? (
+        <Link to={'/logout'}>
+          {' '}
+          <button className="border-primary hover:border-primary-dark text-primary hidden rounded-lg border bg-white px-4 py-2 text-sm font-medium transition-colors md:block">
+            Logout
+          </button>
+        </Link>
+      ) : (
+        <Link to={'/login'}>
+          {' '}
+          <button className="bg-primary hover:bg-primary-dark hidden rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors md:block">
+            Get Started
+          </button>
+        </Link>
+      )}
 
       {/* Hamburger menu - visible only on small screens */}
       <button
