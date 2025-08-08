@@ -1,11 +1,45 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import logInImage from '../assets/images/login_card-img.png'
 import personCircle from '../assets/icons/person-circle.svg'
 import lockFill from '../assets/icons/lock-fill.svg'
 import person from '../assets/icons/person.svg'
 
 function LoginForm() {
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState({ email: '', password: '' })
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        alert(data.message || 'Login Failed!')
+        return
+      }
+
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user))
+
+      navigate('/quiz')
+    } catch (error) {
+      console.error('Login Error!', error)
+    }
+  }
   return (
     <div className="mx-auto flex h-screen w-full max-w-6xl items-center justify-center px-4 md:px-14">
       <div className="flex w-full max-w-5xl overflow-hidden rounded-xl bg-white shadow-2xl transition-all duration-300 hover:shadow-xl">
@@ -30,7 +64,10 @@ function LoginForm() {
           </div>
 
           {/* Form */}
-          <form className="mx-auto w-full max-w-sm space-y-6">
+          <form
+            className="mx-auto w-full max-w-sm space-y-6"
+            onSubmit={handleSubmit}
+          >
             <div className="relative">
               <label htmlFor="emailInput" className="sr-only">
                 Email
@@ -39,6 +76,9 @@ function LoginForm() {
                 type="text"
                 id="emailInput"
                 name="email"
+                onChange={handleChange}
+                value={formData.email}
+                required
                 placeholder="Email"
                 className="peer focus:border-primary focus:ring-primary w-full rounded-xl border-2 border-gray-300 px-10 py-3 text-lg transition outline-none focus:ring-1"
               />
@@ -58,6 +98,9 @@ function LoginForm() {
                 id="passwordInput"
                 name="password"
                 placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                required
                 className="peer focus:border-primary focus:ring-primary w-full rounded-xl border-2 border-gray-300 px-10 py-3 text-lg transition outline-none focus:ring-1"
               />
               <img

@@ -1,8 +1,43 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import signUpImage from '../assets/images/signup_card_img.png'
 
 function SignUpForm() {
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+  })
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = response.json()
+      if (!response.ok)
+        return console.error(
+          'Sign up failed!',
+          data.message || 'Unknown Error!',
+        )
+
+      navigate('/login')
+    } catch (err) {
+      console.error('error during signup', err)
+    }
+  }
+
   return (
     <div className="mx-auto flex h-screen w-full max-w-6xl items-center justify-center px-4 md:px-14">
       <div className="flex w-full max-w-5xl overflow-hidden rounded-xl bg-white shadow-2xl transition-all duration-300 hover:shadow-xl">
@@ -25,28 +60,18 @@ function SignUpForm() {
           </div>
 
           {/* Form */}
-          <form className="mt-10 w-full max-w-md space-y-5">
-            {/* First + Last Name */}
-            <div className="flex gap-4">
-              <input
-                type="text"
-                name="firstname"
-                placeholder="First Name"
-                className="focus:border-primary focus:ring-primary w-1/2 rounded-xl border-2 border-gray-300 px-4 py-3 text-lg transition outline-none focus:ring-1"
-              />
-              <input
-                type="text"
-                name="lastname"
-                placeholder="Last Name"
-                className="focus:border-primary focus:ring-primary w-1/2 rounded-xl border-2 border-gray-300 px-4 py-3 text-lg transition outline-none focus:ring-1"
-              />
-            </div>
-
+          <form
+            className="mt-10 w-full max-w-md space-y-5"
+            onSubmit={handleSubmit}
+          >
             {/* Email */}
             <input
               type="email"
               name="email"
+              required
               placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
               className="focus:border-primary focus:ring-primary w-full rounded-xl border-2 border-gray-300 px-4 py-3 text-lg transition outline-none focus:ring-1"
             />
 
@@ -54,7 +79,10 @@ function SignUpForm() {
             <input
               type="text"
               name="username"
+              required
               placeholder="Username"
+              value={formData.username}
+              onChange={handleChange}
               className="focus:border-primary focus:ring-primary w-full rounded-xl border-2 border-gray-300 px-4 py-3 text-lg transition outline-none focus:ring-1"
             />
 
@@ -62,7 +90,10 @@ function SignUpForm() {
             <input
               type="password"
               name="password"
+              required
               placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
               className="focus:border-primary focus:ring-primary w-full rounded-xl border-2 border-gray-300 px-4 py-3 text-lg transition outline-none focus:ring-1"
             />
 
