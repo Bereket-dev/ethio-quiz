@@ -1,23 +1,21 @@
 import { useState } from 'react'
-import { addOneKingdom } from '../../services/kingdomServices'
+import { editOneKingdom } from '../../services/kingdomServices'
 import { kingdomsFormFields } from '../../Data/kingdoms'
-import AddForm from '../../components/admin/AddForm'
-import { CastleIcon } from 'lucide-react'
+import EditForm from './EditForm'
 
-function AddKingdom({ setKingdoms, setOnAdd, onCancel }) {
+function EditKingdom({ setOnEdit, onCancel }) {
   const [isLoading, setIsLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
 
-  const handleAdd = async (formData) => {
+  const handleEdit = async (formData) => {
     setIsLoading(true)
     setErrorMsg('')
 
     try {
-      const newKingdom = await addOneKingdom(formData)
+      const updatedKingdom = await editOneKingdom(formData)
 
-      if (newKingdom) {
-        setKingdoms((prev) => [...prev, newKingdom])
-        setOnAdd(false)
+      if (updatedKingdom) {
+        setOnEdit(false)
       } else {
         setIsLoading(false)
         setErrorMsg('Failed to add kingdom. Please try again.')
@@ -40,9 +38,9 @@ function AddKingdom({ setKingdoms, setOnAdd, onCancel }) {
         </div>
       )}
 
-      <AddForm
+      <EditForm
         fields={kingdomsFormFields}
-        onSave={handleAdd}
+        onSave={handleEdit}
         onCancel={onCancel}
         onLoading={isLoading}
         setOnLoading={setIsLoading}
@@ -52,4 +50,4 @@ function AddKingdom({ setKingdoms, setOnAdd, onCancel }) {
   )
 }
 
-export default AddKingdom
+export default EditKingdom

@@ -1,4 +1,4 @@
-export const kingdomsAddFormFields = [
+export const kingdomsFormFields = [
   {
     type: 'text',
     label: 'Kingdom Name',

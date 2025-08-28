@@ -120,3 +120,79 @@ export const users = [
     quizzesTaken: 3,
   },
 ]
+
+export const activeUsers = [
+  { Jan: 12, Feb: 43, March: 54, April: 23, May: 2, June: 58 },
+  { Jan: 2, Feb: 33, March: 24, April: 43, May: 2, June: 18 },
+  { Jan: 34, Feb: 45, March: 44, April: 23, May: 2, June: 38 },
+  { Jan: 23, Feb: 43, March: 54, April: 23, May: 2, June: 58 },
+  { Jan: 43, Feb: 46, March: 4, April: 33, May: 2, June: 8 },
+]
+export const areaChart = {
+  data: [
+    { Month: 'Jan', Free: 250, Subscription: 50, Kingdom: 'trivia' },
+    { Month: 'Jan', Free: 200, Subscription: 70, Kingdom: 'freshman' },
+    { Month: 'Feb', Free: 150, Subscription: 60, Kingdom: 'trivia' },
+    { Month: 'Feb', Free: 200, Subscription: 90, Kingdom: 'kingdom' },
+  ],
+  keys: ['Free', 'Subscription'],
+}
+export const lineData = [
+  {
+    id: 'Trivia',
+    data: [
+      { x: 'Jan', y: 59 },
+      { x: 'Feb', y: 240 },
+      { x: 'Mar', y: 221 },
+      { x: 'Apr', y: 70 },
+      { x: 'May', y: 199 },
+      { x: 'Jun', y: 212 },
+      { x: 'Jul', y: 16 },
+      { x: 'Aug', y: 291 },
+      { x: 'Sep', y: 257 },
+      { x: 'Oct', y: 29 },
+      { x: 'Nov', y: 116 },
+      { x: 'Dec', y: 97 },
+    ],
+  },
+  {
+    id: 'Freshman',
+    data: [
+      { x: 'Jan', y: 19 },
+      { x: 'Feb', y: 217 },
+      { x: 'Mar', y: 26 },
+      { x: 'Apr', y: 96 },
+      { x: 'May', y: 64 },
+      { x: 'Jun', y: 9 },
+      { x: 'Jul', y: 56 },
+      { x: 'Aug', y: 23 },
+      { x: 'Sep', y: 124 },
+      { x: 'Oct', y: 166 },
+      { x: 'Nov', y: 299 },
+      { x: 'Dec', y: 257 },
+    ],
+  },
+]
+
+export const topPlayers = [
+  {
+    player: 'Hana',
+    trivia: 870,
+    freshman: 760,
+  },
+  {
+    player: 'Bekele',
+    trivia: 800,
+    freshman: 720,
+  },
+  {
+    player: 'Samrawit',
+    trivia: 780,
+    freshman: 690,
+  },
+  {
+    player: 'Daniel',
+    trivia: 750,
+    freshman: 670,
+  },
+]

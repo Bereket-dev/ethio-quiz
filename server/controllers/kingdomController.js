@@ -40,6 +40,56 @@ const createNewKingdom = async (req, res) => {
   }
 };
 
+const editKingdom = async (req, res) => {
+  const { title, description } = req.body;
+  const file = req.file;
+
+  if (!title || !description) {
+    return res
+      .status(400)
+      .json({ message: "Title and description are required" });
+  }
+
+  try {
+    let image = null;
+    if (file) {
+      const result = await cloudinary.uploader.upload(file.path);
+      image = {
+        src: result.secure_url,
+        alt: `${title} kingdom image`,
+      };
+    } else {
+      return res.status(400).json({ message: "Image is required" });
+    }
+
+    const kingdom = await Kingdom.create({
+      title,
+      image,
+      description,
+    });
+    res.status(201).json(kingdom);
+  } catch (error) {
+    console.error("Creation error:", error);
+    if (error.code === 11000) {
+      return res
+        .status(400)
+        .json({ message: "Kingdom with this title already exists" });
+    }
+    res.status(500).json({ message: "Failed to create new kingdom" });
+  }
+};
+
+const removeKingdom = async (req, res) => {
+  const { title } = req.params;
+  try {
+    const result = await Kingdom.findOneAndDelete({ title });
+    if (!result) return res.status(404).json({ message: "Kingdom not found!" });
+
+    res.status(200).json({ message: "Kingdom removed successfully!" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to remove kingdom" });
+  }
+};
 const getAllKingdoms = async (req, res) => {
   try {
     const allKingdoms = await Kingdom.find();
@@ -54,4 +104,9 @@ const getAllKingdoms = async (req, res) => {
   }
 };
 
-module.exports = { createNewKingdom, getAllKingdoms };
+module.exports = {
+  createNewKingdom,
+  editKingdom,
+  removeKingdom,
+  getAllKingdoms,
+};

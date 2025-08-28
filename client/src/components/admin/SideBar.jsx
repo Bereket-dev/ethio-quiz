@@ -40,9 +40,7 @@ function SideBar({ isShrink, setIsShrink }) {
             className={`${isShrink ? 'w-[50px]' : 'w-[120px]'} rounded-full`}
           />
           <div className="text-center">
-            <div className="text-lg font-semibold text-gray-700 text-white">
-              Admin
-            </div>
+            <div className="text-lg font-semibold text-white">Admin</div>
             {!isShrink && (
               <div className="text-md text-gray-200">example@gmail.com</div>
             )}

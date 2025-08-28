@@ -1,8 +1,14 @@
 import { PlusIcon, XIcon } from 'lucide-react'
 import { useState } from 'react'
 
-function AddForm({ icon, fields, onCancel, onSave, onLoading, setOnLoading }) {
-  const [formData, setFormData] = useState({})
+function EditForm({
+  initialFormData,
+  fields,
+  onCancel,
+  onSave,
+  onLoading,
+  setOnLoading,
+}) {
   const [previewImg, setPreviewImg] = useState(null)
 
   const handleSubmit = async (e) => {
@@ -15,7 +21,6 @@ function AddForm({ icon, fields, onCancel, onSave, onLoading, setOnLoading }) {
     }
 
     // Reset form after save
-    setFormData({})
     setPreviewImg(null)
     setOnLoading(false)
   }
@@ -64,7 +69,11 @@ function AddForm({ icon, fields, onCancel, onSave, onLoading, setOnLoading }) {
                 </button>
               </>
             ) : (
-              icon
+              <img
+                src={initialFormData.img_icon}
+                alt="preview"
+                className="h-full w-full rounded-full object-cover"
+              />
             )}
           </div>
           <label
@@ -173,4 +182,4 @@ function AddForm({ icon, fields, onCancel, onSave, onLoading, setOnLoading }) {
   )
 }
 
-export default AddForm
+export default EditForm
