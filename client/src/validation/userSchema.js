@@ -17,12 +17,12 @@ const baseUserSchema = Yup.object({
 })
 
 export const loginSchema = Yup.object({
-  email: baseUserSchema.email,
+  email: baseUserSchema.fields.email,
   password: Yup.string().required('Password is required'),
 })
 
 export const signUpSchema = Yup.object({
-  email: baseUserSchema.email,
-  username: baseUserSchema.username,
-  password: baseUserSchema.password,
+  email: baseUserSchema.fields.email,
+  username: baseUserSchema.fields.username,
+  password: baseUserSchema.fields.password,
 })
