@@ -1,39 +1,17 @@
-import { useState } from 'react'
-import { addOneKingdom } from '../../services/kingdomServices'
-import { kingdomsFormFields } from '../../Data/kingdoms'
-import AddForm from '../../components/admin/AddForm'
 import { CastleIcon } from 'lucide-react'
+import { kingdomsFormFields } from '../../Data/kingdoms'
+import AddForm from './AddForm'
+import kingdomSchema from '../../validation/kingdomSchema'
+import { useKingdoms } from '../../hooks/useKingdoms'
 
 function AddKingdom({ setKingdoms, setOnAdd, onCancel }) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [errorMsg, setErrorMsg] = useState('')
-
-  const handleAdd = async (formData) => {
-    setIsLoading(true)
-    setErrorMsg('')
-
-    try {
-      const newKingdom = await addOneKingdom(formData)
-
-      if (newKingdom) {
-        setKingdoms((prev) => [...prev, newKingdom])
-        setOnAdd(false)
-      } else {
-        setIsLoading(false)
-        setErrorMsg('Failed to add kingdom. Please try again.')
-      }
-    } catch (error) {
-      setIsLoading(false)
-      console.error('Error adding kingdom:', error)
-      setErrorMsg('An unexpected error occurred. Please try again later.')
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const { handleAdd, errorMsg, setErrorMsg } = useKingdoms(
+    setKingdoms,
+    setOnAdd,
+  )
 
   return (
     <div className="mx-auto mt-12 flex w-full max-w-2xl flex-col items-center justify-center px-4">
-      {/* Optional Error Display */}
       {errorMsg && (
         <div className="mb-4 w-full rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm">
           {errorMsg}
@@ -44,8 +22,8 @@ function AddKingdom({ setKingdoms, setOnAdd, onCancel }) {
         fields={kingdomsFormFields}
         onSave={handleAdd}
         onCancel={onCancel}
-        onLoading={isLoading}
-        setOnLoading={setIsLoading}
+        formSchema={kingdomSchema}
+        setMessage={setErrorMsg}
         icon={<CastleIcon size={48} className="text-white" />}
       />
     </div>
