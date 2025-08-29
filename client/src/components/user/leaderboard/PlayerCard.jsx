@@ -1,7 +1,7 @@
-import profileIcon from '../../assets/icons/profile-icon.svg'
-import golde from '../../assets/icons/gold-medal.svg'
-import silver from '../../assets/icons/silver-medal.svg'
-import bronze from '../../assets/icons/bronze-medal.svg'
+import profileIcon from '../../../assets/icons/profile-icon.svg'
+import golde from '../../../assets/icons/gold-medal.svg'
+import silver from '../../../assets/icons/silver-medal.svg'
+import bronze from '../../../assets/icons/bronze-medal.svg'
 
 function PlayerCard({ player, index }) {
   const medalImage = [

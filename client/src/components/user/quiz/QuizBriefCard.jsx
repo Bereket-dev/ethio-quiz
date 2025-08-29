@@ -1,4 +1,4 @@
-import questionmark from '../../assets/icons/questionmark.svg'
+import questionmark from '../../../assets/icons/questionmark.svg'
 
 function QuizBriefCard({
   questionNumber,

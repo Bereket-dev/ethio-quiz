@@ -1,4 +1,4 @@
-import level_up from '../../assets/images/level_up.png'
+import level_up from '../../../assets/images/level_up.png'
 
 function LeaderBoardTeaser() {
   return (

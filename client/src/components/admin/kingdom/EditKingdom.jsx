@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { editOneKingdom } from '../../../services/kingdomServices'
 import { kingdomsFormFields } from '../../../Data/kingdoms'
-import EditForm from './EditForm'
+import EditForm from '../forms/EditForm'
 
 function EditKingdom({ setOnEdit, onCancel }) {
   const [isLoading, setIsLoading] = useState(false)

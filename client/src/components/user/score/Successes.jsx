@@ -1,9 +1,9 @@
 import SuccessCard from './SuccessCard'
 
-import quizIcon from '../../assets/icons/quiz.svg'
-import gradient_levelIcon from '../../assets/icons/gradient_level.svg'
-import engagementIcon from '../../assets/icons/engagement.svg'
-import scoreIcon from '../../assets/icons/score.svg'
+import quizIcon from '../../../assets/icons/quiz.svg'
+import gradient_levelIcon from '../../../assets/icons/gradient_level.svg'
+import engagementIcon from '../../../assets/icons/engagement.svg'
+import scoreIcon from '../../../assets/icons/score.svg'
 
 function Successes() {
   const successList = [

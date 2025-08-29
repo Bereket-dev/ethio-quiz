@@ -1,5 +1,5 @@
-import CategoryCard from './CategoryCard'
-import DoughnutChart from './DoughnutChart'
+import CategoryCard from '../categories/CategoryCard'
+import DoughnutChart from '../charts/DoughnutChart'
 import {
   freshmanCategories,
   triviaCategories,

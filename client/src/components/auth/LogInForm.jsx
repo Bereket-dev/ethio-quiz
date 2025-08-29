@@ -119,7 +119,7 @@ function LoginForm() {
                         name="password"
                         placeholder="Password"
                         required
-                        disabled={isSubmitting}
+                        disabled={false || isSubmitting}
                         className="peer focus:border-primary focus:ring-primary w-full rounded-xl border-2 border-gray-300 px-10 py-3 text-lg transition outline-none focus:ring-1"
                       />
                       <img
