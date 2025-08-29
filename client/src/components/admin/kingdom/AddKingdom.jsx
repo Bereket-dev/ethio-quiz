@@ -1,8 +1,8 @@
 import { CastleIcon } from 'lucide-react'
-import { kingdomsFormFields } from '../../Data/kingdoms'
+import { kingdomsFormFields } from '../../../Data/kingdoms'
 import AddForm from './AddForm'
-import kingdomSchema from '../../validation/kingdomSchema'
-import { useKingdoms } from '../../hooks/useKingdoms'
+import kingdomSchema from '../../../validation/kingdomSchema'
+import { useKingdoms } from '../../../hooks/useKingdoms'
 
 function AddKingdom({ setKingdoms, setOnAdd, onCancel }) {
   const { handleAdd, errorMsg, setErrorMsg } = useKingdoms(

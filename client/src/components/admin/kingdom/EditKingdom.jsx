@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { editOneKingdom } from '../../services/kingdomServices'
-import { kingdomsFormFields } from '../../Data/kingdoms'
+import { editOneKingdom } from '../../../services/kingdomServices'
+import { kingdomsFormFields } from '../../../Data/kingdoms'
 import EditForm from './EditForm'
 
 function EditKingdom({ setOnEdit, onCancel }) {
