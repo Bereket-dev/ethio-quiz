@@ -1,5 +1,5 @@
 import QuizKingdomCard from './QuizKingdomCard'
-import { getKingdomList } from '../../services/kingdomServices'
+import { getKingdomList } from '../../../services/kingdomServices'
 import { useEffect, useState } from 'react'
 
 function QuizKingdoms({ title }) {

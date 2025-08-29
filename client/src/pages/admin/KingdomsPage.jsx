@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { PlusCircle, CastleIcon } from 'lucide-react'
-import KingdomCard from '../../components/admin/KingdomCard'
+import KingdomCard from '../../components/admin/kingdom/KingdomCard'
 import SideBar from '../../components/admin/SideBar'
 import Header from '../../components/admin/Header'
 import { getKingdomList } from '../../services/kingdomServices'
-import AddKingdom from '../../components/admin/AddKingdom'
-import EditKingdom from '../../components/admin/EditKingdom'
-import EditForm from '../../components/admin/EditForm'
+import AddKingdom from '../../components/admin/kingdom/AddKingdom'
+import EditKingdom from '../../components/admin/kingdom/EditKingdom'
+import EditForm from '../../components/admin/forms/EditForm'
 
 function KingdomsPage() {
   const [kingdoms, setKingdoms] = useState([])
@@ -26,7 +26,6 @@ function KingdomsPage() {
         const kingdomList = await getKingdomList()
         setKingdoms(kingdomList || [])
       } catch (error) {
-        console.error('Error fetching kingdoms:', error)
         setErrorMsg('Failed to load kingdoms. Please try again.')
       } finally {
         setLoading(false)

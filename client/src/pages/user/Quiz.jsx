@@ -1,6 +1,6 @@
 import Header from '../../components/user/Header'
 import Banner from '../../components/user/Banner'
-import QuizKingdoms from '../../components/user/QuizKingdoms'
+import QuizKingdoms from '../../components/user/quiz/QuizKingdoms'
 import Footer from '../../components/user/Footer'
 
 import kingdomImageBanner from '../../assets/images/kingdom_img.png'

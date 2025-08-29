@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 
-import QuizBriefCard from '../../components/user/QuizBriefCard'
-import QuizQuestion from '../../components/user/QuizQuestion'
-import ScoreResult from '../../components/user/ScoreResult'
+import QuizBriefCard from '../../components/user/quiz/QuizBriefCard'
+import QuizQuestion from '../../components/user/quiz/QuizQuestion'
+import ScoreResult from '../../components/user/score/ScoreResult'
 import { useEffect } from 'react'
 
 // import { totalQuestions } from '../Data/totalQuestions'

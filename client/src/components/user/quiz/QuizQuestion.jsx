@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import Timer from '../user/Timer'
+import Timer from './Timer'
 
 function QuizQuestion({
   questions,

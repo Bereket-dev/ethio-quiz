@@ -1,9 +1,9 @@
 import Header from '../../components/user/Header'
 import Banner from '../../components/user/Banner'
 import Footer from '../../components/user/Footer'
-import QuizKingdoms from '../../components/user/QuizKingdoms'
-import LeaderBoardTeaser from '../../components/user/LeaderBoardTeaser'
-import Successes from '../../components/user/Successes'
+import QuizKingdoms from '../../components/user/quiz/QuizKingdoms'
+import LeaderBoardTeaser from '../../components/user/leaderboard/LeaderBoardTeaser'
+import Successes from '../../components/user/score/Successes'
 
 import cupImageBanner from '../../assets/images/cup.png'
 
