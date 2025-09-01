@@ -3,6 +3,7 @@ import { PlusCircle, Edit, Trash2 } from 'lucide-react'
 import SideBar from '../../components/admin/SideBar'
 import Header from '../../components/admin/Header'
 import SearchBar from '../../components/admin/SearchBar'
+import AddCategory from '../../components/admin/category/AddCategory'
 import { freshmanCategories, triviaCategories } from '../../Data/quizCategories'
 
 // import category services
@@ -49,6 +50,11 @@ function CategoriesPage() {
     const allCategories = [...freshmanCategories, ...triviaCategories]
     setCategories(allCategories)
   }, [])
+
+  const handleCancel = () => {
+    setIsAdding(false)
+    setIsEditing(false)
+  }
 
   const handleAdd = async () => {
     if (!formData.title.trim())
@@ -99,10 +105,6 @@ function CategoriesPage() {
       color: { light: '', bold: '' },
       description: '',
     })
-    setSelectedCategory(null)
-    setIsAdding(false)
-    setIsEditing(false)
-    setErrorMsg('')
   }
 
   return (
@@ -138,76 +140,89 @@ function CategoriesPage() {
         </div>
 
         {/* Category Column List */}
-        <div className="mt-6 w-full space-y-2 overflow-auto rounded-2xl">
-          {/* Header */}
-          <div className="sticky top-0 z-10 grid grid-cols-12 bg-gray-100/80 px-5 py-3 text-sm font-semibold text-gray-700 shadow-sm backdrop-blur">
-            <div className="col-span-1">#</div>
-            <div className="col-span-2">Title</div>
-            <div className="col-span-1">Points</div>
-            <div className="col-span-2">Time</div>
-            <div className="col-span-4">Description</div>
-            <div className="col-span-2 text-right">Actions</div>
+        {!isAdding && !isEditing && (
+          <div className="mt-6 w-full space-y-2 overflow-auto rounded-2xl">
+            {/* Header */}
+            <div className="sticky top-0 z-10 grid grid-cols-12 bg-gray-100/80 px-5 py-3 text-sm font-semibold text-gray-700 shadow-sm backdrop-blur">
+              <div className="col-span-1">#</div>
+              <div className="col-span-2">Title</div>
+              <div className="col-span-1">Points</div>
+              <div className="col-span-2">Time</div>
+              <div className="col-span-4">Description</div>
+              <div className="col-span-2 text-right">Actions</div>
+            </div>
+
+            {/* Rows */}
+            {categories.map((cat, index) => {
+              // Helper function to pick text color based on bg brightness
+              const getTextColor = (hex) => {
+                if (!hex) return '#1f2937' // default gray-800
+                const c = hex.substring(1) // strip #
+                const rgb = parseInt(c, 16)
+                const r = (rgb >> 16) & 0xff
+                const g = (rgb >> 8) & 0xff
+                const b = (rgb >> 0) & 0xff
+                const brightness = (r * 299 + g * 587 + b * 114) / 1000
+                return brightness > 150 ? '#1f2937' : '#fff' // dark text for light bg, white text for dark bg
+              }
+
+              const textColor = getTextColor(cat.color.light)
+
+              return (
+                <div
+                  key={index}
+                  className={`grid grid-cols-12 items-center gap-2 rounded-xl px-5 py-4 text-sm shadow-sm transition duration-200 hover:scale-[1.01] hover:shadow-lg`}
+                  style={{
+                    backgroundColor:
+                      index % 2 === 0
+                        ? cat.color.light
+                        : `${cat.color.light}CC`,
+                    color: textColor,
+                  }}
+                >
+                  <div className="col-span-1 font-semibold">{index + 1}</div>
+                  <div className="col-span-2 font-medium">{cat.title}</div>
+                  <div className="col-span-1">{cat.points}</div>
+                  <div className="col-span-2">
+                    {cat.timeAllowed.min}m {cat.timeAllowed.sec}s
+                  </div>
+                  <div className="col-span-4 italic">
+                    {`${cat.description} (${cat.kingdomId})`}
+                  </div>
+                  <div className="col-span-2 flex justify-end gap-2">
+                    <button
+                      onClick={() => {
+                        setIsEditing(true)
+                        setSelectedCategory(cat)
+                        setFormData(cat)
+                      }}
+                      className="rounded-full p-2 transition hover:bg-white/20"
+                      title="Edit"
+                    >
+                      <Edit size={18} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(cat._id)}
+                      className="rounded-full p-2 transition hover:bg-white/20"
+                      title="Delete"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
           </div>
+        )}
 
-          {/* Rows */}
-          {categories.map((cat, index) => {
-            // Helper function to pick text color based on bg brightness
-            const getTextColor = (hex) => {
-              if (!hex) return '#1f2937' // default gray-800
-              const c = hex.substring(1) // strip #
-              const rgb = parseInt(c, 16)
-              const r = (rgb >> 16) & 0xff
-              const g = (rgb >> 8) & 0xff
-              const b = (rgb >> 0) & 0xff
-              const brightness = (r * 299 + g * 587 + b * 114) / 1000
-              return brightness > 150 ? '#1f2937' : '#fff' // dark text for light bg, white text for dark bg
-            }
-
-            const textColor = getTextColor(cat.color.light)
-
-            return (
-              <div
-                key={index}
-                className={`grid grid-cols-12 items-center gap-2 rounded-xl px-5 py-4 text-sm shadow-sm transition duration-200 hover:scale-[1.01] hover:shadow-lg`}
-                style={{
-                  backgroundColor:
-                    index % 2 === 0 ? cat.color.light : `${cat.color.light}CC`,
-                  color: textColor,
-                }}
-              >
-                <div className="col-span-1 font-semibold">{index + 1}</div>
-                <div className="col-span-2 font-medium">{cat.title}</div>
-                <div className="col-span-1">{cat.points}</div>
-                <div className="col-span-2">
-                  {cat.timeAllowed.min}m {cat.timeAllowed.sec}s
-                </div>
-                <div className="col-span-4 italic">
-                  {`${cat.description} (${cat.kingdomId})`}
-                </div>
-                <div className="col-span-2 flex justify-end gap-2">
-                  <button
-                    onClick={() => {
-                      setIsEditing(true)
-                      setSelectedCategory(cat)
-                      setFormData(cat)
-                    }}
-                    className="rounded-full p-2 transition hover:bg-white/20"
-                    title="Edit"
-                  >
-                    <Edit size={18} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(cat._id)}
-                    className="rounded-full p-2 transition hover:bg-white/20"
-                    title="Delete"
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              </div>
-            )
-          })}
-        </div>
+        {/* Add Kingdom Form */}
+        {isAdding && (
+          <AddCategory
+            setCategories={setCategories}
+            setOnAdd={setIsAdding}
+            onCancel={handleCancel}
+          />
+        )}
       </main>
     </div>
   )
