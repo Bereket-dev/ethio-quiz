@@ -6,114 +6,114 @@ import psychology from '../assets/icons/psychology.svg'
 import logic from '../assets/icons/logic.svg'
 
 import knowledge from '../assets/icons/knowledge.svg'
-import football from '../assets/icons//football.svg'
+import football from '../assets/icons/football.svg'
 import computer from '../assets/icons/computer.svg'
 import art from '../assets/icons/art.svg'
 import entertainment from '../assets/icons/entertainment.svg'
 
 export const freshmanCategories = [
   {
-    id: 1,
-    image: {
-      src: economics,
-      alt: 'economics',
-    },
+    kingdomId: 'FRESHMAN_KINGDOM_ID',
     title: 'economics',
-    color: { lighter: '#E1D2E5', bolder: '#6D6C6C' },
+    points: 10,
+    timeAllowed: { min: 1, sec: 0 },
+    image: { src: economics, alt: 'economics' },
+    color: { light: '#E1D2E5', bold: '#6D6C6C' },
+    description: 'Basic questions covering fundamental economics concepts.',
   },
   {
-    id: 2,
-    image: {
-      src: calculation,
-      alt: 'calculation',
-    },
+    kingdomId: 'FRESHMAN_KINGDOM_ID',
     title: 'ns maths',
-    color: { lighter: '#CEDDF2', bolder: '#2AABEE' },
+    points: 10,
+    timeAllowed: { min: 1, sec: 0 },
+    image: { src: calculation, alt: 'calculation' },
+    color: { light: '#CEDDF2', bold: '#2AABEE' },
+    description:
+      'Numerical skills and problem-solving with natural science math.',
   },
-
   {
-    id: 3,
-    image: {
-      src: logic,
-      alt: 'logic',
-    },
+    kingdomId: 'FRESHMAN_KINGDOM_ID',
     title: 'logic',
-    color: { lighter: '#FFD2D2', bolder: '#E36464' },
+    points: 10,
+    timeAllowed: { min: 1, sec: 0 },
+    image: { src: logic, alt: 'logic' },
+    color: { light: '#FFD2D2', bold: '#E36464' },
+    description: 'Analytical reasoning and logical thinking exercises.',
   },
   {
-    id: 4,
-    image: {
-      src: psychology,
-      alt: 'psychology',
-    },
+    kingdomId: 'FRESHMAN_KINGDOM_ID',
     title: 'psychology',
-    color: { lighter: '#BEEBD6', bolder: '#1BD17C' },
+    points: 10,
+    timeAllowed: { min: 1, sec: 0 },
+    image: { src: psychology, alt: 'psychology' },
+    color: { light: '#BEEBD6', bold: '#1BD17C' },
+    description: 'Cognitive processes, behavior, and psychology fundamentals.',
   },
   {
-    id: 5,
-    image: {
-      src: physics,
-      alt: 'physics',
-    },
+    kingdomId: 'FRESHMAN_KINGDOM_ID',
     title: 'G. physics',
-    color: { lighter: '#E6E2B2', bolder: '#B1A74D' },
+    points: 10,
+    timeAllowed: { min: 1, sec: 0 },
+    image: { src: physics, alt: 'physics' },
+    color: { light: '#E6E2B2', bold: '#B1A74D' },
+    description: 'General physics covering motion, energy, and basic laws.',
   },
   {
-    id: 6,
-    image: {
-      src: chemistry,
-      alt: 'chemistry',
-    },
+    kingdomId: 'FRESHMAN_KINGDOM_ID',
     title: 'G. chemistry',
-    color: { lighter: '#E1D2E5', bolder: '#B6A935' },
+    points: 10,
+    timeAllowed: { min: 1, sec: 0 },
+    image: { src: chemistry, alt: 'chemistry' },
+    color: { light: '#E1D2E5', bold: '#B6A935' },
+    description:
+      'Fundamental chemistry topics like atoms, reactions, and bonds.',
   },
 ]
 
 export const triviaCategories = [
   {
-    id: 1,
-    image: {
-      src: entertainment,
-      alt: 'entertainment',
-    },
+    kingdomId: 'TRIVIA_KINGDOM_ID',
     title: 'entertainment',
-    color: { lighter: '#E1D2E5', bolder: '#6D6C6C' },
+    points: 10,
+    timeAllowed: { min: 1, sec: 0 },
+    image: { src: entertainment, alt: 'entertainment' },
+    color: { light: '#E1D2E5', bold: '#6D6C6C' },
+    description: 'Trivia on movies, music, and pop culture.',
   },
   {
-    id: 2,
-    image: {
-      src: knowledge,
-      alt: 'G. knowledge',
-    },
+    kingdomId: 'TRIVIA_KINGDOM_ID',
     title: 'G. knowledge',
-    color: { lighter: '#CEDDF2', bolder: '#2AABEE' },
+    points: 10,
+    timeAllowed: { min: 1, sec: 0 },
+    image: { src: knowledge, alt: 'G. knowledge' },
+    color: { light: '#CEDDF2', bold: '#2AABEE' },
+    description: 'General knowledge questions across diverse topics.',
   },
-
   {
-    id: 3,
-    image: {
-      src: football,
-      alt: 'football',
-    },
+    kingdomId: 'TRIVIA_KINGDOM_ID',
     title: 'sport',
-    color: { lighter: '#FFD2D2', bolder: '#E36464' },
+    points: 10,
+    timeAllowed: { min: 1, sec: 0 },
+    image: { src: football, alt: 'football' },
+    color: { light: '#FFD2D2', bold: '#E36464' },
+    description: 'Sports trivia including football, athletics, and games.',
   },
   {
-    id: 4,
-    image: {
-      src: computer,
-      alt: 'computer',
-    },
+    kingdomId: 'TRIVIA_KINGDOM_ID',
     title: 'technology',
-    color: { lighter: '#BEEBD6', bolder: '#1BD17C' },
+    points: 10,
+    timeAllowed: { min: 1, sec: 0 },
+    image: { src: computer, alt: 'computer' },
+    color: { light: '#BEEBD6', bold: '#1BD17C' },
+    description: 'Questions on computers, gadgets, and modern tech.',
   },
   {
-    id: 5,
-    image: {
-      src: art,
-      alt: 'art',
-    },
+    kingdomId: 'TRIVIA_KINGDOM_ID',
     title: 'art',
-    color: { lighter: '#E6E2B2', bolder: '#B6A935' },
+    points: 10,
+    timeAllowed: { min: 1, sec: 0 },
+    image: { src: art, alt: 'art' },
+    color: { light: '#E6E2B2', bold: '#B6A935' },
+    description: 'Art, culture, and creativity-themed trivia.',
   },
 ]

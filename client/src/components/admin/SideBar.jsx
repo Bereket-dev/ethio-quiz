@@ -5,6 +5,7 @@ import {
   CrownIcon,
   LayoutIcon,
   SettingsIcon,
+  ListIcon,
 } from 'lucide-react'
 import userIcon from '../../assets/icons/profile-icon.svg'
 
@@ -17,8 +18,14 @@ function SideBar({ isShrink, setIsShrink }) {
   const navList = [
     { name: 'Dashboard', to: '/dashboard', icon: <LayoutIcon size={24} /> },
     { name: 'Kingdoms', to: '/kingdoms', icon: <CrownIcon size={24} /> },
+    { name: 'Categories', to: '/categories', icon: <ListIcon size={24} /> },
     { name: 'Settings', to: '/settings', icon: <SettingsIcon size={24} /> },
   ]
+
+  //admin data from local storage
+  const user = JSON.parse(localStorage.getItem('user'))
+  const username = user.username
+  const email = user.email
 
   return (
     <aside
@@ -40,9 +47,11 @@ function SideBar({ isShrink, setIsShrink }) {
             className={`${isShrink ? 'w-[50px]' : 'w-[120px]'} rounded-full`}
           />
           <div className="text-center">
-            <div className="text-lg font-semibold text-white">Admin</div>
-            {!isShrink && (
-              <div className="text-md text-gray-200">example@gmail.com</div>
+            <div className="text-lg font-semibold text-white">
+              {username ? username : 'Admin'}
+            </div>
+            {!isShrink && email && (
+              <div className="text-md text-gray-200">{email}</div>
             )}
           </div>
         </div>

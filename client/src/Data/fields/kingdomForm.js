@@ -1,4 +1,4 @@
-export const kingdomsFormFields = [
+const kingdomFormFields = [
   {
     type: 'text',
     label: 'Kingdom Name',
@@ -14,3 +14,5 @@ export const kingdomsFormFields = [
     required: true,
   },
 ]
+
+export default kingdomFormFields

@@ -6,15 +6,15 @@ import Header from '../../components/admin/Header'
 import { getKingdomList } from '../../services/kingdomServices'
 import AddKingdom from '../../components/admin/kingdom/AddKingdom'
 import EditKingdom from '../../components/admin/kingdom/EditKingdom'
-import EditForm from '../../components/admin/forms/EditForm'
+import { useKingdomsDelete } from '../../hooks/useKingdoms'
 
 function KingdomsPage() {
   const [kingdoms, setKingdoms] = useState([])
   const [loading, setLoading] = useState(true)
   const [errorMsg, setErrorMsg] = useState('')
+  const [selectedKingdom, setSelectedKingdom] = useState(null)
 
   const [isShrink, setIsShrink] = useState(false)
-  const [onDelete, setOnDelete] = useState(false)
   const [onEdit, setOnEdit] = useState(false)
   const [onAdd, setOnAdd] = useState(false)
 
@@ -34,19 +34,18 @@ function KingdomsPage() {
     fetchKingdoms()
   }, [])
 
-  const handleDelete = (kingdom) => {
-    if (window.confirm(`Delete ${kingdom.name}?`)) {
-      setKingdoms((prev) => prev.filter((k) => k.id !== kingdom.id))
-    }
-  }
+  const {
+    handleDelete,
+    errorMsg: deleteError,
+    setErrorMsg: setDeleteError,
+  } = useKingdomsDelete(setKingdoms)
 
   const handleCancel = () => {
     setOnAdd(false)
-    setOnDelete(false)
     setOnEdit(false)
   }
 
-  const showMainList = !onAdd && !onDelete && !onEdit
+  const showMainList = !onAdd && !onEdit
 
   return (
     <div className="flex h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 backdrop-blur-sm">
@@ -69,6 +68,13 @@ function KingdomsPage() {
           </div>
         )}
 
+        {/*Delete Error Display */}
+        {deleteError && (
+          <div className="mx-auto rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm">
+            {deleteError}
+          </div>
+        )}
+
         {/* Kingdoms List */}
         {showMainList && (
           <div>
@@ -77,7 +83,6 @@ function KingdomsPage() {
               <button
                 onClick={() => {
                   setOnAdd(true)
-                  setOnDelete(false)
                   setOnEdit(false)
                 }}
                 className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-3 text-white shadow-lg transition duration-300 hover:from-blue-700 hover:to-blue-600 focus:ring-4 focus:ring-blue-300 focus:outline-none"
@@ -104,8 +109,8 @@ function KingdomsPage() {
                     key={kingdom._id}
                     kingdom={kingdom}
                     onEdit={() => {
+                      setSelectedKingdom(kingdom)
                       setOnAdd(false)
-                      setOnDelete(false)
                       setOnEdit(true)
                     }}
                     onDelete={handleDelete}
@@ -132,7 +137,8 @@ function KingdomsPage() {
 
         {/* Edit Kingdom Form */}
         {onEdit && (
-          <EditForm
+          <EditKingdom
+            previousKingdom={selectedKingdom}
             setKingdoms={setKingdoms}
             setOnEdit={setOnEdit}
             onCancel={handleCancel}

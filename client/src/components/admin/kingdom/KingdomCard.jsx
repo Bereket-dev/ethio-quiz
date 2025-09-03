@@ -9,7 +9,7 @@ function KingdomCard({ kingdom, onEdit, onDelete }) {
         <h2 className="text-lg font-semibold text-gray-800">{kingdom.title}</h2>
         <div className="flex gap-2">
           <button
-            onClick={() => onEdit(kingdom)}
+            onClick={() => onEdit()}
             className="rounded-lg p-2 hover:bg-gray-100"
           >
             <Edit size={18} className="text-blue-500" />

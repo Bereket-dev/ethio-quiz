@@ -11,6 +11,7 @@ import LogInForm from './components/auth/LogInForm'
 import Logout from './components/auth/Logout'
 import Dashboard from './pages/admin/Dashboard'
 import KingdomsPage from './pages/admin/KingdomsPage'
+import CategoriesPage from './pages/admin/CategoriesPage'
 import AdminRoute from './components/auth/AdminRoute'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 
@@ -36,6 +37,7 @@ function App() {
         <Route element={<AdminRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/kingdoms" element={<KingdomsPage />} />
+          <Route path="/categories" element={<CategoriesPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

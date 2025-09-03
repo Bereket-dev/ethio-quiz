@@ -10,39 +10,34 @@ export const getKingdomList = async () => {
 
     const data = await response.json()
 
-    if (!response.ok) {
-      console.error(data.message || 'Failed to fetch kingdoms')
-      return []
-    }
-
-    return data.kingdoms || []
-  } catch (error) {
-    console.error('Failed to fetch kingdoms!', error)
-    return []
-  }
-}
-
-export const addOneKingdom = async (formData) => {
-  try {
-    const data = new FormData()
-    for (const key in formData) {
-      data.append(key, formData[key])
-    }
-
-    const response = await fetch('http://localhost:5000/api/kingdom/create', {
-      method: 'POST',
-      body: data,
-    })
-
-    const newKingdom = await response.json()
     if (response.ok) {
-      return newKingdom
+      return data.kingdoms || []
     } else {
-      throw new Error(newKingdom.error || 'Unknown error')
+      throw new Error(data.error || 'Failed to fetch kingdoms')
     }
   } catch (err) {
     throw err
   }
+}
+
+export const addOneKingdom = async (formData) => {
+  const data = new FormData()
+  for (const key in formData) {
+    data.append(key, formData[key])
+  }
+
+  const response = await fetch('http://localhost:5000/api/kingdom/create', {
+    method: 'POST',
+    body: data,
+  })
+
+  const result = await response.json()
+
+  if (!response.ok) {
+    throw new Error(result.error || 'Failed to create kingdom')
+  }
+
+  return result
 }
 
 export const editOneKingdom = async (formData) => {
@@ -52,15 +47,47 @@ export const editOneKingdom = async (formData) => {
       data.append(key, formData[key])
     }
 
-    const response = await fetch('http://localhost:5000/api/kingdom/edit', {
-      method: 'PUT',
-      body: data,
-    })
+    const id = formData._id //kingdom id
+    console.log('id:', id)
+    const response = await fetch(
+      `http://localhost:5000/api/kingdom/edit/${id}`,
+      {
+        method: 'PUT',
+        body: data,
+      },
+    )
 
     const updatedKingdom = await response.json()
-    return response.ok ? updatedKingdom : null
-  } catch (error) {
-    console.error('Failed to edit kingdom!', error)
-    return null
+    if (response.ok) {
+      return updatedKingdom
+    } else {
+      throw new Error(updatedKingdom.error || 'Failed to update kingdom!')
+    }
+  } catch (err) {
+    throw err
+  }
+}
+
+export const removeOneKingdom = async (id) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/kingdom/remove/${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      },
+    )
+
+    const result = await response.json()
+    if (response.ok) {
+      return result.message || `kingdom deleted successfully!`
+    } else {
+      throw new Error(result.error || 'Failed to create kingdom')
+    }
+  } catch (err) {
+    throw err
   }
 }

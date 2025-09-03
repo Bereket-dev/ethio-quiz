@@ -11,14 +11,29 @@ function EditForm({
   setMessage,
   initialValues,
 }) {
-  const [previewImg, setPreviewImg] = useState(null)
+  const [previewImg, setPreviewImg] = useState(
+    initialValues?.image?.src || null,
+  )
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={{ ...initialValues, img_icon: null }}
       validationSchema={formSchema}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         setMessage(null)
+
+        // Check if there are actual changes
+        const hasTitleChanged = values.title !== initialValues.title
+        const hasDescriptionChanged =
+          values.description !== initialValues.description
+        const hasImageChanged = values.img_icon !== null // New file selected
+
+        if (!hasTitleChanged && !hasDescriptionChanged && !hasImageChanged) {
+          setMessage('No changes detected')
+          setSubmitting(false)
+          return
+        }
+
         try {
           const result = await onSave(values)
           if (result) {
@@ -44,7 +59,7 @@ function EditForm({
                 {previewImg ? (
                   <img
                     src={previewImg}
-                    alt="preview"
+                    alt="preview img"
                     className="h-full w-full rounded-full object-cover"
                   />
                 ) : (

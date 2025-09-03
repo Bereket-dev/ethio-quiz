@@ -1,37 +1,17 @@
-import { useState } from 'react'
-import { editOneKingdom } from '../../../services/kingdomServices'
-import { kingdomsFormFields } from '../../../Data/kingdoms'
+import { CastleIcon } from 'lucide-react'
+import kingdomFormFields from '../../../Data/fields/kingdomForm'
 import EditForm from '../forms/EditForm'
+import { editKingdomSchema } from '../../../validation/kingdomSchema'
+import { useKingdomsEdit } from '../../../hooks/useKingdoms'
 
-function EditKingdom({ setOnEdit, onCancel }) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [errorMsg, setErrorMsg] = useState('')
-
-  const handleEdit = async (formData) => {
-    setIsLoading(true)
-    setErrorMsg('')
-
-    try {
-      const updatedKingdom = await editOneKingdom(formData)
-
-      if (updatedKingdom) {
-        setOnEdit(false)
-      } else {
-        setIsLoading(false)
-        setErrorMsg('Failed to add kingdom. Please try again.')
-      }
-    } catch (error) {
-      setIsLoading(false)
-      console.error('Error adding kingdom:', error)
-      setErrorMsg('An unexpected error occurred. Please try again later.')
-    } finally {
-      setIsLoading(false)
-    }
-  }
+function EditKingdom({ setKingdoms, previousKingdom, setOnEdit, onCancel }) {
+  const { handleEdit, errorMsg, setErrorMsg } = useKingdomsEdit(
+    setKingdoms,
+    setOnEdit,
+  )
 
   return (
     <div className="mx-auto mt-12 flex w-full max-w-2xl flex-col items-center justify-center px-4">
-      {/* Optional Error Display */}
       {errorMsg && (
         <div className="mb-4 w-full rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm">
           {errorMsg}
@@ -39,11 +19,12 @@ function EditKingdom({ setOnEdit, onCancel }) {
       )}
 
       <EditForm
-        fields={kingdomsFormFields}
+        fields={kingdomFormFields}
         onSave={handleEdit}
         onCancel={onCancel}
-        onLoading={isLoading}
-        setOnLoading={setIsLoading}
+        formSchema={editKingdomSchema}
+        setMessage={setErrorMsg}
+        initialValues={previousKingdom}
         icon={<CastleIcon size={48} className="text-white" />}
       />
     </div>
