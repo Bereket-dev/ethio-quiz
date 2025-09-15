@@ -8,24 +8,25 @@ const SUPPORTED_FORMATS = [
   'image/svg+xml',
 ]
 
-const categorySchema = Yup.object({
+const baseCategorySchema = Yup.object({
   title: Yup.string().required('A title is required'),
   description: Yup.string()
+    .required('A description is required')
     .min(30, 'Minimum 30 characters')
-    .max(300, 'Maximum 300 characters')
-    .required('A description is required'),
+    .max(300, 'Maximum 300 characters'),
   points: Yup.number('It should be number')
+    .required('Points are required')
     .min(0, 'It should be positive number')
-    .max(50, 'It should be lessthan 50')
-    .required('Points are required'),
+    .max(50, 'It should be lessthan 50'),
   timeAllowed: Yup.string()
-    .matches(/^\d{2}:\d{2}/, 'Time must be in mm:ss format')
-    .test('is-valid-time', 'Time must be between 00:00 to 29:59', (value) => {
-      if (!value) return false
-      const [minutes, seconds] = value.split(':').map(Number)
-      return minutes >= 0 && minutes <= 29 && seconds >= 0 && seconds <= 59
-    })
-    .required('A time is required'),
+    .required('Time required')
+    .matches(/^([0-9]|[0-2][0-9]):([0-5][0-9])$/, 'Time must be 0:00 to 29:59'),
+  kingdomId: Yup.string()
+    .required('Kingdom is required')
+    .matches(/^[0-9a-fA-F]{24}$/, 'Invalid Kingdom'),
+})
+
+export const addCategorySchema = baseCategorySchema.shape({
   img_icon: Yup.mixed()
     .required('An image is required!')
     .test('fileSize', 'File must be less than 2MB', (value) => {
@@ -36,4 +37,15 @@ const categorySchema = Yup.object({
     }),
 })
 
-export default categorySchema
+export const editCategorySchema = baseCategorySchema.shape({
+  img_icon: Yup.mixed()
+    .nullable()
+    .test('fileSize', 'File too large', (value) => {
+      if (!value || typeof value === 'string') return true
+      return value.size <= FILE_SIZE
+    })
+    .test('fileFormat', 'File larger than 1MB', (value) => {
+      if (!value || typeof value === 'string') return true
+      return SUPPORTED_FORMATS.includes(value.type)
+    }),
+})
