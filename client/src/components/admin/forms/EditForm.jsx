@@ -10,6 +10,7 @@ function EditForm({
   formSchema,
   setMessage,
   initialValues,
+  optionsValue,
 }) {
   const [previewImg, setPreviewImg] = useState(
     initialValues?.image?.src || null,
@@ -27,8 +28,21 @@ function EditForm({
         const hasDescriptionChanged =
           values.description !== initialValues.description
         const hasImageChanged = values.img_icon !== null // New file selected
+        const hasPointsChanged = values.points !== initialValues.points
+        const hasTimeAllowedChanged =
+          values.timeAllowed !== initialValues.timeAllowed
+        const hasColorChanged = values.color !== initialValues.color
+        const hasKingdomChanged = values.kingdomId !== initialValues.kingdomId
 
-        if (!hasTitleChanged && !hasDescriptionChanged && !hasImageChanged) {
+        if (
+          !hasTitleChanged &&
+          !hasDescriptionChanged &&
+          !hasImageChanged &&
+          !hasPointsChanged &&
+          !hasTimeAllowedChanged &&
+          !hasColorChanged &&
+          !hasKingdomChanged
+        ) {
           setMessage('No changes detected')
           setSubmitting(false)
           return
@@ -104,13 +118,36 @@ function EditForm({
               >
                 {field.label || 'Field'}
               </label>
-              <Field
-                as={field.type === 'textarea' ? 'textarea' : 'input'}
-                type={field.type || 'text'}
-                name={field.name}
-                placeholder={field.placeholder || ''}
-                className="focus:border-primary focus:ring-primary/30 w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-800 transition-all duration-200 outline-none focus:bg-white focus:ring-2"
-              />
+              {field.type === 'select' ? (
+                optionsValue && (
+                  <Field
+                    as="select"
+                    type={field.type || 'text'}
+                    name={field.name}
+                    placeholder={field.placeholder || ''}
+                    className="focus:border-primary focus:ring-primary/30 w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-800 transition-all duration-200 outline-none focus:bg-white focus:ring-2"
+                  >
+                    {' '}
+                    <option value="">Select {field.label}</option>
+                    {optionsValue.map((option, optionIndex) => (
+                      <option key={optionIndex} value={option.value}>
+                        {option.title || `option ${optionIndex + 1}`}
+                      </option>
+                    ))}
+                  </Field>
+                )
+              ) : (
+                <Field
+                  as={field.type === 'textarea' ? 'textarea' : 'input'}
+                  type={field.type || 'text'}
+                  name={field.name}
+                  {...(field.step ? { step: field.step } : {})}
+                  {...(field.min ? { min: field.min } : {})}
+                  {...(field.max ? { max: field.max } : {})}
+                  placeholder={field.placeholder || ''}
+                  className="focus:border-primary focus:ring-primary/30 w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-800 transition-all duration-200 outline-none focus:bg-white focus:ring-2"
+                />
+              )}
               <ErrorMessage
                 name={field.name}
                 component="div"

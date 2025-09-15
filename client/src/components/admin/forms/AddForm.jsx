@@ -2,14 +2,25 @@ import { PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Formik, Field, ErrorMessage, Form } from 'formik'
 
-function AddForm({ icon, fields, onCancel, onSave, formSchema, setMessage }) {
+function AddForm({
+  icon,
+  fields,
+  onCancel,
+  onSave,
+  formSchema,
+  setMessage,
+  optionsValue,
+}) {
   const [previewImg, setPreviewImg] = useState(null)
 
   return (
     <Formik
-      initialValues={fields.reduce((acc, f) => ({ ...acc, [f.name]: '' }), {
-        img_icon: null,
-      })}
+      initialValues={fields.reduce(
+        (acc, f) => ({ ...acc, [f.name]: f.type === 'color' ? '#000000' : '' }),
+        {
+          img_icon: null,
+        },
+      )}
       validationSchema={formSchema}
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         setMessage(null)
@@ -83,13 +94,36 @@ function AddForm({ icon, fields, onCancel, onSave, formSchema, setMessage }) {
               >
                 {field.label || 'Field'}
               </label>
-              <Field
-                as={field.type === 'textarea' ? 'textarea' : 'input'}
-                type={field.type || 'text'}
-                name={field.name}
-                placeholder={field.placeholder || ''}
-                className="focus:border-primary focus:ring-primary/30 w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-800 transition-all duration-200 outline-none focus:bg-white focus:ring-2"
-              />
+              {field.type === 'select' ? (
+                optionsValue && (
+                  <Field
+                    as="select"
+                    type={field.type || 'text'}
+                    name={field.name}
+                    placeholder={field.placeholder || ''}
+                    className="focus:border-primary focus:ring-primary/30 w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-800 transition-all duration-200 outline-none focus:bg-white focus:ring-2"
+                  >
+                    {' '}
+                    <option value="">Select {field.label}</option>
+                    {optionsValue.map((option, optionIndex) => (
+                      <option key={optionIndex} value={option.value}>
+                        {option.title || `option ${optionIndex + 1}`}
+                      </option>
+                    ))}
+                  </Field>
+                )
+              ) : (
+                <Field
+                  as={field.type === 'textarea' ? 'textarea' : 'input'}
+                  type={field.type || 'text'}
+                  name={field.name}
+                  {...(field.step ? { step: field.step } : {})}
+                  {...(field.min ? { min: field.min } : {})}
+                  {...(field.max ? { max: field.max } : {})}
+                  placeholder={field.placeholder || ''}
+                  className="focus:border-primary focus:ring-primary/30 w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-800 transition-all duration-200 outline-none focus:bg-white focus:ring-2"
+                />
+              )}
               <ErrorMessage
                 name={field.name}
                 component="div"
