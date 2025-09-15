@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { ListCheckIcon } from 'lucide-react'
-import { PlusCircle } from 'lucide-react'
 import SideBar from '../../components/admin/SideBar'
 import Header from '../../components/admin/Header'
 import SearchBar from '../../components/admin/SearchBar'
@@ -10,6 +9,7 @@ import EditCategory from '../../components/admin/category/EditCategory'
 import CategoryCard from '../../components/admin/category/CategoryCard'
 import { useCategoriesDelete } from '../../hooks/useCategories'
 import { getKingdomList } from '../../services/kingdomServices'
+import AddButton from '../../components/admin/AddButton'
 
 // Function to find kingdom title by ID
 const findKingdomTitle = (kingdoms, kingdomId) => {
@@ -104,15 +104,13 @@ function CategoriesPage() {
           <div>
             {/* Actions */}
             <div className="mt-6 flex items-end justify-between pt-4">
-              <button
-                onClick={() => {
+              <AddButton
+                onAdd={() => {
                   setIsAdding(true)
                   setIsEditing(false)
                 }}
-                className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-3 text-white shadow-lg transition duration-300 hover:from-blue-700 hover:to-blue-600 focus:ring-4 focus:ring-blue-300 focus:outline-none"
-              >
-                <PlusCircle size={22} /> Add Category
-              </button>
+                message="Add Category"
+              />
               <SearchBar />
             </div>
 

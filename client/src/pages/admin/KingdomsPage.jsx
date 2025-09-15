@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { PlusCircle, CastleIcon } from 'lucide-react'
+import { CastleIcon } from 'lucide-react'
 import KingdomCard from '../../components/admin/kingdom/KingdomCard'
 import SideBar from '../../components/admin/SideBar'
 import Header from '../../components/admin/Header'
@@ -7,6 +7,7 @@ import { getKingdomList } from '../../services/kingdomServices'
 import AddKingdom from '../../components/admin/kingdom/AddKingdom'
 import EditKingdom from '../../components/admin/kingdom/EditKingdom'
 import { useKingdomsDelete } from '../../hooks/useKingdoms'
+import AddButton from '../../components/admin/AddButton'
 
 function KingdomsPage() {
   const [kingdoms, setKingdoms] = useState([])
@@ -80,16 +81,13 @@ function KingdomsPage() {
           <div>
             {/* Add Button */}
             <div className="mt-6 flex items-center justify-end pt-4">
-              <button
-                onClick={() => {
+              <AddButton
+                onAdd={() => {
                   setOnAdd(true)
                   setOnEdit(false)
                 }}
-                className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 px-5 py-3 text-white shadow-lg transition duration-300 hover:from-blue-700 hover:to-blue-600 focus:ring-4 focus:ring-blue-300 focus:outline-none"
-              >
-                <PlusCircle size={22} />
-                Add Kingdom
-              </button>
+                message="Add Kingdom"
+              />
             </div>
 
             {/* Loading State */}
