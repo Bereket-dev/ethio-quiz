@@ -1,5 +1,9 @@
 import { useState } from 'react'
-// import { addOneCategory, editOneCategory } from '../services/CategoryServices'
+import {
+  addOneCategory,
+  editOneCategory,
+  removeOneCategory,
+} from '../services/categoryServices'
 
 export const useCategoriesAdd = (setCategories, setOnAdd) => {
   const [errorMsg, setErrorMsg] = useState('')
@@ -7,8 +11,8 @@ export const useCategoriesAdd = (setCategories, setOnAdd) => {
   const handleAdd = async (formData) => {
     setErrorMsg('')
     try {
-      const newKingdom = await addOneCategory(formData)
-      setCategories((prev) => [...prev, newKingdom])
+      const newCategory = await addOneCategory(formData)
+      setCategories((prev) => [...prev, newCategory])
       setOnAdd(false)
     } catch (error) {
       setErrorMsg(error.message)
@@ -20,30 +24,46 @@ export const useCategoriesAdd = (setCategories, setOnAdd) => {
 
 export const useCategoriesEdit = (setCategories, setOnEdit) => {
   const [errorMsg, setErrorMsg] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleEdit = async (formData) => {
     setErrorMsg('')
+    setIsLoading(true)
+
     try {
       const updatedCategory = await editOneCategory(formData)
-      setCategories((prev) => [...prev, updatedCategory])
+
+      setCategories((prev) =>
+        prev.map((category) =>
+          category._id === updatedCategory._id ? updatedCategory : category,
+        ),
+      )
+
       setOnEdit(false)
+      return updatedCategory // Optional: return the updated kingdom
     } catch (error) {
-      setErrorMsg(error.message)
+      const message =
+        error.response?.data?.error || error.message || 'Update failed'
+      setErrorMsg(message)
+      throw error // Re-throw if you want to handle it in the component too
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  return { handleEdit, errorMsg, setErrorMsg }
+  return { handleEdit, errorMsg, setErrorMsg, isLoading }
 }
 
 export const useCategoriesDelete = (setCategories) => {
   const [errorMsg, setErrorMsg] = useState('')
 
-  const handleDelete = async (title) => {
+  const handleDelete = async (category) => {
     setErrorMsg('')
 
     try {
-      await removeOneCategory(title)
-      setCategories((prev) => prev.filter((cat) => cat.title === title))
+      const id = category._id
+      await removeOneCategory(id)
+      setCategories((prev) => prev.filter((cat) => cat._id !== id))
     } catch (error) {
       setErrorMsg(error.message)
     }
