@@ -110,7 +110,7 @@ function KingdomsPage() {
                     kingdom={kingdom}
                     onEdit={() => {
                       setSelectedKingdom(kingdom)
-                      setOnAdd(false)
+                      setOnAdd(false) //why it is here?
                       setOnEdit(true)
                     }}
                     onDelete={handleDelete}
