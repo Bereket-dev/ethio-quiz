@@ -20,12 +20,18 @@ const categoryFormFields = [
     placeholder: 'Points',
     required: true,
   },
-  { type: 'time', label: 'time allowed', name: 'timeAllowed', required: true },
+  {
+    type: 'text',
+    label: 'time allowed',
+    name: 'timeAllowed',
+    placeholder: 'mm:ss',
+    required: true,
+  },
   { type: 'color', label: 'color of category', name: 'color', required: true },
   {
     type: 'select',
     label: 'kingdom of category',
-    name: 'kingdom',
+    name: 'kingdomId',
     required: true,
   },
 ]
