@@ -34,7 +34,7 @@ export const addOneKingdom = async (formData) => {
   const result = await response.json()
 
   if (!response.ok) {
-    throw new Error(result.error || 'Failed to create kingdom')
+    throw new Error(result.error || 'Failed to add kingdom')
   }
 
   return result
@@ -48,7 +48,6 @@ export const editOneKingdom = async (formData) => {
     }
 
     const id = formData._id //kingdom id
-    console.log('id:', id)
     const response = await fetch(
       `http://localhost:5000/api/kingdom/edit/${id}`,
       {
