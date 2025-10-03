@@ -26,6 +26,24 @@ function CategoriesPage() {
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [isAdding, setIsAdding] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
+  // State and effect for kingdoms
+  const [kingdoms, setKingdoms] = useState([])
+
+  useEffect(() => {
+    const fetchKingdoms = async () => {
+      setLoading(true)
+      setErrorMsg('')
+      try {
+        const kingdomList = await getKingdomList()
+        setKingdoms(kingdomList || [])
+      } catch (error) {
+        setErrorMsg('Failed to load kingdom of category. Please try again.')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchKingdoms()
+  }, [])
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -41,25 +59,6 @@ function CategoriesPage() {
       }
     }
     fetchCategories()
-  }, [])
-
-  // State and effect for kingdoms
-  const [kingdoms, setKingdoms] = useState([])
-
-  useEffect(() => {
-    const fetchKingdoms = async () => {
-      setLoading(true)
-      setErrorMsg('')
-      try {
-        const kingdomList = await getKingdomList()
-        setKingdoms(kingdomList || [])
-      } catch (error) {
-        setErrorMsg('Failed to load kingdoms. Please try again.')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchKingdoms()
   }, [])
 
   const {
