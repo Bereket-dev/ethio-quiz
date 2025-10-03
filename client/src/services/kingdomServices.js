@@ -84,7 +84,7 @@ export const removeOneKingdom = async (id) => {
     if (response.ok) {
       return result.message || `kingdom deleted successfully!`
     } else {
-      throw new Error(result.error || 'Failed to create kingdom')
+      throw new Error(result.error || 'Failed to delete kingdom')
     }
   } catch (err) {
     throw err
