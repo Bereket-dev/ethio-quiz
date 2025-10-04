@@ -12,8 +12,8 @@ function QuizKingdom() {
   const location = useLocation()
   const receivedData = location.state
 
-  const kingdomId = receivedData?.id;
- 
+  const kingdomId = receivedData?.id
+
   const bannerContent = {
     title: receivedData?.title,
     description: receivedData?.description,
@@ -54,7 +54,7 @@ function QuizKingdom() {
       />
 
       {/* Error Display */}
-      {errorMsg && (
+      {errorMsg && categories.length != 0 && (
         <div className="mx-auto mt-3 max-w-6xl rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm">
           {errorMsg}
         </div>
