@@ -20,6 +20,31 @@ export const getCategoryList = async () => {
   }
 }
 
+export const getCategoriesByKingdom = async (kingdomId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5000/api/category/kingdom/${kingdomId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      },
+    )
+
+    const data = await response.json()
+
+    if (response.ok) {
+      return data || []
+    } else {
+      throw new Error(data.message || 'Failed to fetch categories by kingdom')
+    }
+  } catch (err) {
+    throw err
+  }
+}
+
 export const addOneCategory = async (formData) => {
   const data = new FormData()
   for (const key in formData) {
