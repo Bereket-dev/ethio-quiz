@@ -1,7 +1,6 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 
-function ScoreResult({ score, outOf }) {
+function ScoreResult({ score, outOf, points }) {
   return (
     <div className="mx-auto max-w-3xl rounded-2xl border border-gray-100 bg-white p-8 shadow-xl transition hover:shadow-2xl">
       <div className="flex justify-center">
@@ -17,7 +16,8 @@ function ScoreResult({ score, outOf }) {
           Congratulation!
         </h3>
         <p className="text-primary text-md text-center">
-          Greate Job, Beki! You did it!
+          Greate Job, Beki! You get{' '}
+          <span className="font-bold">{score * points}</span> points!
         </p>
       </div>
       <div className="mt-4 px-6 text-white">
@@ -26,7 +26,7 @@ function ScoreResult({ score, outOf }) {
             Leader Board
           </button>
         </Link>
-        <Link to={'/'}>
+        <Link to={'/quiz'}>
           <button className="bg-primary hover:bg-primary-dark mx-auto mt-2 flex w-full max-w-[400px] justify-center rounded-lg px-2 py-1">
             Back To Home
           </button>
