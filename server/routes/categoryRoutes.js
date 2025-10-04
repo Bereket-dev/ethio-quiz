@@ -3,6 +3,7 @@ const {
   removeCategory,
   createNewCategory,
   editCategory,
+  findCategoriesByKingdom,
 } = require("../controllers/categoryController");
 
 const multer = require("multer");
@@ -11,6 +12,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/", getAllCategories);
+router.get("/kingdom/:kingdomId", findCategoriesByKingdom);
 router.post("/create", upload.single("img_icon"), createNewCategory);
 router.put("/edit/:id", upload.single("img_icon"), editCategory);
 router.delete("/remove/:id", removeCategory);
