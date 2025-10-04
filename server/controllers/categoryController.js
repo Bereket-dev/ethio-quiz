@@ -2,14 +2,8 @@ const { Category } = require("../models/quizModels");
 const cloudinary = require("../config/cloudinary");
 
 const createNewCategory = async (req, res) => {
-  const {
-    title,
-    description,
-    points,
-    timeAllowed,
-    color,
-    kingdomId,
-  } = req.body;
+  const { title, description, points, timeAllowed, color, kingdomId } =
+    req.body;
   const file = req.file;
 
   if (!title) return res.status(400).json({ error: "A title is required" });
@@ -56,14 +50,8 @@ const createNewCategory = async (req, res) => {
 
 const editCategory = async (req, res) => {
   const { id } = req.params;
-  const {
-    title,
-    description,
-    points,
-    timeAllowed,
-    color,
-    kingdomId,
-  } = req.body;
+  const { title, description, points, timeAllowed, color, kingdomId } =
+    req.body;
   const file = req.file;
 
   if (!title) return res.status(400).json({ error: "A title is required" });
@@ -121,6 +109,7 @@ const removeCategory = async (req, res) => {
     res.status(500).json({ error: "Failed to remove category" });
   }
 };
+
 const getAllCategories = async (req, res) => {
   try {
     const allCategories = await Category.find();
@@ -133,9 +122,25 @@ const getAllCategories = async (req, res) => {
   }
 };
 
+const findCategoriesByKingdom = async (req, res) => {
+  const { kingdomId } = req.params;
+
+  try {
+    const categories = await Category.find({ kingdomId });
+    if (!categories || categories.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Categories of this kingdom not found!" });
+    }
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 module.exports = {
   createNewCategory,
   editCategory,
   removeCategory,
   getAllCategories,
+  findCategoriesByKingdom,
 };
