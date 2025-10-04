@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import stopwatch from '../../../assets/icons/stopwatch.svg'
 
 function Timer({ questionTime, isPoused, isStarted }) {
-  const questionSeconds = questionTime.min * 60 + questionTime.sec
+  const questionSeconds = questionTime.minutes * 60 + questionTime.seconds
   const [timeLeft, setTimeLeft] = useState(questionSeconds)
 
   useEffect(() => {

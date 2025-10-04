@@ -17,6 +17,9 @@ function Categories({ title, categoriesList }) {
             title={item.title}
             color={item.color?.lighter}
             size={cardSize}
+            categoryId={item?._id}
+            questionPoints={item?.points}
+            questionTime={item?.timeAllowed}
           />
         ))}
       </div>

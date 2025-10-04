@@ -43,7 +43,7 @@ function QuizBriefCard({
           </div>
           <div>
             <p className="text-lg font-medium text-gray-700">
-              {questionTime.min} min {questionTime.sec} sec
+              {questionTime.minutes} min {questionTime.seconds} sec
             </p>
             <p className="text-sm text-gray-500">Total duration of the quiz</p>
           </div>

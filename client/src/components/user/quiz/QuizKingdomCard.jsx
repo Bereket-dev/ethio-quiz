@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
 
-function QuizKingdomCard({ image, title, description, to }) {
+function QuizKingdomCard({ image, title, description, id }) {
+  const dataToPass = { image, title, description, id }
   return (
     <Link
-      to={to}
+      to={`/quizkingdom`}
+      state={dataToPass}
       className="block transition-transform duration-300 hover:scale-[1.03]"
     >
       <div className="w-[270px] rounded-2xl bg-white px-6 py-6 text-black shadow-xl transition-shadow duration-300 hover:shadow-2xl hover:shadow-gray-300 md:w-[320px]">

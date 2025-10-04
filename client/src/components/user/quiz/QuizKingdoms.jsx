@@ -26,7 +26,7 @@ function QuizKingdoms({ title }) {
               image={kingdom.image}
               title={kingdom.title}
               description={kingdom.description}
-              to={kingdom.link}
+              id={kingdom._id}
             />
           ))}
         </div>

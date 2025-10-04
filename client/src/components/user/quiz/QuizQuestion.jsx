@@ -11,7 +11,7 @@ function QuizQuestion({
 }) {
   const outOf = questionNumber
   const count = step - 1
-  const question = questions[count].question
+  const question = questions[count].questionText
   const options = questions[count].options
 
   return (
@@ -32,7 +32,7 @@ function QuizQuestion({
           <div className="text-primary font-medium">
             {`Question ${step} of ${outOf}`}
           </div>
-          <Link to="/freshman">
+          <Link to="/quiz">
             <button
               onClick={() => {
                 isPoused === true
@@ -60,7 +60,7 @@ function QuizQuestion({
               <span className="text-primary mr-2 font-semibold">
                 {String.fromCharCode(65 + index)}.
               </span>
-              {option.text}
+              {option}
             </li>
           ))}
         </ul>
