@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useParams, useLocation } from 'react-router-dom'
-
 import QuizBriefCard from '../../components/user/quiz/QuizBriefCard'
 import QuizQuestion from '../../components/user/quiz/QuizQuestion'
 import ScoreResult from '../../components/user/score/ScoreResult'
-import { useEffect } from 'react'
 import { getQuestionsByCategory } from '../../services/questionServices'
+import { useScoreUpdate } from '../../hooks/useScore'
 
 function QuizFlow() {
   const { categoryId } = useParams()
@@ -13,7 +12,8 @@ function QuizFlow() {
   const receivedData = location.state
   const title = receivedData?.title || 'Quiz'
   const questionPoints = receivedData?.questionPoints || 1
-  const timeString = receivedData?.questionTime || '15:00' // default time per question in seconds
+  const timeString = receivedData?.questionTime || '15:00'
+
   const [questions, setQuestions] = useState([])
   const [errorMsg, setErrorMsg] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -21,6 +21,16 @@ function QuizFlow() {
   const [minutes, seconds] = timeString.split(':').map(Number)
   const questionTime = { minutes, seconds }
 
+  const [step, setStep] = useState(0)
+  const [score, setScore] = useState(0)
+  const [selectedAnswers, setSelectedAnswers] = useState({})
+  const [isStarted, setIsStarted] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(minutes * 60 + seconds)
+
+  const totalSteps = questions.length
+
+  // Fetch questions
   useEffect(() => {
     const fetchQuestions = async () => {
       setLoading(true)
@@ -29,9 +39,7 @@ function QuizFlow() {
         const questionList = await getQuestionsByCategory(categoryId)
         setQuestions(questionList || [])
       } catch (error) {
-        setErrorMsg(
-          error.message || 'Failed to load questions. Please try again.',
-        )
+        setErrorMsg(error.message || 'Failed to load questions.')
       } finally {
         setLoading(false)
       }
@@ -39,50 +47,88 @@ function QuizFlow() {
     fetchQuestions()
   }, [categoryId])
 
-  const totalSteps = questions.length
-
-  const [step, setStep] = useState(0)
-  const [score, setScore] = useState(0)
-  const [isStarted, setIsStarted] = useState(false)
-  const [isPaused, setIsPaused] = useState(false)
-
-  const handleNext = () => {
-    setStep((prev) => Math.min(prev + 1, totalSteps + 1))
-  }
-
-  const handlePrev = () => {
-    setStep((prev) => Math.max(prev - 1, 0))
-  }
+  // Timer effect
+  useEffect(() => {
+    let timer = null
+    if (isStarted && !isPaused && timeLeft > 0 && step <= totalSteps) {
+      timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000)
+    } else if (timeLeft === 0 && step < totalSteps) {
+      handleNext() // Auto move to next when time ends
+    }
+    return () => clearInterval(timer)
+  }, [isStarted, isPaused, timeLeft, step])
 
   const handleStart = () => {
     setIsStarted(true)
-    setIsPaused(false)
-    handleNext()
+    setStep(1)
+    setTimeLeft(minutes * 60 + seconds)
   }
 
+  const handleNext = () => {
+    if (step < totalSteps) {
+      setStep(step + 1)
+      setTimeLeft(minutes * 60 + seconds)
+    } else {
+      handleSubmit()
+    }
+  }
+
+  const handlePrev = () => {
+    if (step > 1) setStep(step - 1)
+  }
+
+  const handleAnswer = (index) => {
+    if (selectedAnswers[step] !== undefined) return
+    const currentQuestion = questions[step - 1]
+    const isCorrect = index === currentQuestion.correctAnswer
+
+    setSelectedAnswers((prev) => ({ ...prev, [step]: index }))
+
+    if (isCorrect) {
+      setScore((prev) => prev + questionPoints)
+    }
+
+    // Move to next after a short delay
+    setTimeout(() => handleNext(), 80000)
+  }
+
+  const {
+    handleScoreUpdate,
+    isLoading: scoreUpdateLoading,
+    errorMsg: scoreUpdateErrorMsg,
+  } = useScoreUpdate()
   const handleSubmit = () => {
+    const user = localStorage.getItem('user')
+    const userId = user ? JSON.parse(user).id : null
+    const quizzesTaken = totalSteps
+
+    handleScoreUpdate(userId, score, quizzesTaken)
+    // Reset quiz state
     setIsStarted(false)
     setIsPaused(false)
-    handleNext()
+    setStep(totalSteps + 1)
   }
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-gray-50 px-4 py-10">
-      {/* Error Display */}
+    <div className="flex min-h-screen w-full flex-row items-center justify-center bg-gray-50 px-4 py-10">
       {errorMsg && (
         <div className="mx-auto mt-3 max-w-6xl rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm">
           {errorMsg}
         </div>
       )}
 
-      {/* Loading State */}
+      {scoreUpdateErrorMsg && (
+        <div className="mx-auto mt-3 max-w-6xl rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm">
+          {scoreUpdateErrorMsg}
+        </div>
+      )}
+
       {loading ? (
         <p className="mt-20 text-center text-gray-500 italic">
           Loading questions...
         </p>
       ) : (
         <div className="w-full max-w-3xl space-y-6">
-          {/* Step 0 - Quiz Brief */}
           {step === 0 && (
             <QuizBriefCard
               questionNumber={totalSteps}
@@ -92,7 +138,6 @@ function QuizFlow() {
             />
           )}
 
-          {/* Step 1 to N - Quiz Questions */}
           {step > 0 && step <= totalSteps && (
             <QuizQuestion
               questions={questions}
@@ -101,15 +146,19 @@ function QuizFlow() {
               questionTime={questionTime}
               isStarted={isStarted}
               isPaused={isPaused}
+              selectedAnswer={selectedAnswers[step]}
+              answer={handleAnswer}
             />
           )}
 
-          {/* Step N+1 - Score Result */}
           {step === totalSteps + 1 && (
-            <ScoreResult score={score} outOf={totalSteps} />
+            <ScoreResult
+              score={score / questionPoints}
+              outOf={totalSteps}
+              points={questionPoints}
+            />
           )}
 
-          {/* Navigation Buttons */}
           <div className="mt-4 flex flex-wrap justify-between gap-4">
             {step > 0 && step <= totalSteps && (
               <button
