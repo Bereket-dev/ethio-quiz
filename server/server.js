@@ -7,6 +7,7 @@ const authRoutes = require("./routes/authRoutes");
 const kingdomRoutes = require("./routes/kingdomRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const questionRoutes = require("./routes/questionRoutes");
+const userRoutes = require("./routes/userRoutes");
 const { authenticateToken, requireAdmin } = require("./middleware/auth");
 
 dotenv.config();
@@ -23,3 +24,4 @@ app.use("/api/auth", authRoutes);
 app.use("/api/kingdom", kingdomRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/questions", questionRoutes);
+app.use("/api/user", userRoutes);
