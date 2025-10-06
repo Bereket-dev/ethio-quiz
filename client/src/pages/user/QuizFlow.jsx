@@ -100,9 +100,8 @@ function QuizFlow() {
   const handleSubmit = () => {
     const user = localStorage.getItem('user')
     const userId = user ? JSON.parse(user).id : null
-    const quizzesTaken = totalSteps
 
-    handleScoreUpdate(userId, score, quizzesTaken)
+    handleScoreUpdate(userId, categoryId, score)
     // Reset quiz state
     setIsStarted(false)
     setIsPaused(false)
