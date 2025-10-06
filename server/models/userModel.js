@@ -12,8 +12,6 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     profileImage: { type: String, default: null },
-    score: { type: Number },
-    quizzesTaken: { type: Number },
   },
   { timestamps: true }
 );
