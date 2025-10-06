@@ -19,3 +19,21 @@ export const updateUserScore = async (userId, categoryId, score) => {
     throw err
   }
 }
+
+export const getTopPlayers = async () => {
+  try {
+    const response = await fetch(`http://localhost:5000/api/user/top-players`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    })
+    const data = await response.json()
+    if (response.ok) {
+      return data
+    } else {
+      throw new Error(data.error || 'Failed to fetch top players!')
+    }
+  } catch (err) {
+    throw err
+  }
+}
