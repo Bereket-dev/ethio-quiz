@@ -11,7 +11,7 @@ const updateUserScore = async (req, res) => {
   try {
     const quizResult = await QuizResult.findOneAndUpdate(
       { userId, categoryId },
-      { $inc: { score: score } },
+      { $max:{score:score}},
       { upsert: true, new: true }
     );
     if (!quizResult) {
@@ -23,4 +23,47 @@ const updateUserScore = async (req, res) => {
   }
 };
 
-module.exports = { updateUserScore };
+const getTopPlayers = async (req, res) => {
+  try {
+    const topPlayers = await QuizResult.aggregate([
+      {
+        $group: {
+          _id: "$userId",
+          totalScore: { $sum: "$score" },
+        },
+      },
+      {
+        $sort: { totalScore: -1 },
+      },
+      {
+        $limit: 20,
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "_id",
+          as: "userId",
+        },
+      },
+      {
+        $unwind: "$userId",
+      },
+      {
+        $project: {
+          _id: 0,
+          userId: "$_id",
+          username: "$userId.username",
+          profileImage: "$userId.profileImage",
+          totalScore: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json(topPlayers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { updateUserScore, getTopPlayers };
