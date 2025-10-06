@@ -1,23 +1,23 @@
-const User = require("../models/userModel");
+const QuizResult = require("../models/quizResultModel");
 
 const updateUserScore = async (req, res) => {
-  const { userId } = req.params;
-  const { score, quizzesTaken } = req.body;
-  if (score === undefined || quizzesTaken === undefined) {
+  const { userId, categoryId } = req.params;
+  const { score } = req.body;
+  if (score === undefined || categoryId === undefined || userId === undefined) {
     return res
       .status(400)
-      .json({ message: "Score and quizzesTaken are required" });
+      .json({ message: "Score, categoryId, and userId are required" });
   }
   try {
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { $inc: { score, quizzesTaken } },
-      { new: true, runValidators: true }
+    const quizResult = await QuizResult.findOneAndUpdate(
+      { userId, categoryId },
+      { $inc: { score: score } },
+      { upsert: true, new: true }
     );
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    if (!quizResult) {
+      return res.status(404).json({ message: "Failed to update quiz result!" });
     }
-    res.status(200).json(user);
+    res.status(200).json(quizResult);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
