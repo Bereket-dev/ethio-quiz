@@ -5,7 +5,7 @@ function CategoryCard({ category, onEdit, onDelete, index, kingdomTitle }) {
   return (
     <Link to={`/categories/${category._id}/questions`}>
       <div
-        className={`border- grid grid-cols-12 items-center gap-2 rounded-xl border px-5 py-4 text-sm shadow-sm transition duration-200 hover:scale-[1.01] hover:shadow-lg`}
+        className={`mb-2 grid grid-cols-12 items-center gap-2 rounded-xl border border-4 px-5 py-4 text-sm shadow-sm transition duration-200 hover:scale-[1.01] hover:shadow-lg`}
         style={{
           borderBlockColor: category.color,
         }}
