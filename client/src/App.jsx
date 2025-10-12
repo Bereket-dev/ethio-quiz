@@ -13,6 +13,7 @@ import Dashboard from './pages/admin/Dashboard'
 import KingdomsPage from './pages/admin/KingdomsPage'
 import CategoriesPage from './pages/admin/CategoriesPage'
 import QuestionPage from './pages/admin/QuestionsPage'
+import AddQuiz from './pages/admin/AddQuiz'
 import AdminRoute from './components/auth/AdminRoute'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 
@@ -43,6 +44,7 @@ function App() {
             path="/categories/:categoryId/questions"
             element={<QuestionPage />}
           />
+          <Route path="/add-quiz" element={<AddQuiz />} />
         </Route>
       </Routes>
     </BrowserRouter>
