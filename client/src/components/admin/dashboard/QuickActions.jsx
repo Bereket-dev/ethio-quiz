@@ -1,6 +1,7 @@
-import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function QuickActions({ actions = [] }) {
+  const navigate = useNavigate()
   return (
     <div className="flex h-full w-full flex-col rounded-2xl bg-white shadow-lg transition-shadow duration-300 hover:shadow-2xl">
       {/* Header */}
@@ -14,7 +15,7 @@ function QuickActions({ actions = [] }) {
           {actions.map((action, index) => (
             <button
               key={index}
-              onClick={action.onClick}
+              onClick={() => navigate(action.to)}
               aria-label={action.label}
               className="group flex min-h-44 flex-col items-center justify-center gap-2 rounded-xl border border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100 p-4 text-sm font-medium text-gray-700 shadow-sm transition-all duration-300 hover:border-blue-400 hover:from-blue-500 hover:to-blue-600 hover:text-white hover:shadow-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
             >
