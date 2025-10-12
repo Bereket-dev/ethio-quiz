@@ -134,26 +134,28 @@ function CategoriesPage() {
                     </div>
 
                     {/* Rows */}
-                    {categories.map((category, index) => {
-                      const kingdomTitle = findKingdomTitle(
-                        kingdoms,
-                        category.kingdomId,
-                      )
-                      return (
-                        <CategoryCard
-                          key={category._id}
-                          category={category}
-                          onEdit={() => {
-                            setSelectedCategory(category)
-                            setIsEditing(true)
-                            setIsAdding(false)
-                          }}
-                          onDelete={handleDelete}
-                          index={index}
-                          kingdomTitle={kingdomTitle}
-                        />
-                      )
-                    })}
+                    <div className="mx-4">
+                      {categories.map((category, index) => {
+                        const kingdomTitle = findKingdomTitle(
+                          kingdoms,
+                          category.kingdomId,
+                        )
+                        return (
+                          <CategoryCard
+                            key={category._id}
+                            category={category}
+                            onEdit={() => {
+                              setSelectedCategory(category)
+                              setIsEditing(true)
+                              setIsAdding(false)
+                            }}
+                            onDelete={handleDelete}
+                            index={index}
+                            kingdomTitle={kingdomTitle}
+                          />
+                        )
+                      })}
+                    </div>
                   </div>
                 ) : (
                   <div className="mt-20 flex flex-col items-center text-gray-500">
