@@ -101,9 +101,25 @@ const findQuestionsByCategory = async (req, res) => {
   }
 };
 
+const findAllQuestions = async (req, res) => {
+  try {
+    const allQuestions = await Question.find();
+    if (!allQuestions || allQuestions.length === 0) {
+      return res.status(404).json({ message: "Questions not found!"});
+    }
+    res.status(200).json({
+      message: "Questions fetched successfullys!",
+      questions: allQuestions,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createNewQuestion,
   findQuestionsByCategory,
+  findAllQuestions,
   editQuestion,
   removeQuestion,
 };
