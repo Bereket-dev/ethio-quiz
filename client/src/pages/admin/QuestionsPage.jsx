@@ -4,7 +4,10 @@ import { useParams } from 'react-router-dom'
 import SideBar from '../../components/admin/SideBar'
 import Header from '../../components/admin/Header'
 import AddButton from '../../components/admin/AddButton'
-import { getQuestionsByCategory } from '../../services/questionServices'
+import {
+  getQuestionList,
+  getQuestionsByCategory,
+} from '../../services/questionServices'
 import AddQuestion from '../../components/admin/question/AddQuestion'
 import QuestionCard from '../../components/admin/question/QuestionCard'
 import EditQuestion from '../../components/admin/question/EditQuestion'
@@ -26,13 +29,44 @@ function QuestionPage() {
     const fetchQuestions = async () => {
       setLoading(true)
       setErrorMsg('')
+
+      const timeoutId = setTimeout(() => {
+        setLoading(false)
+      }, 3000)
+
+      let totalQuestions
+
       try {
-        const questionList = await getQuestionsByCategory(categoryId)
-        setQuestions(questionList || [])
+        const storedQuestions = JSON.parse(localStorage.getItem('questions'))
+        totalQuestions = storedQuestions || []
+
+        if (totalQuestions.length === 0) {
+          totalQuestions = await getQuestionList()
+        }
+
+        if (Array.isArray(totalQuestions) && totalQuestions.length > 0) {
+          const filtered = totalQuestions.filter(
+            (ques) => ques.categoryId === categoryId,
+          )
+          setQuestions(filtered)
+        }
+
+        const categoryQuestions = await getQuestionsByCategory(categoryId)
+        if (categoryQuestions && categoryQuestions.length > 0)
+          setQuestions(categoryQuestions)
       } catch (error) {
         setErrorMsg('Failed to load questions. Please try again.')
+
+        const storedQuestions = JSON.parse(localStorage.getItem('questions'))
+        if (Array.isArray(storedQuestions) && storedQuestions.length > 0) {
+          const filtered = totalQuestions.filter(
+            (ques) => ques.categoryId === categoryId,
+          )
+          setQuestions(filtered)
+        }
       } finally {
         setLoading(false)
+        clearTimeout(timeoutId)
       }
     }
     fetchQuestions()

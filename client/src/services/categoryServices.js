@@ -11,6 +11,7 @@ export const getCategoryList = async () => {
     const data = await response.json()
 
     if (response.ok) {
+      localStorage.setItem('categories', JSON.stringify(data?.categories))
       return data.categories || []
     } else {
       throw new Error(data.error || 'Failed to fetch categories')

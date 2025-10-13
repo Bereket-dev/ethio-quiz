@@ -23,13 +23,26 @@ function KingdomsPage() {
     const fetchKingdoms = async () => {
       setLoading(true)
       setErrorMsg('')
+
+      const timeoutId = setTimeout(() => {
+        setLoading(false)
+      }, 3000)
+
+      const storedKingdoms = JSON.parse(localStorage.getItem('kingdoms'))
       try {
+        if (Array.isArray(storedKingdoms) && storedKingdoms.length > 0)
+          setKingdoms(storedKingdoms)
+
         const kingdomList = await getKingdomList()
-        setKingdoms(kingdomList || [])
+        if (Array.isArray(kingdomList) && kingdomList.length > 0)
+          setKingdoms(kingdomList)
       } catch (error) {
         setErrorMsg('Failed to load kingdoms. Please try again.')
+        if (Array.isArray(storedKingdoms) && storedKingdoms.length > 0)
+          setKingdoms(storedKingdoms)
       } finally {
         setLoading(false)
+        clearTimeout(timeoutId)
       }
     }
     fetchKingdoms()

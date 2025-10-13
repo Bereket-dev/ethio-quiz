@@ -49,13 +49,28 @@ function CategoriesPage() {
     const fetchCategories = async () => {
       setLoading(true)
       setErrorMsg('')
+
+      const timeoutId = setTimeout(() => {
+        setLoading(false)
+      }, 3000)
+
       try {
+        const storedCategories = JSON.parse(localStorage.getItem('categories'))
+        if (Array.isArray(storedCategories) && storedCategories.length > 0)
+          setCategories(storedCategories)
+
         const categoryList = await getCategoryList()
-        setCategories(categoryList || [])
+        if (Array.isArray(categoryList) && categoryList.length > 0)
+          setCategories(categoryList)
       } catch (error) {
         setErrorMsg('Failed to load categories. Please try again.')
+
+        const storedCategories = JSON.parse(localStorage.getItem('categories'))
+        if (Array.isArray(storedCategories) && storedCategories.length > 0)
+          setCategories(storedCategories)
       } finally {
         setLoading(false)
+        clearTimeout(timeoutId)
       }
     }
     fetchCategories()

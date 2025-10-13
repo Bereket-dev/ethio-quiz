@@ -11,6 +11,7 @@ export const getKingdomList = async () => {
     const data = await response.json()
 
     if (response.ok) {
+      localStorage.setItem('kingdoms', JSON.stringify(data?.kingdoms))
       return data.kingdoms || []
     } else {
       throw new Error(data.error || 'Failed to fetch kingdoms')

@@ -1,3 +1,23 @@
+export const getQuestionList = async () => {
+  try {
+    const response = await fetch('http://localhost:5000/api/questions', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (response.ok) {
+      localStorage.setItem('questions', JSON.stringify(data?.questions))
+      return data.questions || []
+    } else throw new Error(data.error || 'Failed to fetch questions list')
+  } catch (err) {
+    throw err
+  }
+}
+
 export const getQuestionsByCategory = async (categoryId) => {
   try {
     const response = await fetch(
@@ -13,11 +33,10 @@ export const getQuestionsByCategory = async (categoryId) => {
 
     const data = await response.json()
 
-    if (!response.ok) {
+    if (response.ok) {
+      return data || []
+    } else
       throw new Error(data.error || 'Failed to fetch questions of a category')
-    }
-
-    return data || []
   } catch (err) {
     throw err
   }
