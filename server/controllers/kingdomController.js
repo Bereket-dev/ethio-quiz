@@ -94,6 +94,9 @@ const removeKingdom = async (req, res) => {
 const getAllKingdoms = async (req, res) => {
   try {
     const allKingdoms = await Kingdom.find();
+    if (!allKingdoms || allKingdoms.length === 0) {
+      return res.status(404).json({ message: "Kingdoms not found!" });
+    }
     res.status(200).json({
       message: "All kingdoms fetched successfully",
       kingdoms: allKingdoms,

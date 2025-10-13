@@ -113,6 +113,9 @@ const removeCategory = async (req, res) => {
 const getAllCategories = async (req, res) => {
   try {
     const allCategories = await Category.find();
+    if (!allCategories || allCategories.length === 0) {
+      return res.status(404).json({ message: "Categories not found!" });
+    }
     res.status(200).json({
       message: "All categories fetched successfully",
       categories: allCategories,
