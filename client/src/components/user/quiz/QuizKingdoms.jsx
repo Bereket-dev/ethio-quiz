@@ -6,9 +6,13 @@ function QuizKingdoms({ title }) {
   const [kingdomList, setKingdomList] = useState([])
 
   useEffect(() => {
+    const storedKingdoms = JSON.parse(localStorage.getItem('kingdoms'))
+    if (Array.isArray(storedKingdoms) && storedKingdoms.length > 0)
+      setKingdomList(storedKingdoms)
+
     async function fetchKingdoms() {
       const result = await getKingdomList()
-      setKingdomList(result || [])
+      if (Array.isArray(result) && result.length > 0) setKingdomList(result)
     }
     fetchKingdoms()
   }, [])

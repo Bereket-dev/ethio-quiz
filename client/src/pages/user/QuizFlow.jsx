@@ -35,6 +35,16 @@ function QuizFlow() {
     const fetchQuestions = async () => {
       setLoading(true)
       setErrorMsg('')
+
+      const storedAllQuestions = JSON.parse(localStorage.getItem('questions'))
+      if (Array.isArray(storedAllQuestions) && storedAllQuestions.length > 0) {
+        const filtered = storedAllQuestions.filter(
+          (ques) => ques.categoryId === categoryId,
+        )
+        setQuestions(filtered)
+        setLoading(false)
+      }
+
       try {
         const questionList = await getQuestionsByCategory(categoryId)
         setQuestions(questionList || [])

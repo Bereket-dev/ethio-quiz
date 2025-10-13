@@ -32,9 +32,23 @@ function QuizKingdom() {
     const fetchCategoriesByKingdom = async () => {
       setLoading(true)
       setErrorMsg('')
+
+      const storedAllCategories = JSON.parse(localStorage.getItem('categories'))
+      if (
+        Array.isArray(storedAllCategories) &&
+        storedAllCategories.length > 0
+      ) {
+        const filtered = storedAllCategories.filter(
+          (cat) => cat.kingdomId === kingdomId,
+        )
+        setCategories(filtered)
+        setLoading(false)
+      }
+
       try {
         const categoryList = await getCategoriesByKingdom(kingdomId)
-        setCategories(categoryList || [])
+        if (Array.isArray(categoryList) && categoryList.length > 0)
+          setCategories(categoryList)
       } catch (error) {
         setErrorMsg(error.message || 'Failed to load categories')
       } finally {

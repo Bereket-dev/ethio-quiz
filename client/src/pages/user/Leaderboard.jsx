@@ -13,17 +13,21 @@ function Leaderboard() {
     const fetchTopPlayers = async () => {
       setLoading(true)
       setErrorMsg('')
-      try {
-        const cached = localStorage.getItem('topPlayers')
-        if (cached) {
-          setPlayers(JSON.parse(cached))
-          setLoading(false)
-        }
 
+      const storedTopPlayers = JSON.parse(localStorage.getItem('topPlayers'))
+      if (Array.isArray(storedTopPlayers) && storedTopPlayers.length > 0) {
+        setPlayers(storedTopPlayers)
+        setLoading(false)
+      }
+
+      try {
         const playersList = await getTopPlayers()
-        if (playersList) {
+        if (Array.isArray(playersList) && playersList.length > 0) {
           setPlayers(playersList)
-          localStorage.setItem('topPlayers', players)
+          localStorage.setItem(
+            'topPlayers',
+            JSON.stringify(playersList.slice(0, 10)),
+          )
         }
       } catch (error) {
         setErrorMsg(error.message || 'Failed to load players')
