@@ -1,4 +1,4 @@
-import { updateUserScore } from '../services/userServices'
+import { updateUserScore } from '../services/quizResultServices'
 import { useState } from 'react'
 
 export const useScoreUpdate = () => {
