@@ -1,11 +1,36 @@
 import { Navigate, Outlet } from 'react-router-dom'
+import { checkAdmin } from '../../services/authServices'
+import { useState, useEffect } from 'react'
 
 function AdminRoute() {
-  const token = localStorage.getItem('token')
-  const user = JSON.parse(localStorage.getItem('user'))
+  const [status, setStatus] = useState({
+    loading: true,
+    isAdmin: false,
+  })
 
-  if (!token) return <Navigate to={'/login'} replace />
-  if (!user || user.role != 'admin')
+  useEffect(() => {
+    const fetchLogData = async () => {
+      const logginData = await checkAdmin()
+      if (
+        logginData &&
+        logginData.loggedIn &&
+        logginData.user.role === 'admin'
+      ) {
+        setStatus({ loading: false, isAdmin: true })
+      } else setStatus({ loading: false, isAdmin: false })
+    }
+    fetchLogData()
+  }, [])
+
+  if (status.loading) {
+    return (
+      <div className="flex h-screen items-center justify-center text-xl">
+        Checking admin access...
+      </div>
+    )
+  }
+
+  if (!status.loading && !status.isAdmin)
     return <Navigate to={'/unauthorized'} replace />
 
   return <Outlet />
