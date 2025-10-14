@@ -7,7 +7,7 @@ const authenticateToken = async (req, res, next) => {
 
   try {
     const decode = jwt.verify(token, process.env.JWT_SECRET);
-    const user = decode;
+    req.user = decode;
     next();
   } catch (error) {
     res.status(401).json({ error: "Invalid Token!" });
@@ -15,11 +15,11 @@ const authenticateToken = async (req, res, next) => {
 };
 
 // Check if user is admin
-function requireAdmin(req, res, next) {
+const requireAdmin = (req, res, next) => {
   if (req.user.role !== "admin") {
     return res.status(403).json({ message: "Access denied. Admins only." });
   }
   next();
-}
+};
 
 module.exports = { authenticateToken, requireAdmin };
