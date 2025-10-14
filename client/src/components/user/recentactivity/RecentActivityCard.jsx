@@ -1,9 +1,8 @@
 import CategoryCard from '../categories/CategoryCard'
 import DoughnutChart from '../charts/DoughnutChart'
-import {
-  freshmanCategories,
-  triviaCategories,
-} from '../../../Data/quizCategories'
+
+const freshmanCategories = []
+const triviaCategories = []
 
 function RecentActivityCard({ index, kingdom, score }) {
   const isFreshman = kingdom === 'freshman'
