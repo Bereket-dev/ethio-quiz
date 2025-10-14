@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PlusCircle, Settings } from 'lucide-react'
 
 import SideBar from '../../components/admin/SideBar'
@@ -7,13 +7,45 @@ import LineChart from '../../components/admin/charts/LineChart'
 import PieChart from '../../components/admin/charts/PieChart'
 import BarChart from '../../components/admin/charts/BarChart'
 import QuickActions from '../../components/admin/dashboard/QuickActions'
-
+import { getTopPlayers } from '../../services/quizResultServices'
 import { lineData } from '../../Data/users'
-import { questionStatus } from '../../Data/Questions'
-import { topPlayers } from '../../Data/users'
 
 function Dashboard() {
   const [isShrink, setIsShrink] = useState(false)
+  const [players, setPlayers] = useState([])
+  const [errorMsg, setErrorMsg] = useState(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const fetchTopPlayers = async () => {
+      setLoading(true)
+      setErrorMsg('')
+
+      const storedTopPlayers = JSON.parse(localStorage.getItem('topPlayers'))
+      if (Array.isArray(storedTopPlayers) && storedTopPlayers.length > 0) {
+        setPlayers(storedTopPlayers)
+        setLoading(false)
+      }
+
+      try {
+        const playersList = await getTopPlayers()
+        if (Array.isArray(playersList) && playersList.length > 0) {
+          setPlayers(playersList)
+          localStorage.setItem(
+            'topPlayers',
+            JSON.stringify(playersList.slice(0, 10)),
+          )
+        }
+      } catch (error) {
+        setErrorMsg(error.message || 'Failed to load players')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchTopPlayers()
+  }, [])
+
+  const topPlayers = players.slice(0, 4)
 
   const quickActions = [
     {
@@ -67,7 +99,7 @@ function Dashboard() {
                 <span className="text-sm text-gray-400">This Week</span>
               </div>
               <div className="h-52">
-                <PieChart pieData={questionStatus} />
+                {/* <PieChart pieData={questionStatus} /> */}
               </div>
             </div>
           </div>
