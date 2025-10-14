@@ -12,6 +12,7 @@ export const checkUser = async (formData) => {
     const data = await response.json()
 
     if (response.ok) {
+      localStorage.setItem('user', JSON.stringify(data.user))
       return data
     } else {
       throw new Error(data.error || 'Unknown Error!')
@@ -57,5 +58,41 @@ export const registerUser = async (formData) => {
     return data
   } catch (err) {
     throw err
+  }
+}
+
+export const checkAuth = async () => {
+  try {
+    const response = await fetch('http://localhost:5000/api/auth/user', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = response.json()
+    if (!response.ok) throw new Error(data.error || 'Error checking auth')
+    return data
+  } catch (error) {
+    return { loggedIn: false }
+  }
+}
+
+export const checkAdmin = async () => {
+  try {
+    const response = await fetch('http://localhost:5000/api/auth/admin', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = response.json()
+    if (!response.ok) throw new Error(data.error || 'Error checking admin')
+    return data
+  } catch (error) {
+    return { loggedIn: false }
   }
 }
