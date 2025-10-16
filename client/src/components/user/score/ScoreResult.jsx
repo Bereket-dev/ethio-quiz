@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function ScoreResult({ score, outOf, points }) {
+  const navigate = useNavigate()
   return (
     <div className="mx-auto max-w-3xl rounded-2xl border border-gray-100 bg-white p-8 shadow-xl transition hover:shadow-2xl">
       <div className="flex justify-center">
@@ -21,16 +22,18 @@ function ScoreResult({ score, outOf, points }) {
         </p>
       </div>
       <div className="mt-4 px-6 text-white">
-        <Link to={'/leaderboard'}>
-          <button className="bg-primary hover:bg-primary-dark mx-auto flex w-full max-w-[400px] justify-center rounded-lg px-2 py-1">
-            Leader Board
-          </button>
-        </Link>
-        <Link to={'/quiz'}>
-          <button className="bg-primary hover:bg-primary-dark mx-auto mt-2 flex w-full max-w-[400px] justify-center rounded-lg px-2 py-1">
-            Back To Home
-          </button>
-        </Link>
+        <button
+          onClick={() => navigate('/leaderboard')}
+          className="bg-primary hover:bg-primary-dark mx-auto flex w-full max-w-[400px] justify-center rounded-lg px-2 py-1"
+        >
+          Leader Board
+        </button>
+        <button
+          onClick={() => navigate(-1)}
+          className="bg-primary hover:bg-primary-dark mx-auto mt-2 flex w-full max-w-[400px] justify-center rounded-lg px-2 py-1"
+        >
+          Back To Home
+        </button>
       </div>
     </div>
   )
