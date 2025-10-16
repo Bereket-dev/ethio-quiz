@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Header from '../../components/user/Header'
 import PlayerCard from '../../components/user/leaderboard/PlayerCard'
 import Footer from '../../components/user/Footer'
-import { getTopPlayers } from '../../services/userServices'
+import { getTopPlayers } from '../../services/quizResultServices'
 
 function Leaderboard() {
   const [players, setPlayers] = useState([])

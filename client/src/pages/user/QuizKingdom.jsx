@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getCategoriesByKingdom } from '../../services/categoryServices'
 import { ListCheckIcon } from 'lucide-react'
+import { getRecentQuizResult } from '../../services/quizResultServices'
 
 function QuizKingdom() {
   const location = useLocation()
@@ -25,6 +26,7 @@ function QuizKingdom() {
   }
 
   const [categories, setCategories] = useState([])
+  const [recentactivities, setRecentActivities] = useState([])
   const [errorMsg, setErrorMsg] = useState(null)
   const [loading, setLoading] = useState(false)
 
@@ -57,6 +59,47 @@ function QuizKingdom() {
     }
     fetchCategoriesByKingdom()
   }, [])
+
+  useEffect(() => {
+    const fetchRecentActivities = async () => {
+      try {
+        setLoading(true)
+        setErrorMsg('')
+
+        // Safely parse localStorage
+        const stored = localStorage.getItem('recent-activities')
+        const storedActivities = stored ? JSON.parse(stored) : []
+
+        if (Array.isArray(storedActivities) && storedActivities.length > 0) {
+          const filtered = storedActivities.filter((act) => {
+            const result = categories.find((cat) => cat._id === act.categoryId)
+            return result?.kingdomId === kingdomId
+          })
+          setRecentActivities(filtered)
+        }
+
+        const user = localStorage.getItem('user')
+        const userId = user ? JSON.parse(user)?.id : null
+
+        if (!userId) throw new Error('User not found')
+
+        const recentActivities = await getRecentQuizResult(userId)
+        if (Array.isArray(recentActivities) && recentActivities.length > 0) {
+          const filtered = recentActivities.filter((act) => {
+            const result = categories.find((cat) => cat._id === act.categoryId)
+            return result?.kingdomId === kingdomId
+          })
+          setRecentActivities(filtered)
+        }
+      } catch (error) {
+        setErrorMsg(error.message || 'Failed to load recent activities')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchRecentActivities()
+  }, [categories, kingdomId])
 
   return (
     <div>
@@ -93,7 +136,15 @@ function QuizKingdom() {
         </div>
       )}
 
-      <RecentActivities kingdom={bannerContent.title} />
+      {recentactivities &&
+        categories &&
+        categories.length > 0 &&
+        recentactivities.length > 0 && (
+          <RecentActivities
+            recentActivities={recentactivities}
+            categories={categories}
+          />
+        )}
       <Footer />
     </div>
   )

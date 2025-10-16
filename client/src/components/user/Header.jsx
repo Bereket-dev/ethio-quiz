@@ -21,7 +21,6 @@ function Header() {
     const fetchLogData = async () => {
       const logginData = await checkAuth()
       if (logginData && logginData.loggedIn && logginData.user) {
-        localStorage.setItem('user', logginData.user)
         setStatus({ loading: false, isLoggedIn: true })
       } else setStatus({ loading: false, isLoggedIn: false })
     }

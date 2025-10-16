@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/user/Home'
 import Quiz from './pages/user/Quiz'
 import QuizKingdom from './pages/user/quizkingdom'
-import Trivia from './pages/user/Trivia'
 import QuizFlow from './pages/user/QuizFlow'
 import Leaderboard from './pages/user/Leaderboard'
 import SignUpForm from './components/auth/SignUpForm'
@@ -16,6 +15,8 @@ import QuestionPage from './pages/admin/QuestionsPage'
 import AddQuiz from './pages/admin/AddQuiz'
 import AdminRoute from './components/auth/AdminRoute'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import NotFound from './pages/NotFound'
+import Unauthorized from './pages/Unauthorized'
 
 function App() {
   return (
@@ -25,11 +26,11 @@ function App() {
         <Route path="/signup" element={<SignUpForm />} />
         <Route path="/login" element={<LogInForm />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* protected routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/quizkingdom" element={<QuizKingdom />} />
-          <Route path="/trivia" element={<Trivia />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/quizflow/:categoryId" element={<QuizFlow />} />
@@ -46,6 +47,9 @@ function App() {
           />
           <Route path="/add-quiz" element={<AddQuiz />} />
         </Route>
+
+        {/* Not Found */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )
