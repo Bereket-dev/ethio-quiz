@@ -1,5 +1,4 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Timer from './Timer'
 
 function QuizQuestion({
@@ -14,6 +13,7 @@ function QuizQuestion({
 }) {
   const question = questions[step - 1]
   const options = question.options
+  const navigate = useNavigate()
 
   return (
     <div>
@@ -30,9 +30,12 @@ function QuizQuestion({
           <div className="text-primary font-medium">
             {`Question ${step} of ${questionNumber}`}
           </div>
-          <Link to="/quiz" className="text-red-500 hover:text-red-700">
+          <button
+            onClick={() => navigate(-1)}
+            className="text-red-500 hover:text-red-700"
+          >
             Quit
-          </Link>
+          </button>
         </div>
 
         <h3 className="mb-6 text-lg leading-snug font-semibold text-gray-800">
