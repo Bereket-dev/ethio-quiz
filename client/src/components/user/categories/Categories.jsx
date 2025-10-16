@@ -1,4 +1,5 @@
 import CategoryCard from './CategoryCard'
+import { Link } from 'react-router-dom'
 
 function Categories({ title, categoriesList }) {
   const cardSize = { cardWidth: '120px', imgWidth: '56px' }
@@ -10,18 +11,23 @@ function Categories({ title, categoriesList }) {
       </h2>
 
       <div className="grid w-full grid-cols-[repeat(auto-fit,_minmax(120px,_1fr))] place-items-center gap-8 sm:gap-10 md:gap-12">
-        {categoriesList.map((item, index) => (
-          <CategoryCard
-            key={index}
-            image={item.image}
-            title={item.title}
-            color={item.color?.lighter}
-            size={cardSize}
-            categoryId={item?._id}
-            questionPoints={item?.points}
-            questionTime={item?.timeAllowed}
-          />
-        ))}
+        {categoriesList.map((item, index) => {
+          const categoryId = item?._id
+          const questionPoints = item?.points
+          const questionTime = item?.timeAllowed
+
+          const dataToPass = { questionPoints, questionTime, title }
+          return (
+            <Link key={index} to={`/quizflow/${categoryId}`} state={dataToPass}>
+              <CategoryCard
+                image={item.image}
+                title={item.title}
+                color={item.color?.lighter}
+                size={cardSize}
+              />
+            </Link>
+          )
+        })}
       </div>
     </section>
   )
