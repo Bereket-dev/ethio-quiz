@@ -1,11 +1,12 @@
+import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import {
   ArrowLeft,
   ArrowRight,
   CrownIcon,
   LayoutIcon,
-  SettingsIcon,
   ListIcon,
+  ChevronDown,
 } from 'lucide-react'
 import userIcon from '../../assets/icons/profile-icon.svg'
 
@@ -19,13 +20,14 @@ function SideBar({ isShrink, setIsShrink }) {
     { name: 'Dashboard', to: '/dashboard', icon: <LayoutIcon size={24} /> },
     { name: 'Kingdoms', to: '/kingdoms', icon: <CrownIcon size={24} /> },
     { name: 'Categories', to: '/categories', icon: <ListIcon size={24} /> },
-    { name: 'Settings', to: '/settings', icon: <SettingsIcon size={24} /> },
   ]
 
   //admin data from local storage
   const user = JSON.parse(localStorage.getItem('user'))
   const username = user.username
   const email = user.email
+
+  const [isClicked, setIsClicked] = useState(false)
 
   return (
     <aside
@@ -47,13 +49,30 @@ function SideBar({ isShrink, setIsShrink }) {
             className={`${isShrink ? 'w-[50px]' : 'w-[120px]'} rounded-full`}
           />
           <div className="text-center">
-            <div className="text-lg font-semibold text-white">
-              {username ? username : 'Admin'}
+            <div className="flex items-center justify-center gap-2">
+              <strong className="text-lg font-semibold text-white">
+                {username ? username : 'Admin'}
+              </strong>
+              <button
+                onClick={() => setIsClicked((prev) => !prev)}
+                className="flex items-center transition-transform duration-200 ease-in"
+                style={isClicked ? { transform: 'rotate(-180deg)' } : {}}
+              >
+                <ChevronDown size={22} />
+              </button>
             </div>
-            {!isShrink && email && (
-              <div className="text-md text-gray-200">{email}</div>
+            {isClicked && (
+              <Link to={'/logout'}>
+                <div className="rounded-md bg-white/50 px-2 py-1 text-black/70 shadow-md">
+                  logout
+                </div>
+              </Link>
             )}
           </div>
+
+          {!isShrink && email && (
+            <div className="text-md text-gray-200">{email}</div>
+          )}
         </div>
 
         {/*nav lists*/}
