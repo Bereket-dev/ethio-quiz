@@ -13,7 +13,7 @@ export const checkUser = async (formData) => {
 
     if (response.ok) {
       localStorage.setItem('user', JSON.stringify(data.user))
-      return data
+      return data.user
     } else {
       throw new Error(data.error || 'Unknown Error!')
     }
@@ -71,7 +71,7 @@ export const checkAuth = async () => {
       credentials: 'include',
     })
 
-    const data = response.json()
+    const data = await response.json()
     if (!response.ok) throw new Error(data.error || 'Error checking auth')
     return data
   } catch (error) {
