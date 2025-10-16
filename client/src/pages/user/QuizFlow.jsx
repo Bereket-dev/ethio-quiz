@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useParams, useLocation } from 'react-router-dom'
+import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import QuizBriefCard from '../../components/user/quiz/QuizBriefCard'
 import QuizQuestion from '../../components/user/quiz/QuizQuestion'
 import ScoreResult from '../../components/user/score/ScoreResult'
@@ -9,6 +9,7 @@ import { useScoreUpdate } from '../../hooks/useScore'
 function QuizFlow() {
   const { categoryId } = useParams()
   const location = useLocation()
+  const navigate = useNavigate()
   const receivedData = location.state
   const title = receivedData?.title || 'Quiz'
   const questionPoints = receivedData?.questionPoints || 1
@@ -179,11 +180,12 @@ function QuizFlow() {
             )}
 
             {step === 0 && (
-              <Link to="/quiz">
-                <button className="rounded-xl bg-gray-200 px-5 py-2 text-sm font-medium text-red-600 shadow-sm transition hover:bg-gray-300">
-                  Quit
-                </button>
-              </Link>
+              <button
+                onClick={() => navigate(-1)}
+                className="rounded-xl bg-gray-200 px-5 py-2 text-sm font-medium text-red-600 shadow-sm transition hover:bg-gray-300"
+              >
+                Quit
+              </button>
             )}
 
             {step === 0 && (
