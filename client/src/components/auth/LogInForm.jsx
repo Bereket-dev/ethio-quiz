@@ -44,11 +44,7 @@ function LoginForm() {
               try {
                 const userData = await checkUser(values)
 
-                localStorage.setItem('token', userData.token)
-                localStorage.setItem('user', JSON.stringify(userData.user))
-
-                const user = JSON.parse(localStorage.getItem('user'))
-                if (user?.role === 'admin') {
+                if (userData?.role === 'admin') {
                   navigate('/dashboard')
                 } else {
                   navigate('/quiz')
