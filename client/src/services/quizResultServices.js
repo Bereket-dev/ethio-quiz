@@ -1,3 +1,5 @@
+const API_URL = 'http://localhost:5000/api'
+
 export const updateUserScore = async (userId, categoryId, score) => {
   try {
     const response = await fetch(
@@ -66,7 +68,6 @@ export const getRecentQuizResult = async (userId) => {
 }
 
 export const fetchMonthlyQuizStats = async () => {
-  const API_URL = 'http://localhost:5000/api'
   try {
     const response = await fetch(`${API_URL}/quiz-result/monthly-stats`, {
       method: 'GET',
@@ -79,6 +80,26 @@ export const fetchMonthlyQuizStats = async () => {
     const data = await response.json()
     if (!response.ok)
       throw new Error(data.error || 'Failed to get monthly user stats')
+
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+export const fetchTopPlayersStats = async () => {
+  try {
+    const response = await fetch(`${API_URL}/quiz-result/top-players-stats`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (!response.ok)
+      throw new Error(data.error || 'Failed to fetch top players stats')
 
     return data
   } catch (err) {
