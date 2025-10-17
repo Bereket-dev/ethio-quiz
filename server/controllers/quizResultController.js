@@ -85,4 +85,81 @@ const getRecentQuizResult = async (req, res) => {
   }
 };
 
-module.exports = { updateUserScore, getHighScoreUser, getRecentQuizResult };
+const getMonthlyQuizStats = async (req, res) => {
+  try {
+    const result = await QuizResult.aggregate([
+      // Join category info
+      {
+        $lookup: {
+          from: "categories",
+          localField: "categoryId",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      { $unwind: "$category" },
+      // Group by category and month
+      {
+        $group: {
+          _id: {
+            category: "$category.title",
+            month: { $month: "$createdAt" },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { "_id.month": 1 } },
+      // Group again by category for line chart format
+      {
+        $group: {
+          _id: "$_id.category",
+          data: {
+            $push: {
+              x: {
+                $arrayElemAt: [
+                  [
+                    "",
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec",
+                  ],
+                  "$_id.month",
+                ],
+              },
+              y: "$count",
+            },
+          },
+        },
+      },
+      // Final projection for chart library
+      {
+        $project: {
+          _id: 0,
+          id: "$_id",
+          data: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching monthly quiz stats:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+module.exports = {
+  updateUserScore,
+  getHighScoreUser,
+  getRecentQuizResult,
+  getMonthlyQuizStats,
+};
