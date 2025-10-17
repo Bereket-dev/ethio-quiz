@@ -1,16 +1,43 @@
 import { ResponsiveBar } from '@nivo/bar'
+import { useState, useEffect } from 'react'
 
-function BarChart({ data }) {
+function BarChart({ rawData }) {
+  const [chartData, setChartData] = useState([])
+  const [keys, setKeys] = useState([])
+
+  useEffect(() => {
+    if (!rawData || rawData.length === 0) return
+
+    // Step 1: group by player
+    const playerMap = {}
+    
+    const kingdomSet = new Set()
+
+    rawData.forEach(({ player, kingdom, totalScore }) => {
+      const kingdomKey = kingdom.toLowerCase() // normalize
+      kingdomSet.add(kingdomKey)
+
+      if (!playerMap[player]) playerMap[player] = { player }
+      playerMap[player][kingdomKey] = totalScore
+    })
+
+    // Step 2: prepare chart data
+    const formattedData = Object.values(playerMap)
+    const kingdomKeys = Array.from(kingdomSet)
+
+    setChartData(formattedData)
+    setKeys(kingdomKeys)
+  }, [rawData])
   return (
     <ResponsiveBar
-      data={data}
-      keys={['trivia', 'freshman']}
+      data={chartData}
+      keys={keys}
       indexBy="player"
       margin={{ top: 40, right: 80, bottom: 50, left: 70 }}
       padding={0.3}
       valueScale={{ type: 'linear', nice: true }}
       indexScale={{ type: 'band', round: true }}
-      colors={['#2563eb', '#facc15']}
+      colors={{ scheme: 'set2' }}
       enableGridX={false}
       gridYValues={5}
       axisTop={null}
