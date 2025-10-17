@@ -1,3 +1,6 @@
+const BASE_URL = 'http://localhost:5000'
+const API_URL = `${BASE_URL}/api/questions`
+
 export const getQuestionList = async () => {
   try {
     const response = await fetch('http://localhost:5000/api/questions', {
@@ -98,6 +101,26 @@ export const removeOneQuestion = async (id) => {
     } else {
       throw new Error(result.error || 'Failed to delete question')
     }
+  } catch (err) {
+    throw err
+  }
+}
+
+export const fetchQuestionStats = async () => {
+  try {
+    const response = await fetch(`${API_URL}/stats`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = response.json()
+    if (!response.ok)
+      throw new Error(data.error || 'Failed to fetch question stats')
+
+    return data || []
   } catch (err) {
     throw err
   }
