@@ -152,8 +152,71 @@ const getMonthlyQuizStats = async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    console.error("Error fetching monthly quiz stats:", error);
     res.status(500).json({ error: "Server error" });
+  }
+};
+
+const getTopPlayersStats = async (req, res) => {
+  try {
+    const topPlayersStats = await QuizResult.aggregate([
+      {
+        $lookup: {
+          from: "categories",
+          localField: "categoryId",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      { $unwind: "$category" },
+      {
+        $group: {
+          _id: {
+            user: "$userId",
+            kingdom: "$category.kingdomId",
+          },
+          totalScore: { $sum: "$score" },
+        },
+      },
+      {
+        $sort: { totalScore: -1 },
+      },
+      {
+        $limit: 4,
+      },
+      {
+        $lookup: {
+          from: "kingdoms",
+          localField: "_id.kingdom",
+          foreignField: "_id",
+          as: "kingdom",
+        },
+      },
+      { $unwind: "$kingdom" },
+
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id.user",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+      {
+        $project: {
+          _id: 0,
+          player: "$user.username",
+          kingdom: "$kingdom.title",
+          totalScore: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json(topPlayersStats);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -162,4 +225,5 @@ module.exports = {
   getHighScoreUser,
   getRecentQuizResult,
   getMonthlyQuizStats,
+  getTopPlayersStats,
 };
