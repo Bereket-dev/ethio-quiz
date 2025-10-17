@@ -7,14 +7,23 @@ import LineChart from '../../components/admin/charts/LineChart'
 import PieChart from '../../components/admin/charts/PieChart'
 import BarChart from '../../components/admin/charts/BarChart'
 import QuickActions from '../../components/admin/dashboard/QuickActions'
-import { getTopPlayers } from '../../services/quizResultServices'
-import { lineData } from '../../Data/users'
+import {
+  fetchMonthlyQuizStats,
+  getTopPlayers,
+} from '../../services/quizResultServices'
 
 function Dashboard() {
   const [isShrink, setIsShrink] = useState(false)
   const [players, setPlayers] = useState([])
   const [errorMsg, setErrorMsg] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [lineData, setLineData] = useState([])
+
+  useEffect(() => {
+    fetchMonthlyQuizStats()
+      .then((data) => setLineData(data))
+      .catch((err) => setErrorMsg(err))
+  }, [])
 
   useEffect(() => {
     const fetchTopPlayers = async () => {
