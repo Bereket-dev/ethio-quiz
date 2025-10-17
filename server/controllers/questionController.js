@@ -105,12 +105,56 @@ const findAllQuestions = async (req, res) => {
   try {
     const allQuestions = await Question.find();
     if (!allQuestions || allQuestions.length === 0) {
-      return res.status(404).json({ message: "Questions not found!"});
+      return res.status(404).json({ message: "Questions not found!" });
     }
     res.status(200).json({
       message: "Questions fetched successfullys!",
       questions: allQuestions,
     });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getQuestionStats = async (req, res) => {
+  try {
+    const questionStats = await Question.aggregate([
+      {
+        $lookup: {
+          from: "categories",
+          localField: "categoryId",
+          foreignField: "_id",
+          as: "category",
+        },
+      },
+      { $unwind: "$category" },
+      {
+        $lookup: {
+          from: "kingdoms",
+          localField: "category.kingdomId",
+          foreignField: "_id",
+          as: "kingdom",
+        },
+      },
+      { $unwind: "$kingdom" },
+      {
+        $group: {
+          _id: "$kingdom._id",
+          kingdom: { $first: "$kingdom.title" },
+          count: { $sum: 1 },
+        },
+      },
+
+      {
+        $project: {
+          _id: 0,
+          kingdom: 1,
+          count: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json(questionStats);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -122,4 +166,5 @@ module.exports = {
   findAllQuestions,
   editQuestion,
   removeQuestion,
+  getQuestionStats,
 };
