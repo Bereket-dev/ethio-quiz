@@ -1,7 +1,34 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Edit, Trash2 } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 function KingdomCard({ kingdom, onEdit, onDelete }) {
+  const [categories, setCategories] = useState([])
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const storedCategories = JSON.parse(localStorage.getItem('categories'))
+        if (Array.isArray(storedCategories) && storedCategories.length > 0)
+          setCategories(storedCategories)
+
+        const categoryList = await getCategoryList()
+        if (Array.isArray(categoryList) && categoryList.length > 0)
+          setCategories(categoryList)
+      } catch (error) {
+        const storedCategories = JSON.parse(localStorage.getItem('categories'))
+        if (Array.isArray(storedCategories) && storedCategories.length > 0)
+          setCategories(storedCategories)
+      }
+    }
+    fetchCategories()
+  }, [])
+
+  const kingdomCategories = categories.filter(
+    (cat) => cat.kingdomId === kingdom._id,
+  )
+
   return (
     <div className="mx-auto w-full max-w-xl rounded-2xl border border-gray-200 bg-white shadow-md transition-all duration-200 hover:shadow-lg">
       {/* Kingdom Title */}
@@ -26,21 +53,22 @@ function KingdomCard({ kingdom, onEdit, onDelete }) {
       {/* Categories List */}
       <div className="p-4">
         <h3 className="mb-2 text-sm font-medium text-gray-500">Categories</h3>
-        {/* {categories?_id === kingdom?._id ? (
+        {kingdomCategories.length > 0 ? (
           <ul className="space-y-1 space-x-1">
-            {categories.map((cat, i) => (
-              <Link
+            {kingdomCategories.map((cat, i) => (
+              <button
                 key={i}
-                to={`/categories/edit/${cat._id}`}
-                className="rounded-lg bg-gray-500 px-3 py-1 text-sm text-gray-700"
-                style={{ backgroundColor: cat.lightColor }}
+                onClick={() => navigate(`/categories`)}
+                className="rounded-lg bg-gray-500 px-3 py-1 text-sm text-white"
+                style={{ backgroundColor: `${cat.color}95` }}
               >
-                {cat}
-              </Link>
+                {cat.title}
+              </button>
             ))}
           </ul>
-        ) : ( */}
-        <p className="text-sm text-gray-400 italic">No categories</p>
+        ) : (
+          <p className="text-sm text-gray-400 italic">No categories</p>
+        )}
       </div>
     </div>
   )
