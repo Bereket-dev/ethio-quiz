@@ -1,9 +1,8 @@
-const BASE_URL = 'http://localhost:5000'
-const API_URL = `${BASE_URL}/api/questions`
+const QUESTION_BASE_URL = `${import.meta.env.VITE_API_URL}/api/questions`
 
 export const getQuestionList = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/questions', {
+    const response = await fetch(`${QUESTION_BASE_URL}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -24,7 +23,7 @@ export const getQuestionList = async () => {
 export const getQuestionsByCategory = async (categoryId) => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/questions/category/${categoryId}`,
+      `${QUESTION_BASE_URL}/category/${categoryId}`,
       {
         method: 'GET',
         headers: {
@@ -46,7 +45,7 @@ export const getQuestionsByCategory = async (categoryId) => {
 }
 
 export const addOneQuestion = async (formData) => {
-  const reponse = await fetch('http://localhost:5000/api/questions/create', {
+  const reponse = await fetch(`${QUESTION_BASE_URL}/create`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData),
@@ -62,14 +61,11 @@ export const addOneQuestion = async (formData) => {
 export const editOneQuestion = async (formData) => {
   try {
     const id = formData._id //kingdom id
-    const response = await fetch(
-      `http://localhost:5000/api/questions/edit/${id}`,
-      {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      },
-    )
+    const response = await fetch(`${QUESTION_BASE_URL}/edit/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    })
 
     const updatedQuestion = await response.json()
     if (response.ok) {
@@ -84,16 +80,13 @@ export const editOneQuestion = async (formData) => {
 
 export const removeOneQuestion = async (id) => {
   try {
-    const response = await fetch(
-      `http://localhost:5000/api/questions/remove/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
+    const response = await fetch(`${QUESTION_BASE_URL}/remove/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    )
+      credentials: 'include',
+    })
 
     const result = await response.json()
     if (response.ok) {
@@ -108,7 +101,7 @@ export const removeOneQuestion = async (id) => {
 
 export const fetchQuestionStats = async () => {
   try {
-    const response = await fetch(`${API_URL}/stats`, {
+    const response = await fetch(`${QUESTION_BASE_URL}/stats`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -1,9 +1,9 @@
-const API_URL = 'http://localhost:5000/api'
+const QUIZ_RESULT_BASE_URL = `${import.meta.env.VITE_API_URL}/api/quiz-result`
 
 export const updateUserScore = async (userId, categoryId, score) => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/quiz-result/update-score/${userId}/${categoryId}`,
+      `${QUIZ_RESULT_BASE_URL}/update-score/${userId}/${categoryId}`,
       {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -24,14 +24,11 @@ export const updateUserScore = async (userId, categoryId, score) => {
 
 export const getTopPlayers = async () => {
   try {
-    const response = await fetch(
-      `http://localhost:5000/api/quiz-result/top-players`,
-      {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      },
-    )
+    const response = await fetch(`${QUIZ_RESULT_BASE_URL}/top-players`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    })
     const data = await response.json()
     if (response.ok) {
       return data
@@ -46,7 +43,7 @@ export const getTopPlayers = async () => {
 export const getRecentQuizResult = async (userId) => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/quiz-result/recent-activity/${userId}`,
+      `${QUIZ_RESULT_BASE_URL}/recent-activity/${userId}`,
       {
         method: 'GET',
         headers: {
@@ -69,7 +66,7 @@ export const getRecentQuizResult = async (userId) => {
 
 export const fetchMonthlyQuizStats = async () => {
   try {
-    const response = await fetch(`${API_URL}/quiz-result/monthly-stats`, {
+    const response = await fetch(`${QUIZ_RESULT_BASE_URL}/monthly-stats`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -89,7 +86,7 @@ export const fetchMonthlyQuizStats = async () => {
 
 export const fetchTopPlayersStats = async () => {
   try {
-    const response = await fetch(`${API_URL}/quiz-result/top-players-stats`, {
+    const response = await fetch(`${QUIZ_RESULT_BASE_URL}/top-players-stats`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

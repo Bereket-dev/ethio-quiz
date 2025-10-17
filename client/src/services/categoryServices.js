@@ -1,6 +1,8 @@
+const CATEGORY_BASE_URL = `${import.meta.env.VITE_API_URL}/api/category`
+
 export const getCategoryList = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/category', {
+    const response = await fetch(`${CATEGORY_BASE_URL}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -23,16 +25,13 @@ export const getCategoryList = async () => {
 
 export const getCategoriesByKingdom = async (kingdomId) => {
   try {
-    const response = await fetch(
-      `http://localhost:5000/api/category/kingdom/${kingdomId}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
+    const response = await fetch(`${CATEGORY_BASE_URL}/kingdom/${kingdomId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    )
+      credentials: 'include',
+    })
 
     const data = await response.json()
 
@@ -52,7 +51,7 @@ export const addOneCategory = async (formData) => {
     data.append(key, formData[key])
   }
 
-  const response = await fetch('http://localhost:5000/api/category/create', {
+  const response = await fetch(`${CATEGORY_BASE_URL}/create`, {
     method: 'POST',
     body: data,
   })
@@ -74,13 +73,10 @@ export const editOneCategory = async (formData) => {
     }
 
     const id = formData._id //category id
-    const response = await fetch(
-      `http://localhost:5000/api/category/edit/${id}`,
-      {
-        method: 'PUT',
-        body: data,
-      },
-    )
+    const response = await fetch(`${CATEGORY_BASE_URL}/edit/${id}`, {
+      method: 'PUT',
+      body: data,
+    })
 
     const updatedCategory = await response.json()
     if (response.ok) {
@@ -95,16 +91,13 @@ export const editOneCategory = async (formData) => {
 
 export const removeOneCategory = async (id) => {
   try {
-    const response = await fetch(
-      `http://localhost:5000/api/category/remove/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
+    const response = await fetch(`${CATEGORY_BASE_URL}/remove/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    )
+      credentials: 'include',
+    })
 
     const result = await response.json()
     if (response.ok) {

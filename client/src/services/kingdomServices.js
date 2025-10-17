@@ -1,6 +1,8 @@
+const KINGDOM_BASE_URL = `${import.meta.env.VITE_API_URL}/api/kingdom`
+
 export const getKingdomList = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/kingdom', {
+    const response = await fetch(`${KINGDOM_BASE_URL}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +29,7 @@ export const addOneKingdom = async (formData) => {
     data.append(key, formData[key])
   }
 
-  const response = await fetch('http://localhost:5000/api/kingdom/create', {
+  const response = await fetch(`${KINGDOM_BASE_URL}/create`, {
     method: 'POST',
     body: data,
   })
@@ -49,13 +51,10 @@ export const editOneKingdom = async (formData) => {
     }
 
     const id = formData._id //kingdom id
-    const response = await fetch(
-      `http://localhost:5000/api/kingdom/edit/${id}`,
-      {
-        method: 'PUT',
-        body: data,
-      },
-    )
+    const response = await fetch(`${KINGDOM_BASE_URL}/edit/${id}`, {
+      method: 'PUT',
+      body: data,
+    })
 
     const updatedKingdom = await response.json()
     if (response.ok) {
@@ -70,16 +69,13 @@ export const editOneKingdom = async (formData) => {
 
 export const removeOneKingdom = async (id) => {
   try {
-    const response = await fetch(
-      `http://localhost:5000/api/kingdom/remove/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
+    const response = await fetch(`${KINGDOM_BASE_URL}/remove/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    )
+      credentials: 'include',
+    })
 
     const result = await response.json()
     if (response.ok) {

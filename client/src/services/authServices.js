@@ -1,6 +1,8 @@
+const AUTH_BASE_URL = `${import.meta.env.VITE_API_URL}/api/auth`
+
 export const checkUser = async (formData) => {
   try {
-    const response = await fetch('http://localhost:5000/api/auth/login', {
+    const response = await fetch(`${AUTH_BASE_URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -24,7 +26,7 @@ export const checkUser = async (formData) => {
 
 export const loggingOutUser = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/auth/logout', {
+    const response = await fetch(`${AUTH_BASE_URL}/logout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,7 +46,7 @@ export const loggingOutUser = async () => {
 
 export const registerUser = async (formData) => {
   try {
-    const response = await fetch('http://localhost:5000/api/auth/signup', {
+    const response = await fetch(`${AUTH_BASE_URL}/signup`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -63,7 +65,7 @@ export const registerUser = async (formData) => {
 
 export const checkAuth = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/auth/user', {
+    const response = await fetch(`${AUTH_BASE_URL}/user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -81,7 +83,7 @@ export const checkAuth = async () => {
 
 export const checkAdmin = async () => {
   try {
-    const response = await fetch('http://localhost:5000/api/auth/admin', {
+    const response = await fetch(`${AUTH_BASE_URL}/admin`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
