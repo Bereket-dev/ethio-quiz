@@ -10,23 +10,21 @@ function BarChart({ rawData }) {
 
     // Step 1: group by player
     const playerMap = {}
-    
+
     const kingdomSet = new Set()
 
-    rawData.forEach(({ player, kingdom, totalScore }) => {
-      const kingdomKey = kingdom.toLowerCase() // normalize
-      kingdomSet.add(kingdomKey)
-
-      if (!playerMap[player]) playerMap[player] = { player }
-      playerMap[player][kingdomKey] = totalScore
+    const formattedData = rawData.map(({ player, scores, kingdoms }) => {
+      const obj = { player }
+      kingdoms.forEach((kingdom, index) => {
+        const key = kingdom.toLowerCase() // normalize
+        kingdomSet.add(key)
+        obj[key] = scores[index] // match score to kingdom
+      })
+      return obj
     })
 
-    // Step 2: prepare chart data
-    const formattedData = Object.values(playerMap)
-    const kingdomKeys = Array.from(kingdomSet)
-
     setChartData(formattedData)
-    setKeys(kingdomKeys)
+    setKeys(Array.from(kingdomSet))
   }, [rawData])
   return (
     <ResponsiveBar
