@@ -13,12 +13,14 @@ import {
   getTopPlayers,
 } from '../../services/quizResultServices'
 import { data } from 'react-router-dom'
+import { fetchQuestionStats } from '../../services/questionServices'
 
 function Dashboard() {
   const [isShrink, setIsShrink] = useState(false)
   const [topPlayers, setTopPlayers] = useState([])
   const [errorMsg, setErrorMsg] = useState(null)
   const [lineData, setLineData] = useState([])
+  const [questionStats, setQuestionStats] = useState([])
 
   useEffect(() => {
     fetchMonthlyQuizStats()
@@ -32,7 +34,24 @@ function Dashboard() {
       .catch((err) => setErrorMsg(err))
   }, [])
 
-  console.log('players', topPlayers)
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const stats = await fetchQuestionStats()
+        const formatted = stats.map((item) => ({
+          id: item.kingdom,
+          label: item.kingdom,
+          value: item.count,
+        }))
+
+        setQuestionStats(formatted)
+      } catch (error) {
+        setErrorMsg(error)
+      }
+    }
+    fetchStats()
+  }, [])
+
   const quickActions = [
     {
       label: 'Add Quiz',
@@ -60,6 +79,13 @@ function Dashboard() {
         {/* Header */}
         <Header title="Admin Dashboard" />
 
+        {/* Error Display */}
+        {errorMsg && (
+          <div className="mx-auto rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm">
+            {errorMsg}
+          </div>
+        )}
+
         <div>
           {/* Charts Section */}
           <div className="mt-6 flex flex-col gap-5 md:flex-row">
@@ -85,7 +111,7 @@ function Dashboard() {
                 <span className="text-sm text-gray-400">This Week</span>
               </div>
               <div className="h-52">
-                {/* <PieChart pieData={questionStatus} /> */}
+                <PieChart pieData={questionStats} />
               </div>
             </div>
           </div>
