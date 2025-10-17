@@ -64,3 +64,24 @@ export const getRecentQuizResult = async (userId) => {
     throw err
   }
 }
+
+export const fetchMonthlyQuizStats = async () => {
+  const API_URL = 'http://localhost:5000/api'
+  try {
+    const response = await fetch(`${API_URL}/quiz-result/monthly-stats`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (!response.ok)
+      throw new Error(data.error || 'Failed to get monthly user stats')
+
+    return data
+  } catch (err) {
+    throw err
+  }
+}
