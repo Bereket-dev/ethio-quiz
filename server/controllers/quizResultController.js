@@ -169,11 +169,28 @@ const getTopPlayersStats = async (req, res) => {
       },
       { $unwind: "$category" },
       {
+        $lookup: {
+          from: "kingdoms",
+          localField: "category.kingdomId",
+          foreignField: "_id",
+          as: "kingdom",
+        },
+      },
+      { $unwind: "$kingdom" },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      { $unwind: "$user" },
+      {
         $group: {
-          _id: {
-            user: "$userId",
-            kingdom: "$category.kingdomId",
-          },
+          _id: "$user.username",
+          scores: { $push: "$score" },
+          kingdoms: { $push: "$kingdom.title" },
           totalScore: { $sum: "$score" },
         },
       },
@@ -183,33 +200,13 @@ const getTopPlayersStats = async (req, res) => {
       {
         $limit: 4,
       },
-      {
-        $lookup: {
-          from: "kingdoms",
-          localField: "_id.kingdom",
-          foreignField: "_id",
-          as: "kingdom",
-        },
-      },
-      { $unwind: "$kingdom" },
 
-      {
-        $lookup: {
-          from: "users",
-          localField: "_id.user",
-          foreignField: "_id",
-          as: "user",
-        },
-      },
-      {
-        $unwind: "$user",
-      },
       {
         $project: {
           _id: 0,
-          player: "$user.username",
-          kingdom: "$kingdom.title",
-          totalScore: 1,
+          player: "$_id",
+          scores: 1,
+          kingdoms: 1,
         },
       },
     ]);
