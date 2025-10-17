@@ -50,14 +50,12 @@ function CategoriesPage() {
       setLoading(true)
       setErrorMsg('')
 
-      const timeoutId = setTimeout(() => {
-        setLoading(false)
-      }, 3000)
-
       try {
         const storedCategories = JSON.parse(localStorage.getItem('categories'))
-        if (Array.isArray(storedCategories) && storedCategories.length > 0)
+        if (Array.isArray(storedCategories) && storedCategories.length > 0) {
           setCategories(storedCategories)
+          setLoading(false)
+        }
 
         const categoryList = await getCategoryList()
         if (Array.isArray(categoryList) && categoryList.length > 0)
@@ -70,7 +68,6 @@ function CategoriesPage() {
           setCategories(storedCategories)
       } finally {
         setLoading(false)
-        clearTimeout(timeoutId)
       }
     }
     fetchCategories()
