@@ -9,14 +9,15 @@ import BarChart from '../../components/admin/charts/BarChart'
 import QuickActions from '../../components/admin/dashboard/QuickActions'
 import {
   fetchMonthlyQuizStats,
+  fetchTopPlayersStats,
   getTopPlayers,
 } from '../../services/quizResultServices'
+import { data } from 'react-router-dom'
 
 function Dashboard() {
   const [isShrink, setIsShrink] = useState(false)
-  const [players, setPlayers] = useState([])
+  const [topPlayers, setTopPlayers] = useState([])
   const [errorMsg, setErrorMsg] = useState(null)
-  const [loading, setLoading] = useState(false)
   const [lineData, setLineData] = useState([])
 
   useEffect(() => {
@@ -26,36 +27,12 @@ function Dashboard() {
   }, [])
 
   useEffect(() => {
-    const fetchTopPlayers = async () => {
-      setLoading(true)
-      setErrorMsg('')
-
-      const storedTopPlayers = JSON.parse(localStorage.getItem('topPlayers'))
-      if (Array.isArray(storedTopPlayers) && storedTopPlayers.length > 0) {
-        setPlayers(storedTopPlayers)
-        setLoading(false)
-      }
-
-      try {
-        const playersList = await getTopPlayers()
-        if (Array.isArray(playersList) && playersList.length > 0) {
-          setPlayers(playersList)
-          localStorage.setItem(
-            'topPlayers',
-            JSON.stringify(playersList.slice(0, 10)),
-          )
-        }
-      } catch (error) {
-        setErrorMsg(error.message || 'Failed to load players')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchTopPlayers()
+    fetchTopPlayersStats()
+      .then((data) => setTopPlayers(data))
+      .catch((err) => setErrorMsg(err))
   }, [])
 
-  const topPlayers = players.slice(0, 4)
-
+  console.log('players', topPlayers)
   const quickActions = [
     {
       label: 'Add Quiz',
@@ -123,7 +100,7 @@ function Dashboard() {
                   <span className="text-sm text-gray-200">Last 30 Days</span>
                 </div>
                 <div className="h-52">
-                  <BarChart data={topPlayers} />
+                  <BarChart rawData={topPlayers} />
                 </div>
               </div>
             </div>
