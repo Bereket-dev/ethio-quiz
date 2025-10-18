@@ -58,7 +58,7 @@ const logoutUser = async (req, res) => {
       secure: true,
       sameSite: "none",
       path: "/",
-      domain: "ethio-quiz.vercel.app",
+      domain: "ethio-quiz.onrender.com",
     });
     
     return res.status(200).json({ message: "Logged out!" });

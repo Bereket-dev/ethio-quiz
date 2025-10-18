@@ -31,6 +31,7 @@ export const loggingOutUser = async () => {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials:'include'
     })
 
     const data = await response.json()
