@@ -8,11 +8,13 @@ const {
   findAllQuestions,
   getQuestionStats,
 } = require("../controllers/questionController");
-router.post("/create", createNewQuestion);
-router.put("/edit/:id", editQuestion);
-router.delete("/remove/:id", removeQuestion);
-router.get("/category/:categoryId", findQuestionsByCategory);
-router.get("/", findAllQuestions);
-router.get("/stats", getQuestionStats);
+const { authenticateToken } = require("../middleware/auth.js")
+
+router.post("/create", authenticateToken, createNewQuestion);
+router.put("/edit/:id", authenticateToken, editQuestion);
+router.delete("/remove/:id", authenticateToken, removeQuestion);
+router.get("/category/:categoryId", authenticateToken,findQuestionsByCategory);
+router.get("/", authenticateToken, findAllQuestions);
+router.get("/stats", authenticateToken, getQuestionStats);
 
 module.exports = router;

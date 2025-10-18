@@ -7,11 +7,12 @@ const {
   getMonthlyQuizStats,
   getTopPlayersStats,
 } = require("../controllers/quizResultController");
+const { authenticateToken }= require("../middleware/auth.js")
 
-router.put("/update-score/:userId/:categoryId", updateUserScore);
-router.get("/top-players", getHighScoreUser);
-router.get("/recent-activity/:userId", getRecentQuizResult);
-router.get("/monthly-stats", getMonthlyQuizStats);
-router.get("/top-players-stats", getTopPlayersStats);
+router.put("/update-score/:userId/:categoryId", authenticateToken, updateUserScore);
+router.get("/top-players", authenticateToken, getHighScoreUser);
+router.get("/recent-activity/:userId", authenticateToken, getRecentQuizResult);
+router.get("/monthly-stats", authenticateToken, getMonthlyQuizStats);
+router.get("/top-players-stats", authenticateToken, getTopPlayersStats);
 
 module.exports = router;
