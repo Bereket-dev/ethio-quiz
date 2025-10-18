@@ -53,7 +53,7 @@ function QuestionPage() {
       } catch (error) {
         setErrorMsg('Failed to load questions. Please try again.')
         }
-      } finally {
+      finally {
         setLoading(false)
         clearTimeout(timeoutId)
       }
