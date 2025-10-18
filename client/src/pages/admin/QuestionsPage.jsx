@@ -37,12 +37,8 @@ function QuestionPage() {
       let totalQuestions
 
       try {
-        const storedQuestions = JSON.parse(localStorage.getItem('questions'))
-        totalQuestions = storedQuestions || []
-
-        if (totalQuestions.length === 0) {
-          totalQuestions = await getQuestionList()
-        }
+        const totalQuestions = await getQuestionList()
+        
 
         if (Array.isArray(totalQuestions) && totalQuestions.length > 0) {
           const filtered = totalQuestions.filter(
@@ -56,13 +52,6 @@ function QuestionPage() {
           setQuestions(categoryQuestions)
       } catch (error) {
         setErrorMsg('Failed to load questions. Please try again.')
-
-        const storedQuestions = JSON.parse(localStorage.getItem('questions'))
-        if (Array.isArray(storedQuestions) && storedQuestions.length > 0) {
-          const filtered = totalQuestions.filter(
-            (ques) => ques.categoryId === categoryId,
-          )
-          setQuestions(filtered)
         }
       } finally {
         setLoading(false)

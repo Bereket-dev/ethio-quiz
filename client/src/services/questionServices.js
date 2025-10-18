@@ -12,7 +12,6 @@ export const getQuestionList = async () => {
 
     const data = await response.json()
     if (response.ok) {
-      localStorage.setItem('questions', JSON.stringify(data?.questions))
       return data.questions || []
     } else throw new Error(data.error || 'Failed to fetch questions list')
   } catch (err) {
