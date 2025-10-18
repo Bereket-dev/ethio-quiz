@@ -5,7 +5,7 @@ const {
   editCategory,
   findCategoriesByKingdom,
 } = require("../controllers/categoryController");
-const { authenticateToken } = require("../middlware/auth.js")
+const { authenticateToken } = require("../middleware/auth.js")
 
 const multer = require("multer");
 const upload = multer({ dest: "uploads/category/" });
