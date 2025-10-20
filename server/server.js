@@ -8,6 +8,7 @@ const kingdomRoutes = require("./routes/kingdomRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const questionRoutes = require("./routes/questionRoutes");
 const quizResultRoutes = require("./routes/quizResultRoutes");
+const tokenRoutes = require("./routes/tokenRoutes");
 
 dotenv.config();
 connectDB();
@@ -29,3 +30,4 @@ app.use("/api/kingdom", kingdomRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/questions", questionRoutes);
 app.use("/api/quiz-result", quizResultRoutes);
+app.use("/api/token", tokenRoutes);
