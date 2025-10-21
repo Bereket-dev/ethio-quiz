@@ -7,19 +7,19 @@ const sendMail = require("../utils/email");
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    const user = User.findOne({ email });
+    const user = await User.findOne({ email });
 
-    if (!user) res.status(401).json({ message: "User not found!" });
+    if (!user) return res.status(401).json({ message: "User not found!" });
     const userId = user.userId;
 
     const plainToken = crypto.randomBytes(32).toString("hex");
     const tokenHash = crypto
       .createHash("sha256")
-      .update("plainToken")
+      .update(plainToken)
       .digest("hex");
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
-    const token = Token.findOneAndUpdate(
+    const token = await Token.findOneAndUpdate(
       { userId, type: "passwordReset" },
       { tokenHash, expiresAt },
       { upsert: true, new: true }
@@ -80,7 +80,7 @@ const forgotPassword = async (req, res) => {
 </body>
 </html>`;
 
-    sendMail(user.mail, message);
+    await sendMail(user.mail, message);
     res.status(200).json({ message: "Email sent successfully!" });
   } catch (error) {
     res.status(500).json({ message: error.message });
