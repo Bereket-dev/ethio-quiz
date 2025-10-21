@@ -41,3 +41,22 @@ export const resetPasswordAPI = async (token, newPassword) => {
     throw error
   }
 }
+
+export const checkTokenAPI = async (token) => {
+  try {
+    const response = await fetch(`${TOKEN_BASE_URL}/validate/${token}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (!response.ok) throw new Error(data.message || 'Failed to check token!')
+
+    return data
+  } catch (error) {
+    throw error
+  }
+}
