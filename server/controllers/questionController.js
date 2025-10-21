@@ -1,4 +1,5 @@
 const { Question } = require("../models/quizModels");
+const bcrypt = require("bcryptjs");
 
 const createNewQuestion = async (req, res) => {
   const { questionText, options, correctAnswer, categoryId } = req.body;
@@ -23,6 +24,7 @@ const createNewQuestion = async (req, res) => {
       .json({ message: "Correct answer index is out of bounds" });
   }
   try {
+
     const question = await Question.create({
       questionText,
       options,
