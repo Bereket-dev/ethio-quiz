@@ -10,7 +10,7 @@ const forgotPassword = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) return res.status(401).json({ message: "User not found!" });
-    const userId = user.userId;
+    const userId = user._id;
 
     const plainToken = crypto.randomBytes(32).toString("hex");
     const tokenHash = crypto
