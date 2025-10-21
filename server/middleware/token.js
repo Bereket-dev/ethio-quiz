@@ -1,3 +1,6 @@
+const Token = require("../models/tokenModel");
+const crypto = require("crypto");
+
 const tokenValidator = async (req, res) => {
   try {
     const { token } = req.params;
