@@ -25,7 +25,7 @@ const forgotPassword = async (req, res) => {
       { upsert: true, new: true }
     );
 
-    const resetLink = `https://ethio-quiz.verce.app/reset-password/${plainToken}`; // replace dynamically
+    const resetLink = `https://ethio-quiz.vercel.app/reset-password/${plainToken}`; // replace dynamically
     const year = new Date().getFullYear();
 
     const message = `<!DOCTYPE html>
@@ -80,7 +80,7 @@ const forgotPassword = async (req, res) => {
 </body>
 </html>`;
 
-    await sendMail(user.mail, message);
+    await sendMail(user.email, message);
     res.status(200).json({ message: "Email sent successfully!" });
   } catch (error) {
     res.status(500).json({ message: error.message });
