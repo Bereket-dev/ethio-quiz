@@ -2,8 +2,8 @@ import logInImage from '../assets/images/login_card-img.png'
 import personCircle from '../assets/icons/person-circle.svg'
 import LoginForm from '../components/auth/LogInForm'
 import { useEffect, useState } from 'react'
-import ResetPasswordForm from '../components/auth/resetPasswordForm'
-import ForgotPasswordForm from '../components/auth/forgotPasswordForm'
+import ResetPasswordForm from '../components/auth/ResetPasswordForm'
+import ForgotPasswordForm from '../components/auth/ForgotPasswordForm'
 
 function LoginPage() {
   const [view, setView] = useState('login')
