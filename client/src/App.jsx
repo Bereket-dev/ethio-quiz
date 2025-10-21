@@ -6,7 +6,7 @@ import QuizKingdom from './pages/user/QuizKingdom'
 import QuizFlow from './pages/user/QuizFlow'
 import Leaderboard from './pages/user/Leaderboard'
 import SignUpForm from './components/auth/SignUpForm'
-import LogInForm from './components/auth/LogInForm'
+import LogInPage from './pages/LogInPage'
 import Logout from './components/auth/Logout'
 import Dashboard from './pages/admin/Dashboard'
 import KingdomsPage from './pages/admin/KingdomsPage'
@@ -24,7 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUpForm />} />
-        <Route path="/login" element={<LogInForm />} />
+        <Route path="/login" element={<LogInPage />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 

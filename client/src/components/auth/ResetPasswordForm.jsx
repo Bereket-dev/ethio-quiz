@@ -1,27 +1,18 @@
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import lockFill from '../../assets/icons/lock-fill.svg'
-import person from '../../assets/icons/person.svg'
-import { checkUser } from '../../services/authServices'
-import { loginSchema } from '../../validation/userSchema'
-import { Formik, Field, ErrorMessage } from 'formik'
+import { useState, useEffect } from 'react'
+import { passwordSchema } from '../../validation/resetPasswordSchema'
 
-function LoginForm({ onForgot }) {
-  const navigate = useNavigate()
-
+function ResetPasswordForm({ onSubmit }) {
   return (
     <Formik
-      initialValues={{ email: '', password: '' }}
-      validationSchema={loginSchema}
+      initialValues={{ newPassword: '', confirmPassword: '' }}
+      validationSchema={passwordSchema}
       onSubmit={async (values, { setSubmitting, setStatus }) => {
         setStatus(null)
         try {
-          const userData = await checkUser(values)
-
-          if (userData?.role === 'admin') navigate('/dashboard')
-          else navigate('/quiz')
+          await onSubmit(values.newPassword)
+          navigate('login')
         } catch (error) {
-          setStatus(error.message || 'An error occurred during login.')
+          setStatus(error.message || 'An error occurred during reset.')
         } finally {
           setSubmitting(false)
         }
@@ -47,43 +38,17 @@ function LoginForm({ onForgot }) {
                 {status}
               </div>
             )}
-            <div>
-              {' '}
-              <div className="relative">
-                <label htmlFor="emailInput" className="sr-only">
-                  Email
-                </label>
-                <Field
-                  type="email"
-                  id="emailInput"
-                  name="email"
-                  placeholder="Email"
-                  required
-                  disabled={isSubmitting}
-                  className="peer focus:border-primary focus:ring-primary w-full rounded-xl border-2 border-gray-300 px-10 py-3 text-lg transition outline-none focus:ring-1"
-                />
-                <img
-                  src={person}
-                  alt="person icon"
-                  className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 opacity-60 peer-focus:opacity-100"
-                />
-              </div>
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="text-red-500"
-              />
-            </div>
+
             <div>
               <div className="relative">
-                <label htmlFor="passwordInput" className="sr-only">
-                  Password
+                <label htmlFor="newPasswordInput" className="sr-only">
+                  New Password
                 </label>
                 <Field
                   type="password"
-                  id="passwordInput"
-                  name="password"
-                  placeholder="Password"
+                  id="newPasswordInput"
+                  name="newPassword"
+                  placeholder="New Password"
                   required
                   disabled={false || isSubmitting}
                   className="peer focus:border-primary focus:ring-primary w-full rounded-xl border-2 border-gray-300 px-10 py-3 text-lg transition outline-none focus:ring-1"
@@ -95,35 +60,44 @@ function LoginForm({ onForgot }) {
                 />
               </div>
               <ErrorMessage
-                name="password"
+                name="newPassword"
+                component="div"
+                className="text-red-500"
+              />
+            </div>
+            <div>
+              <div className="relative">
+                <label htmlFor="confirmPasswordInput" className="sr-only">
+                  Confirm Password
+                </label>
+                <Field
+                  type="password"
+                  id="confirmPasswordInput"
+                  name="confirmPassword"
+                  placeholder="confirm Password"
+                  required
+                  disabled={false || isSubmitting}
+                  className="peer focus:border-primary focus:ring-primary w-full rounded-xl border-2 border-gray-300 px-10 py-3 text-lg transition outline-none focus:ring-1"
+                />
+                <img
+                  src={lockFill}
+                  alt="lock icon"
+                  className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 opacity-60 peer-focus:opacity-100"
+                />
+              </div>
+              <ErrorMessage
+                name="confirmPassword"
                 component="div"
                 className="text-red-500"
               />
             </div>
             <button
-              type="button"
-              onClick={onForgot}
-              className="flex w-full justify-end text-blue-600 hover:text-blue-700 hover:underline"
-            >
-              Forgotten password?
-            </button>
-            <button
               type="submit"
               disabled={isSubmitting}
               className="bg-primary hover:bg-primary-dark mt-4 w-full rounded-xl px-6 py-3 text-lg text-white transition disabled:opacity-70"
             >
-              {isSubmitting ? 'Logging in...' : 'Login'}
+              {isSubmitting ? 'Updating...' : 'Submit'}
             </button>
-            {/* Create Account Link */}
-            <p className="mt-4 text-center text-sm text-gray-500">
-              Don’t have an account?{' '}
-              <Link
-                to="/signup"
-                className="text-blue-500 hover:text-blue-600 hover:underline"
-              >
-                Create one
-              </Link>
-            </p>
           </form>
         )
       }}
@@ -131,4 +105,4 @@ function LoginForm({ onForgot }) {
   )
 }
 
-export default LoginForm
+export default ResetPasswordForm
