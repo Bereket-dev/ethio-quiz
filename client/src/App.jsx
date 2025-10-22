@@ -18,6 +18,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute'
 import NotFound from './pages/NotFound'
 import Unauthorized from './pages/Unauthorized'
 import TokenChecker from './pages/TokenChecker'
+import ResetPassword from './pages/ResetPassword'
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
         <Route path="/signup" element={<SignUpForm />} />
         <Route path="/login" element={<LogInPage />} />
         <Route path="/reset-password/:token" element={<TokenChecker />} />
-        <Route path="/login/:token" element={<LogInPage />} />
+        <Route path="/change-password/:token" element={<ResetPassword />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 

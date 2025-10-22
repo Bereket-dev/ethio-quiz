@@ -1,12 +1,15 @@
 import logInImage from '../assets/images/login_card-img.png'
 import personCircle from '../assets/icons/person-circle.svg'
-import LoginForm from '../components/auth/LogInForm'
-import { useState } from 'react'
-import ForgotPasswordForm from '../components/auth/ForgotPasswordForm'
+import ResetPasswordForm from '../components/auth/ResetPasswordForm'
+import { useParams } from 'react-router-dom'
+import { resetPasswordAPI } from '../services/tokenServices'
 
-function LoginPage() {
-  const [view, setView] = useState('login')
+function ResetPassword() {
+  const { token } = useParams()
 
+  const handleReset = async (newPassword) => {
+    await resetPasswordAPI(token, newPassword)
+  }
   return (
     <div className="mx-auto flex h-screen w-full max-w-6xl items-center justify-center px-4 md:px-14">
       <div className="flex w-full max-w-5xl overflow-hidden rounded-xl bg-white shadow-2xl transition-all duration-300 hover:shadow-xl">
@@ -29,13 +32,10 @@ function LoginPage() {
               className="h-[180px] w-[180px] rounded-full"
             />
           </div>
-          {view == 'login' && <LoginForm onForgot={() => setView('forgot')} />}
-          {view == 'forgot' && (
-            <ForgotPasswordForm onBack={() => setView('login')} />
-          )}
+          <ResetPasswordForm onSubmit={handleReset} />
         </div>
       </div>
     </div>
   )
 }
-export default LoginPage
+export default ResetPassword
