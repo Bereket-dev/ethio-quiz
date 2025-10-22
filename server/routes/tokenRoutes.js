@@ -8,7 +8,7 @@ const {
 const { tokenValidator } = require("../middleware/token");
 
 router.post("/forgot-password", forgotPassword);
-router.get("/reset-password/:token", resetPassword);
+router.post("/reset-password/:token", resetPassword);
 router.get("/validate/:token", tokenValidator);
 
 module.exports = router;

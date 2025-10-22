@@ -24,11 +24,11 @@ export const forgotPasswordAPI = async (email) => {
 export const resetPasswordAPI = async (token, newPassword) => {
   try {
     const response = await fetch(`${TOKEN_BASE_URL}/reset-password/${token}`, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPassword),
+      body: JSON.stringify({ newPassword }),
       credentials: 'include',
     })
 

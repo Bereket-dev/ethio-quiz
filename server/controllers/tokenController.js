@@ -94,7 +94,7 @@ const resetPassword = async (req, res) => {
 
     const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
     const resetToken = await Token.findOne({ tokenHash });
-    if (!resetToken || resetToken.expiresAt < Date.now())
+    if (!resetToken || resetToken.expiresAt.getTime() < Date.now())
       return res.status(400).json({ message: "Invalid or expired token!" });
 
     const userId = resetToken.userId;
