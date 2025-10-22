@@ -16,7 +16,7 @@ function ForgotPasswordForm({ onSubmit, onBack }) {
         setSuccessMsg('')
         try {
           const data = await forgotPasswordAPI(values.email)
-          setSuccessMsg(data.message || 'Email has been sent!')
+          setSuccessMsg("We've sent a password reset link to your email. Please check your inbox.")
         } catch (error) {
           setErrorMsg(error.message || 'An error occurred during reset.')
         } finally {
@@ -28,12 +28,11 @@ function ForgotPasswordForm({ onSubmit, onBack }) {
         useEffect(() => {
           if (errorMsg || successMsg) {
             const timer = setTimeout(() => {
-              setSuccessMsg('')
               setErrorMsg('')
             }, 5000)
             return () => clearTimeout(timer)
           }
-        }, [successMsg, errorMsg])
+        }, [errorMsg])
 
         return (
           <form
