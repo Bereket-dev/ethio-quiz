@@ -15,7 +15,7 @@ function ResetPasswordForm({ onSubmit }) {
         setStatus(null)
         try {
           await onSubmit(values.newPassword)
-          navigate('login')
+          navigate('/login')
         } catch (error) {
           setStatus(error.message || 'An error occurred during reset.')
         } finally {
