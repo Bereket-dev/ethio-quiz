@@ -7,8 +7,10 @@ const tokenValidator = async (req, res) => {
 
     const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
     const resetToken = await Token.findOne({ tokenHash });
-    if (!resetToken || resetToken.expiresAt.getTime() < Date.now())
+    if (!resetToken || resetToken.expiresAt.getTime() < Date.now()) {
+      console.log("expires at:", resetToken.expiresAt.getTime());
       return res.status(400).json({ message: "Invalid or expired token!" });
+    }
 
     res.status(200).json({ message: "Valid token!" });
   } catch (error) {
