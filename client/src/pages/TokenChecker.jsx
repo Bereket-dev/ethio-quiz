@@ -27,7 +27,7 @@ function TokenChecker() {
         if (result?.isValid) {
           setStatus('valid')
           setMessage('Token verified successfully! Redirecting...')
-          setTimeout(() => navigate(`/login/${token}`), 1000)
+          setTimeout(() => navigate(`/login?token=${token}`), 1000)
         } else {
           setStatus('invalid')
           setMessage('Invalid or expired token.')
