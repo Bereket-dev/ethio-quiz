@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import { Formik, Field, ErrorMessage } from 'formik'
 import { passwordSchema } from '../../validation/resetPasswordSchema'
 import lockFill from '../../assets/icons/lock-fill.svg'
 
 function ResetPasswordForm({ onSubmit }) {
+  const navigate = useNavigate()
+
   return (
     <Formik
       initialValues={{ newPassword: '', confirmPassword: '' }}
@@ -93,6 +96,12 @@ function ResetPasswordForm({ onSubmit }) {
                 className="text-red-500"
               />
             </div>
+            <Link
+              to="/login"
+              className="flex w-full justify-end text-blue-600 hover:text-blue-700 hover:underline"
+            >
+              Back to Login?
+            </Link>
             <button
               type="submit"
               disabled={isSubmitting}
