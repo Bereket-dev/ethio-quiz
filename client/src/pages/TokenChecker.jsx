@@ -24,7 +24,7 @@ function TokenChecker() {
 
         if (!isMounted) return
 
-        if (result?.valid) {
+        if (result?.isValid) {
           setStatus('valid')
           setMessage('Token verified successfully! Redirecting...')
           setTimeout(() => navigate(`/reset-password/${token}`), 1000)
