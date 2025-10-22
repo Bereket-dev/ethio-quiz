@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Formik, Field, ErrorMessage } from 'formik'
 import { passwordSchema } from '../../validation/resetPasswordSchema'
+import lockFill from '../../assets/icons/lock-fill.svg'
 
 function ResetPasswordForm({ onSubmit }) {
   return (
