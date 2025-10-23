@@ -11,7 +11,7 @@ const submitQuiz = async (req, res) => {
       return res.status(400).json({ message: "Invalid quiz submission data" });
     }
 
-    const category = await Category.findOne({ categoryId });
+    const category = await Category.findOne({ _id: categoryId });
     if (!category)
       return res.status(404).json({ message: "Category not found!" });
 
