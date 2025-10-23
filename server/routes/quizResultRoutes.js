@@ -1,15 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const {
-  updateUserScore,
+  submitQuiz,
   getHighScoreUser,
   getRecentQuizResult,
   getMonthlyQuizStats,
   getTopPlayersStats,
 } = require("../controllers/quizResultController");
-const { authenticateToken }= require("../middleware/auth.js")
+const { authenticateToken } = require("../middleware/auth.js");
 
-router.put("/update-score/:userId/:categoryId", authenticateToken, updateUserScore);
+router.put("/submit", authenticateToken, submitQuiz);
 router.get("/top-players", authenticateToken, getHighScoreUser);
 router.get("/recent-activity/:userId", authenticateToken, getRecentQuizResult);
 router.get("/monthly-stats", authenticateToken, getMonthlyQuizStats);
