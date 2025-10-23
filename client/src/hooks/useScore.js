@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { updateUserScore } from '../services/quizResultServices'
 import { useState } from 'react'
 
@@ -5,13 +6,26 @@ export const useScoreUpdate = () => {
   const [errorMsg, setErrorMsg] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [successMsg, setSuccessMsg] = useState('')
-  const handleScoreUpdate = async (userId, categoryId, score) => {
+  const [returnData, setReturnData] = useState(null)
+  const navigate = useNavigate()
+
+  const handleScoreUpdate = async (userId, categoryId, answers) => {
     setErrorMsg('')
     setSuccessMsg('')
     setIsLoading(true)
     try {
-      const updatedUser = await updateUserScore(userId, categoryId, score)
+      const formattedAnswers = Object.values(answers)
+      const updatedResult = await updateUserScore(
+        userId,
+        categoryId,
+        formattedAnswers,
+      )
+      setReturnData(updatedResult)
       setSuccessMsg('Score updated successfully!')
+
+      navigate('/result-detail', {
+        state: { resultData: returnData },
+      })
     } catch (error) {
       setErrorMsg(error.message)
     } finally {
@@ -25,5 +39,6 @@ export const useScoreUpdate = () => {
     isLoading,
     successMsg,
     setSuccessMsg,
+    returnData,
   }
 }
