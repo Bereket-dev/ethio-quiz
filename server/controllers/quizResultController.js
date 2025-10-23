@@ -28,7 +28,7 @@ const submitQuiz = async (req, res) => {
         selectedOption: userAnswer ? userAnswer.selectedOption : null,
         correctAnswer: q.correctAnswer,
         isCorrect,
-        description: q.description, // Optional: to show on result page
+        // description: q.description, // Optional: to show on result page
       };
     });
 
