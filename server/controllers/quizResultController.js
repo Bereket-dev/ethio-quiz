@@ -44,6 +44,7 @@ const submitQuiz = async (req, res) => {
       score,
       totalQuestions: questions.length,
       quizResult,
+      resultDetails,
     });
   } catch (error) {
     console.error("Submit Quiz Error:", error);
