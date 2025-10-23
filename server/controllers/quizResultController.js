@@ -39,7 +39,7 @@ const submitQuiz = async (req, res) => {
     });
 
     //calculate score in point
-    const scorePoints = category.score ? category.points * score : 0;
+    const scorePoints = category.points ? category.points * score : 0;
 
     // Update or create quiz result with best score
     const quizResult = await QuizResult.findOneAndUpdate(
