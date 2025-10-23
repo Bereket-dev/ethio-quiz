@@ -25,7 +25,7 @@ const submitQuiz = async (req, res) => {
       return {
         questionId: q._id,
         questionText: q.questionText,
-        selectedOption: userAnswer ? userAnswer.selectedOption : null,
+        selectedOption: userAnswer ? userAnswer.selectedAnswer : null,
         correctAnswer: q.correctAnswer,
         isCorrect,
         // description: q.description, // Optional: to show on result page
