@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const QuizResult = require("../models/quizResultModel");
-const Question = require("../models/questionModel");
+const { Question } = require("../models/quizModels");
 
 const submitQuiz = async (req, res) => {
   try {
