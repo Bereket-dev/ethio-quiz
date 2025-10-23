@@ -1,16 +1,13 @@
 const QUIZ_RESULT_BASE_URL = `${import.meta.env.VITE_API_URL}/api/quiz-result`
 
-export const updateUserScore = async (userId, categoryId, score) => {
+export const updateUserScore = async (userId, categoryId, answers) => {
   try {
-    const response = await fetch(
-      `${QUIZ_RESULT_BASE_URL}/update-score/${userId}/${categoryId}`,
-      {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ score: score }),
-        credentials: 'include',
-      },
-    )
+    const response = await fetch(`${QUIZ_RESULT_BASE_URL}/submit`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, categoryId, answers }),
+      credentials: 'include',
+    })
     const updatedQuizResult = await response.json()
     if (response.ok) {
       return updatedQuizResult
