@@ -1,26 +1,53 @@
 const mongoose = require("mongoose");
 const QuizResult = require("../models/quizResultModel");
+const Question = require("../models/questionModel");
 
-const updateUserScore = async (req, res) => {
-  const { userId, categoryId } = req.params;
-  const { score } = req.body;
-  if (score === undefined || categoryId === undefined || userId === undefined) {
-    return res
-      .status(400)
-      .json({ message: "Score, categoryId, and userId are required" });
-  }
+const submitQuiz = async (req, res) => {
   try {
+    const { userId, categoryId, answers } = req.body;
+
+    // Validate input
+    if (!userId || !categoryId || !answers || !Array.isArray(answers)) {
+      return res.status(400).json({ message: "Invalid quiz submission data" });
+    }
+
+    // Fetch questions for that category
+    const questions = await Question.find({ categoryId });
+
+    // Calculate score
+    let score = 0;
+    const resultDetails = questions.map((q) => {
+      const userAnswer = answers.find((a) => a.questionId === q._id.toString());
+      const isCorrect =
+        userAnswer && userAnswer.selectedOption === q.correctAnswer;
+      if (isCorrect) score++;
+
+      return {
+        questionId: q._id,
+        questionText: q.questionText,
+        selectedOption: userAnswer ? userAnswer.selectedOption : null,
+        correctAnswer: q.correctAnswer,
+        isCorrect,
+        description: q.description, // Optional: to show on result page
+      };
+    });
+
+    // Update or create quiz result with best score
     const quizResult = await QuizResult.findOneAndUpdate(
       { userId, categoryId },
       { $max: { score: score } },
       { upsert: true, new: true }
     );
-    if (!quizResult) {
-      return res.status(404).json({ message: "Failed to update quiz result!" });
-    }
-    res.status(200).json(quizResult);
+
+    res.status(200).json({
+      message: "Quiz submitted successfully",
+      score,
+      totalQuestions: questions.length,
+      quizResult,
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Submit Quiz Error:", error);
+    res.status(500).json({ error: "Failed to submit quiz" });
   }
 };
 
@@ -218,7 +245,7 @@ const getTopPlayersStats = async (req, res) => {
 };
 
 module.exports = {
-  updateUserScore,
+  submitQuiz,
   getHighScoreUser,
   getRecentQuizResult,
   getMonthlyQuizStats,
