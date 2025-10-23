@@ -24,7 +24,7 @@ function QuizFlow() {
 
   const [step, setStep] = useState(0)
   const [score, setScore] = useState(0)
-  const [selectedAnswers, setSelectedAnswers] = useState({})
+  const [answers, setAnswers] = useState([])
   const [isStarted, setIsStarted] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
   const [timeLeft, setTimeLeft] = useState(minutes * 60 + seconds)
@@ -80,11 +80,13 @@ function QuizFlow() {
   }
 
   const handleAnswer = (index) => {
-    if (selectedAnswers[step] !== undefined) return
+    if (setAnswers[step] !== undefined) return
     const currentQuestion = questions[step - 1]
-    const isCorrect = index === currentQuestion.correctAnswer
 
-    setSelectedAnswers((prev) => ({ ...prev, [step]: index }))
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [step]: { questionId: currentQuestion._id, selectedAnswer: index },
+    }))
 
     if (isCorrect) {
       setScore((prev) => prev + questionPoints)
@@ -98,16 +100,19 @@ function QuizFlow() {
     handleScoreUpdate,
     isLoading: scoreUpdateLoading,
     errorMsg: scoreUpdateErrorMsg,
+    returnData,
   } = useScoreUpdate()
+
   const handleSubmit = () => {
     const user = localStorage.getItem('user')
-    const userId = user ? JSON.parse(user).id : null
+    const userId = user ? JSON.parse(user).id : navigate('/login')
 
-    handleScoreUpdate(userId, categoryId, score)
     // Reset quiz state
     setIsStarted(false)
     setIsPaused(false)
-    setStep(totalSteps + 1)
+    setStep(0)
+
+    handleScoreUpdate(userId, categoryId, answers)
   }
 
   return (
@@ -149,14 +154,6 @@ function QuizFlow() {
               isPaused={isPaused}
               selectedAnswer={selectedAnswers[step]}
               answer={handleAnswer}
-            />
-          )}
-
-          {step === totalSteps + 1 && (
-            <ScoreResult
-              score={score / questionPoints}
-              outOf={totalSteps}
-              points={questionPoints}
             />
           )}
 
