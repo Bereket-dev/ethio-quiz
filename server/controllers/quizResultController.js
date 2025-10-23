@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const QuizResult = require("../models/quizResultModel");
-const { Question } = require("../models/quizModels");
+const { Question, Category } = require("../models/quizModels");
 
 const submitQuiz = async (req, res) => {
   try {
@@ -10,6 +10,10 @@ const submitQuiz = async (req, res) => {
     if (!userId || !categoryId || !answers || !Array.isArray(answers)) {
       return res.status(400).json({ message: "Invalid quiz submission data" });
     }
+
+    const category = await Category.findOne({ categoryId });
+    if (!category)
+      return res.status(404).json({ message: "Category not found!" });
 
     // Fetch questions for that category
     const questions = await Question.find({ categoryId });
@@ -25,25 +29,30 @@ const submitQuiz = async (req, res) => {
       return {
         questionId: q._id,
         questionText: q.questionText,
-        selectedAnswer: userAnswer ? q.options[userAnswer.selectedAnswer] : null,
+        selectedAnswer: userAnswer
+          ? q.options[userAnswer.selectedAnswer]
+          : null,
         correctAnswer: q.options[q.correctAnswer],
         isCorrect,
         // description: q.description, // Optional: to show on result page
       };
     });
 
+    //calculate score in point
+    const scorePoints = category.score ? category.points * score : 0;
+
     // Update or create quiz result with best score
     const quizResult = await QuizResult.findOneAndUpdate(
       { userId, categoryId },
-      { $max: { score: score } },
+      { $max: { score: scorePoints } },
       { upsert: true, new: true }
     );
 
     res.status(200).json({
       message: "Quiz submitted successfully",
       score,
+      scorePoints,
       totalQuestions: questions.length,
-      quizResult,
       resultDetails,
     });
   } catch (error) {
