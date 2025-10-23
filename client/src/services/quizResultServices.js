@@ -12,7 +12,7 @@ export const updateUserScore = async (userId, categoryId, answers) => {
     if (response.ok) {
       return updatedQuizResult
     } else {
-      throw new Error(updatedQuizResult.error || 'Failed to update user score!')
+      throw new Error(updatedQuizResult.message || 'Failed to update user score!')
     }
   } catch (err) {
     throw err
