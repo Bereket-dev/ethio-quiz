@@ -19,7 +19,7 @@ const submitQuiz = async (req, res) => {
     const resultDetails = questions.map((q) => {
       const userAnswer = answers.find((a) => a.questionId === q._id.toString());
       const isCorrect =
-        userAnswer && userAnswer.selectedOption === q.correctAnswer;
+        userAnswer && userAnswer.selectedAnswer === q.correctAnswer;
       if (isCorrect) score++;
 
       return {
@@ -47,7 +47,7 @@ const submitQuiz = async (req, res) => {
     });
   } catch (error) {
     console.error("Submit Quiz Error:", error);
-    res.status(500).json({ error: "Failed to submit quiz" });
+    res.status(500).json({ message: "Failed to submit quiz" });
   }
 };
 
