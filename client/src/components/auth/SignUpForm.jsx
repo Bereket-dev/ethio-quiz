@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 
 function SignUpForm() {
   const navigate = useNavigate()
+  const [successMsg, setSuccessMsg] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
 
   return (
     <div className="mx-auto flex h-screen w-full max-w-6xl items-center justify-center px-4 md:px-14">
@@ -33,34 +35,39 @@ function SignUpForm() {
           <Formik
             initialValues={{ email: '', username: '', password: '' }}
             validationSchema={signUpSchema}
-            onSubmit={async (values, { setSubmitting, setStatus }) => {
-              setStatus(null)
+            onSubmit={async (values, { setSubmitting }) => {
+              setSuccessMsg('')
+              setErrorMsg('')
               try {
-                await registerUser(values)
-                navigate('/login')
+                const data = await registerUser(values)
+                setSuccessMsg(
+                  data.message ||
+                    'We have sent confirmation email! Check your spam folder!',
+                )
               } catch (error) {
-                setStatus(error.message)
+                setErrorMsg(error.message || 'Failed to register user!')
               } finally {
                 setSubmitting(false)
               }
             }}
           >
-            {({ isSubmitting, status, setStatus, handleSubmit }) => {
-              useEffect(() => {
-                if (status) {
-                  const timer = setTimeout(() => setStatus(null), 5000)
-                  return () => clearTimeout(timer)
-                }
-              }, [status, setStatus])
+            {({ isSubmitting, handleSubmit }) => {
               return (
                 <form
                   className="mt-10 w-full max-w-md space-y-5"
                   onSubmit={handleSubmit}
                 >
                   {/* Display API Error */}
-                  {status && (
+                  {errorMsg && (
                     <div className="rounded-lg border-red-300 bg-red-50/70 px-4 py-2 text-center font-medium text-red-700 shadow-sm transition-all duration-200">
-                      {status}
+                      {errorMsg}
+                    </div>
+                  )}
+
+                  {/* Display API success */}
+                  {successMsg && (
+                    <div className="rounded-lg border-green-300 bg-green-50/70 px-4 py-2 text-center font-medium text-green-700 shadow-sm transition-all duration-200">
+                      {successMsg}
                     </div>
                   )}
 
