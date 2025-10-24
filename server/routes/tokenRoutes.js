@@ -13,6 +13,6 @@ router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);
 router.get("/validate/:token", tokenValidator);
 router.get("/resend-confirmation", resendConfirmation);
-router.get("/verify-email/:token", tokenValidator, verifyEmail);
+router.get("/verify-email/:token", verifyEmail);
 
 module.exports = router;
