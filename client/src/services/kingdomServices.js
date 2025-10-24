@@ -32,6 +32,7 @@ export const addOneKingdom = async (formData) => {
   const response = await fetch(`${KINGDOM_BASE_URL}/create`, {
     method: 'POST',
     body: data,
+    credentials: 'include',
   })
 
   const result = await response.json()
@@ -54,6 +55,7 @@ export const editOneKingdom = async (formData) => {
     const response = await fetch(`${KINGDOM_BASE_URL}/edit/${id}`, {
       method: 'PUT',
       body: data,
+      credentials: 'include',
     })
 
     const updatedKingdom = await response.json()
