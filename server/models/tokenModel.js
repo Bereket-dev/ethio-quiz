@@ -8,7 +8,11 @@ const tokenSchema = new mongoose.Schema(
       required: true,
     },
     tokenHash: { type: String, required: true },
-    type: { type: String, required: true, enum: ["passwordReset"] },
+    type: {
+      type: String,
+      required: true,
+      enum: ["passwordReset", "emailVerification"],
+    },
     expiresAt: { type: Date, required: true, index: { expires: 0 } },
   },
   { timestamps: true }
