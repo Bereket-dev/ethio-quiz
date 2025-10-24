@@ -54,6 +54,7 @@ export const addOneCategory = async (formData) => {
   const response = await fetch(`${CATEGORY_BASE_URL}/create`, {
     method: 'POST',
     body: data,
+    credentials:'include'
   })
 
   const result = await response.json()
@@ -76,6 +77,7 @@ export const editOneCategory = async (formData) => {
     const response = await fetch(`${CATEGORY_BASE_URL}/edit/${id}`, {
       method: 'PUT',
       body: data,
+      credentials:'include',
     })
 
     const updatedCategory = await response.json()
