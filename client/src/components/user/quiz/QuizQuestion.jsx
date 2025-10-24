@@ -46,21 +46,16 @@ function QuizQuestion({
         <ul className="space-y-3 text-sm text-gray-800">
           {options.map((option, index) => {
             const isSelected = selectedAnswer === index
-            const isCorrect = question.correctAnswer === index
-
-            let style = {}
-            if (isSelected) {
-              style = isCorrect
-                ? { backgroundColor: '#d1fae5', borderColor: '#10b981' }
-                : { backgroundColor: '#fee2e2', borderColor: '#ef4444' }
-            }
 
             return (
               <li
                 key={index}
                 onClick={() => answer(index)}
-                className="cursor-pointer rounded-lg border border-gray-200 px-4 py-3 shadow-sm transition hover:bg-gray-100 hover:shadow-md"
-                style={style}
+                className={`cursor-pointer rounded-xl border px-5 py-3 shadow-sm transition-all duration-300 ${
+                  isSelected
+                    ? 'scale-[1.02] border-blue-600 bg-blue-100 shadow-md'
+                    : 'border-gray-200 bg-white hover:scale-[1.01] hover:border-blue-400 hover:bg-blue-50 hover:shadow-md'
+                }`}
               >
                 <span className="text-primary mr-2 font-semibold">
                   {String.fromCharCode(65 + index)}.

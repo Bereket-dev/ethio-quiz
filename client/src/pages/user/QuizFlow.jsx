@@ -23,7 +23,6 @@ function QuizFlow() {
   const questionTime = { minutes, seconds }
 
   const [step, setStep] = useState(0)
-  const [score, setScore] = useState(0)
   const [answers, setAnswers] = useState([])
   const [isStarted, setIsStarted] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
@@ -83,14 +82,10 @@ function QuizFlow() {
     if (setAnswers[step] !== undefined) return
     const currentQuestion = questions[step - 1]
 
-    setSelectedAnswers((prev) => ({
+    setAnswers((prev) => ({
       ...prev,
       [step]: { questionId: currentQuestion._id, selectedAnswer: index },
     }))
-
-    if (isCorrect) {
-      setScore((prev) => prev + questionPoints)
-    }
 
     // Move to next after a short delay
     setTimeout(() => handleNext(), 80000)
@@ -110,9 +105,41 @@ function QuizFlow() {
     // Reset quiz state
     setIsStarted(false)
     setIsPaused(false)
-    setStep(0)
 
     handleScoreUpdate(userId, categoryId, answers)
+    setStep(0)
+  }
+
+  if (scoreUpdateLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-gray-50">
+        <div className="flex flex-col items-center space-y-4">
+          <svg
+            className="h-10 w-10 animate-spin text-blue-600"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            />
+          </svg>
+          <p className="text-lg font-medium text-gray-700">
+            Updating your score...
+          </p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -152,7 +179,7 @@ function QuizFlow() {
               questionTime={questionTime}
               isStarted={isStarted}
               isPaused={isPaused}
-              selectedAnswer={selectedAnswers[step]}
+              selectedAnswer={answers[step]?.selectedAnswer}
               answer={handleAnswer}
             />
           )}
