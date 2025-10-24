@@ -92,7 +92,23 @@ const removeQuestion = async (req, res) => {
   }
 };
 
-const findQuestionsByCategory = async (req, res) => {
+const findQuestionsByCategoryForUser = async (req, res) => {
+  const { categoryId } = req.params;
+
+  try {
+    const questions = await Question.find({ categoryId }).select(
+      "-description -correctAnswer"
+    );
+    if (!questions || questions.length === 0) {
+      return res.status(404).json({ message: "Questions not found!" });
+    }
+    res.json(questions);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const findQuestionsByCategoryForAdmin = async (req, res) => {
   const { categoryId } = req.params;
 
   try {
@@ -108,7 +124,9 @@ const findQuestionsByCategory = async (req, res) => {
 
 const findAllQuestions = async (req, res) => {
   try {
-    const allQuestions = await Question.find();
+    const allQuestions = await Question.find().select(
+      "-description -correctAnswer"
+    );
     if (!allQuestions || allQuestions.length === 0) {
       return res.status(404).json({ message: "Questions not found!" });
     }
@@ -167,7 +185,8 @@ const getQuestionStats = async (req, res) => {
 
 module.exports = {
   createNewQuestion,
-  findQuestionsByCategory,
+  findQuestionsByCategoryForAdmin,
+  findQuestionsByCategoryForUser,
   findAllQuestions,
   editQuestion,
   removeQuestion,

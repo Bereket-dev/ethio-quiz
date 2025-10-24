@@ -19,18 +19,20 @@ export const getQuestionList = async () => {
   }
 }
 
-export const getQuestionsByCategory = async (categoryId) => {
+export const getQuestionsByCategory = async (categoryId, role) => {
   try {
-    const response = await fetch(
-      `${QUESTION_BASE_URL}/category/${categoryId}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
+    const endpoint =
+      role === 'admin'
+        ? `${QUESTION_BASE_URL}/category/${categoryId}/admin`
+        : `${QUESTION_BASE_URL}/category/${categoryId}/user`
+
+    const response = await fetch(endpoint, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    )
+      credentials: 'include',
+    })
 
     const data = await response.json()
 
