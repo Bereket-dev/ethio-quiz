@@ -30,4 +30,9 @@ export const questionSchema = Yup.object().shape({
         return options.some((opt) => opt === options[value])
       },
     ),
+
+  description: Yup.string()
+    .trim()
+    .min(20, 'Minimum 20 characters')
+    .max(200, 'Maximum 200 characters'),
 })

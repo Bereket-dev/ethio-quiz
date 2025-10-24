@@ -9,6 +9,7 @@ const questionSchema = new mongoose.Schema({
   questionText: { type: String, required: true },
   options: [{ type: String, required: true }],
   correctAnswer: { type: Number, required: true },
+  description: { type: String },
 });
 
 const categorySchema = new mongoose.Schema(

@@ -24,6 +24,7 @@ function QuestionForm({
           options: options,
           correctAnswer: '',
           categoryId: categoryId,
+          description: '',
         }
       }
       validationSchema={formSchema}
@@ -110,6 +111,27 @@ function QuestionForm({
             className="text-sm text-red-500"
           />
 
+          {/* Description Input optional */}
+          <div>
+            <label
+              htmlFor="description"
+              className="mb-2 block text-sm font-semibold text-gray-700"
+            >
+              Description
+            </label>
+            <Field
+              as="textarea"
+              id="description"
+              name="description"
+              placeholder="Write Description"
+              className="focus:border-primary focus:ring-primary/30 w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-800 transition-all duration-200 outline-none focus:bg-white focus:ring-2"
+            />
+            <ErrorMessage
+              name="description"
+              component="div"
+              className="text-sm text-red-500"
+            />
+          </div>
           {/* Action Buttons */}
           <div className="flex justify-end space-x-3 pt-4">
             <button

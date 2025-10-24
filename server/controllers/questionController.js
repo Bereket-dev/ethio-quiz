@@ -2,7 +2,8 @@ const { Question } = require("../models/quizModels");
 const bcrypt = require("bcryptjs");
 
 const createNewQuestion = async (req, res) => {
-  const { questionText, options, correctAnswer, categoryId } = req.body;
+  const { questionText, options, correctAnswer, categoryId, description } =
+    req.body;
 
   if (
     !questionText ||
@@ -24,12 +25,12 @@ const createNewQuestion = async (req, res) => {
       .json({ message: "Correct answer index is out of bounds" });
   }
   try {
-
     const question = await Question.create({
       questionText,
       options,
       correctAnswer: correctAnswerIndex,
       categoryId,
+      description,
     });
     res.status(201).json(question);
   } catch (error) {
@@ -39,7 +40,8 @@ const createNewQuestion = async (req, res) => {
 
 const editQuestion = async (req, res) => {
   const { id } = req.params;
-  const { questionText, options, correctAnswer, categoryId } = req.body;
+  const { questionText, options, correctAnswer, categoryId, description } =
+    req.body;
 
   if (
     !questionText ||
@@ -68,6 +70,7 @@ const editQuestion = async (req, res) => {
         options,
         correctAnswer: correctAnswerIndex,
         categoryId,
+        description,
       },
       { new: true }
     );
