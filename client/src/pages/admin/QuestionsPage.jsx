@@ -34,11 +34,8 @@ function QuestionPage() {
         setLoading(false)
       }, 3000)
 
-      let totalQuestions
-
       try {
         const totalQuestions = await getQuestionList()
-        
 
         if (Array.isArray(totalQuestions) && totalQuestions.length > 0) {
           const filtered = totalQuestions.filter(
@@ -47,13 +44,15 @@ function QuestionPage() {
           setQuestions(filtered)
         }
 
-        const categoryQuestions = await getQuestionsByCategory(categoryId)
+        const categoryQuestions = await getQuestionsByCategory(
+          categoryId,
+          'admin',
+        )
         if (categoryQuestions && categoryQuestions.length > 0)
           setQuestions(categoryQuestions)
       } catch (error) {
         setErrorMsg('Failed to load questions. Please try again.')
-        }
-      finally {
+      } finally {
         setLoading(false)
         clearTimeout(timeoutId)
       }
