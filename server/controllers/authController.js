@@ -1,14 +1,27 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { sendConfirmationEmail } = require("./tokenController.js");
 
 const signUpUser = async (req, res) => {
   const { username, email, password } = req.body;
   try {
     const hashed = await bcrypt.hash(password, 10);
-    const user = await User.create({ username, email, password: hashed });
+    const user = await User.create({
+      username,
+      email,
+      password: hashed,
+      isVerified: false,
+    });
 
-    res.status(201).json({ message: "User created successfully!" });
+    const confirmEmail = await sendConfirmationEmail(email);
+    if (!confirmEmail)
+      return res.status(500).json({ message: confirmEmail.message });
+
+    res.status(201).json({
+      message:
+        "We've sent a verification link to your email. Please check your inbox to activate your account.",
+    });
   } catch (error) {
     if (error.code === 11000) {
       return res
@@ -23,6 +36,17 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) return res.status(404).json({ error: "User not found!" });
+
+  if (!user.isVerified) {
+    const confirmEmail = await sendConfirmationEmail(email);
+    if (!confirmEmail)
+      return res.status(500).json({ message: confirmEmail.message });
+
+    return res.status(403).json({
+      message:
+        "Your email is not verified. A verification email has been sent.",
+    });
+  }
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) return res.status(400).json({ error: "Invalid Credentials!" });
@@ -53,14 +77,14 @@ const loginUser = async (req, res) => {
 };
 
 const logoutUser = async (req, res) => {
-  res.clearCookie("token",{  
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      path: "/",
-    });
-    
-    return res.status(200).json({ message: "Logged out!" });
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/",
+  });
+
+  return res.status(200).json({ message: "Logged out!" });
 };
 
 module.exports = { signUpUser, loginUser, logoutUser };

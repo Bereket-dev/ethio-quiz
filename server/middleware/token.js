@@ -6,8 +6,8 @@ const tokenValidator = async (req, res) => {
     const { token } = req.params;
 
     const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
-    const resetToken = await Token.findOne({ tokenHash });
-    if (!resetToken || resetToken.expiresAt.getTime() < Date.now())
+    const foundToken = await Token.findOne({ tokenHash });
+    if (!foundToken || foundToken.expiresAt.getTime() < Date.now())
       return res
         .status(400)
         .json({ isValid: false, message: "Invalid or expired token!" });
