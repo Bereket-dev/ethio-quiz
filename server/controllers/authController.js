@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { sendConfirmationEmail } = require("./tokenController.js");
+const sendConfirmationEmail = require("../utils/sendConfirmationEmail");
 
 const signUpUser = async (req, res) => {
   const { username, email, password } = req.body;
@@ -37,7 +37,7 @@ const loginUser = async (req, res) => {
   const user = await User.findOne({ email });
   if (!user) return res.status(404).json({ error: "User not found!" });
 
-  if (!user?.isVerified) {
+  if (!user.isVerified) {
     const confirmEmail = await sendConfirmationEmail(email);
     if (!confirmEmail)
       return res.status(500).json({ message: confirmEmail.message });
