@@ -34,7 +34,7 @@ const submitQuiz = async (req, res) => {
           : null,
         correctAnswer: q.options[q.correctAnswer],
         isCorrect,
-        // description: q.description, // Optional: to show on result page
+        description: q.description, 
       };
     });
 
