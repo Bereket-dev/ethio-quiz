@@ -137,12 +137,14 @@ const verifyEmail = async (req, res) => {
 
     const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
     const verificationToken = await Token.findOne({ tokenHash });
-    if (
-      !verificationToken ||
-      verificationToken.expiresAt.getTime() < Date.now() ||
-      verificationToken.type != "emailVerification"
-    )
-      return res.status(400).json({ message: "Invalid or exired token!" });
+    if (!verificationToken)
+      return res.status(400).json({ message: "Token not found!" });
+
+    if (verificationToken.expiresAt.getTime() < Date.now())
+      return res.status(400).json({ message: "Expired token!" });
+
+    if (verificationToken.type != "emailVerification")
+      return res.status(400).json({ message: "Invalid token!" });
 
     const userId = verificationToken.userId;
     const user = await User.findOne({ _id: userId });
