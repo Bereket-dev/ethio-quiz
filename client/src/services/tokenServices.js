@@ -60,3 +60,23 @@ export const checkTokenAPI = async (token) => {
     throw error
   }
 }
+
+export const verifyEmail = async (token) => {
+  try {
+    const response = await fetch(`${TOKEN_BASE_URL}/verify-email/${token}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    })
+
+    const data = await response.json()
+    if (!response.ok)
+      throw new Error(data.message || 'Failed to verify email!')
+
+    return data
+  } catch (error) {
+    throw error
+  }
+}
