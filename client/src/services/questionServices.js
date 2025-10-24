@@ -48,6 +48,7 @@ export const addOneQuestion = async (formData) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData),
+    credentials: 'include',
   })
   const result = await reponse.json()
 
@@ -64,6 +65,7 @@ export const editOneQuestion = async (formData) => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
+      credentials: 'include',
     })
 
     const updatedQuestion = await response.json()
