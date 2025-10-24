@@ -31,6 +31,7 @@ function App() {
         <Route path="/login" element={<LogInPage />} />
         <Route path="/reset-password/:token" element={<TokenChecker />} />
         <Route path="/change-password/:token" element={<ResetPassword />} />
+        <Route path="/verify-email/:token" element={<TokenChecker />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 

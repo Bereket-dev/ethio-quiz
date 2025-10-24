@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { checkTokenAPI } from '../services/tokenServices'
 
 function TokenChecker() {
   const { token } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const isEmailVerification = location.pathname == '/verify-email'
+  const isResetPassword = location.pathname == "/reset-password"
 
   const [status, setStatus] = useState('loading') // 'loading' | 'valid' | 'invalid'
   const [message, setMessage] = useState('Checking token validity...')
@@ -27,7 +31,9 @@ function TokenChecker() {
         if (result?.isValid) {
           setStatus('valid')
           setMessage('Token verified successfully! Redirecting...')
-          setTimeout(() => navigate(`/change-password/${token}`), 1000)
+          setTimeout(() => {
+            if(isEmailVerification) navigate('/login')
+            else if (isResetPassword)navigate(`/change-password/${token}`)}, 1000)
         } else {
           setStatus('invalid')
           setMessage('Invalid or expired token.')
