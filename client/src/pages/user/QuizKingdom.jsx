@@ -1,5 +1,5 @@
 import Header from '../../components/user/Header'
-import Banner from '../../components/user/Banner'
+import KingdomBanner from '../../components/user/KingdomBanner'
 import Categories from '../../components/user/categories/Categories'
 import Footer from '../../components/user/Footer'
 import RecentActivities from '../../components/user/recentactivity/RecentActivities'
@@ -104,7 +104,7 @@ function QuizKingdom() {
   return (
     <div>
       <Header />
-      <Banner
+      <KingdomBanner
         title={bannerContent.title}
         description={bannerContent.description}
         image={bannerContent.image}
