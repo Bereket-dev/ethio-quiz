@@ -19,6 +19,8 @@ import NotFound from './pages/NotFound'
 import Unauthorized from './pages/Unauthorized'
 import TokenChecker from './pages/TokenChecker'
 import ResetPassword from './pages/ResetPassword'
+import ResultPage from './pages/user/ResultDetail'
+import ScorePage from './pages/user/ResultScore'
 
 function App() {
   return (
@@ -38,6 +40,8 @@ function App() {
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/quizflow/:categoryId" element={<QuizFlow />} />
+          <Route path="/result-detail" element={<ResultPage />} />
+          <Route path="/result-score" element={<ScorePage />} />
         </Route>
 
         {/* Admin routes */}
