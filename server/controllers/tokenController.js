@@ -136,13 +136,16 @@ const verifyEmail = async (req, res) => {
     const { token } = req.params;
 
     const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
-    const verificationToken = await Token.findOne({ tokenHash });
+    const verificationToken = await Token.findOne({ tokenHash: 1 });
     if (
       !verificationToken ||
       verificationToken.expiresAt.getTime() < Date.now() ||
       verificationToken.type != "emailVerification"
-    )
-      return res.status(400).json({ message: "Invalid or expired token!" });
+    ) {
+      console.log("token hash", tokenHash);
+      console.log("token", token);
+      console.log("type", verificationToken.type);
+    }
 
     const userId = verificationToken.userId;
     const user = await User.findOne({ _id: userId });
