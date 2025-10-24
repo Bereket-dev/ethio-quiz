@@ -141,11 +141,8 @@ const verifyEmail = async (req, res) => {
       !verificationToken ||
       verificationToken.expiresAt.getTime() < Date.now() ||
       verificationToken.type != "emailVerification"
-    ) {
-      console.log("token hash", tokenHash);
-      console.log("token", token);
-      console.log("type", verificationToken.type);
-    }
+    )
+      return res.status(400).json({ message: "Invalid or exired token!" });
 
     const userId = verificationToken.userId;
     const user = await User.findOne({ _id: userId });
