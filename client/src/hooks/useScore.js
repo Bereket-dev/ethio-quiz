@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { updateUserScore } from '../services/quizResultServices'
 import { useState } from 'react'
 
@@ -24,7 +24,7 @@ export const useScoreUpdate = () => {
       setSuccessMsg('Score updated successfully!')
 
       navigate('/result-detail', {
-        state: { resultData: returnData },
+        state: { resultData: updatedResult },
       })
     } catch (error) {
       setErrorMsg(error.message)
