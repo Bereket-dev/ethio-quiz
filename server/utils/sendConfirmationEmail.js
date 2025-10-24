@@ -18,7 +18,7 @@ const sendConfirmationEmail = async (email) => {
     .createHash("sha256")
     .update(plainToken)
     .digest("hex");
-  const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000); //1 hr
 
   const token = await Token.findOneAndUpdate(
     { userId, type: "emailVerification" },
@@ -95,7 +95,7 @@ const sendConfirmationEmail = async (email) => {
 </html>
 `;
   await sendMail(user.email, message);
-  return { success: true, message: "Email sent successfully!" };
+  return { success: true, message: "Verification sent successfully!" };
 };
 
 module.exports = sendConfirmationEmail;
