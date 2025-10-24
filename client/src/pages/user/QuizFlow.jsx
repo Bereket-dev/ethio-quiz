@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import QuizBriefCard from '../../components/user/quiz/QuizBriefCard'
 import QuizQuestion from '../../components/user/quiz/QuizQuestion'
-import ScoreResult from '../../components/user/score/ScoreResult'
 import { getQuestionsByCategory } from '../../services/questionServices'
 import { useScoreUpdate } from '../../hooks/useScore'
 
@@ -37,7 +36,7 @@ function QuizFlow() {
       setErrorMsg('')
 
       try {
-        const questionList = await getQuestionsByCategory(categoryId)
+        const questionList = await getQuestionsByCategory(categoryId, 'user')
         setQuestions(questionList || [])
       } catch (error) {
         setErrorMsg(error.message || 'Failed to load questions.')
@@ -110,33 +109,59 @@ function QuizFlow() {
     setStep(0)
   }
 
-  if (scoreUpdateLoading) {
+  if (scoreUpdateLoading || scoreUpdateErrorMsg) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-50">
-        <div className="flex flex-col items-center space-y-4">
-          <svg
-            className="h-10 w-10 animate-spin text-blue-600"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-            />
-          </svg>
-          <p className="text-lg font-medium text-gray-700">
-            Updating your score...
-          </p>
+        <div className="flex flex-col items-center space-y-5 text-center">
+          {scoreUpdateLoading && (
+            <>
+              <svg
+                className="h-10 w-10 animate-spin text-blue-600"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                />
+              </svg>
+              <p className="text-lg font-medium text-gray-700">
+                Updating your score...
+              </p>
+            </>
+          )}
+
+          {scoreUpdateErrorMsg && (
+            <div className="flex flex-col items-center space-y-3">
+              <div className="rounded-lg bg-red-100 px-4 py-2 text-red-700 shadow">
+                ⚠️{' '}
+                {scoreUpdateErrorMsg ||
+                  'Failed to update score. Please try again.'}
+              </div>
+              <button
+                onClick={() => handleSubmit()}
+                className="rounded-lg bg-blue-600 px-4 py-2 text-white shadow transition hover:bg-blue-700"
+              >
+                Retry
+              </button>
+              <button
+                onClick={() => navigate(-1)}
+                className="text-sm text-gray-500 underline hover:text-gray-700"
+              >
+                Go Back
+              </button>
+            </div>
+          )}
         </div>
       </div>
     )
