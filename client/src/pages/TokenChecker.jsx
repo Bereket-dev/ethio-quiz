@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { checkTokenAPI } from '../services/tokenServices'
 import { useEmail } from '../hooks/useEmail'
@@ -8,8 +8,8 @@ function TokenChecker() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const isEmailVerification = location.pathname === '/verify-email'
-  const isResetPassword = location.pathname === '/reset-password'
+  const isEmailVerification = location.pathname.startsWith('/verify-email')
+  const isResetPassword = location.pathname.startsWith('/reset-password')
 
   const [status, setStatus] = useState('loading') // 'loading' | 'valid' | 'invalid'
   const [message, setMessage] = useState('Checking token validity...')
@@ -18,6 +18,11 @@ function TokenChecker() {
 
   useEffect(() => {
     let isMounted = true
+
+    if (!token) {
+      setMessage('Already token not found')
+      return
+    }
 
     const fetchTokenChecker = async () => {
       if (!token) {
@@ -35,7 +40,6 @@ function TokenChecker() {
           if (result.success) {
             setStatus('valid')
             setMessage(result.message)
-            // redirect after a short delay so user can see message
             setTimeout(() => navigate('/login'), 800)
           } else {
             setStatus('invalid')
@@ -63,10 +67,11 @@ function TokenChecker() {
     }
 
     fetchTokenChecker()
+
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [token])
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
