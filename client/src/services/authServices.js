@@ -17,7 +17,7 @@ export const checkUser = async (formData) => {
       localStorage.setItem('user', JSON.stringify(data.user))
       return data.user
     } else {
-      throw new Error(data.error || 'Unknown Error!')
+      throw new Error(data.message || 'Unknown Error!')
     }
   } catch (err) {
     throw err
@@ -38,7 +38,7 @@ export const loggingOutUser = async () => {
     if (response.ok) {
       return data
     } else {
-      throw new Error(data.error || 'Unknown Error!')
+      throw new Error(data.message || 'Unknown Error!')
     }
   } catch (error) {
     throw err
@@ -56,7 +56,7 @@ export const registerUser = async (formData) => {
     })
 
     const data = await response.json()
-    if (!response.ok) throw new Error(data.error || 'Unknown Error!')
+    if (!response.ok) throw new Error(data.message || 'Unknown Error!')
 
     return data
   } catch (err) {
@@ -75,7 +75,7 @@ export const checkAuth = async () => {
     })
 
     const data = await response.json()
-    if (!response.ok) throw new Error(data.error || 'Error checking auth')
+    if (!response.ok) throw new Error(data.message || 'Error checking auth')
     return data
   } catch (error) {
     return { loggedIn: false }
@@ -93,7 +93,7 @@ export const checkAdmin = async () => {
     })
 
     const data = response.json()
-    if (!response.ok) throw new Error(data.error || 'Error checking admin')
+    if (!response.ok) throw new Error(data.message || 'Error checking admin')
     return data
   } catch (error) {
     return { loggedIn: false }

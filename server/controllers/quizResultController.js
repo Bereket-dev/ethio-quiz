@@ -34,7 +34,7 @@ const submitQuiz = async (req, res) => {
           : null,
         correctAnswer: q.options[q.correctAnswer],
         isCorrect,
-        description: q.description, 
+        description: q.description,
       };
     });
 
@@ -100,7 +100,7 @@ const getHighScoreUser = async (req, res) => {
 
     res.status(200).json(topPlayers);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -118,7 +118,7 @@ const getRecentQuizResult = async (req, res) => {
 
     res.status(200).json(recentQuizResult);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -189,7 +189,7 @@ const getMonthlyQuizStats = async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -250,7 +250,7 @@ const getTopPlayersStats = async (req, res) => {
 
     res.status(200).json(topPlayersStats);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 

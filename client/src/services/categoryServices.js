@@ -16,7 +16,7 @@ export const getCategoryList = async () => {
       localStorage.setItem('categories', JSON.stringify(data?.categories))
       return data.categories || []
     } else {
-      throw new Error(data.error || 'Failed to fetch categories')
+      throw new Error(data.message || 'Failed to fetch categories')
     }
   } catch (err) {
     throw err
@@ -59,7 +59,7 @@ export const addOneCategory = async (formData) => {
   const result = await response.json()
 
   if (!response.ok) {
-    throw new Error(result.error || 'Failed to create category')
+    throw new Error(result.message || 'Failed to create category')
   }
 
   return result
@@ -82,7 +82,7 @@ export const editOneCategory = async (formData) => {
     if (response.ok) {
       return updatedCategory
     } else {
-      throw new Error(updatedCategory.error || 'Failed to update category!')
+      throw new Error(updatedCategory.message || 'Failed to update category!')
     }
   } catch (err) {
     throw err
@@ -103,7 +103,7 @@ export const removeOneCategory = async (id) => {
     if (response.ok) {
       return result.message || `Category deleted successfully!`
     } else {
-      throw new Error(result.error || 'Failed to create category')
+      throw new Error(result.message || 'Failed to create category')
     }
   } catch (err) {
     throw err

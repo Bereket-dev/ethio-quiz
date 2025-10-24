@@ -8,7 +8,7 @@ const createNewKingdom = async (req, res) => {
   if (!title || !description) {
     return res
       .status(400)
-      .json({ error: "Title and description are required" });
+      .json({ message: "Title and description are required" });
   }
 
   try {
@@ -20,7 +20,7 @@ const createNewKingdom = async (req, res) => {
         alt: `${title} kingdom image`,
       };
     } else {
-      return res.status(400).json({ error: "Image is required" });
+      return res.status(400).json({ message: "Image is required" });
     }
 
     const kingdom = await Kingdom.create({
@@ -33,9 +33,9 @@ const createNewKingdom = async (req, res) => {
     if (error.code === 11000) {
       return res
         .status(400)
-        .json({ error: "Kingdom with this title already exists" });
+        .json({ message: "Kingdom with this title already exists" });
     }
-    res.status(500).json({ error: "Failed to create new kingdom" });
+    res.status(500).json({ message: "Failed to create new kingdom" });
   }
 };
 
@@ -47,7 +47,7 @@ const editKingdom = async (req, res) => {
   if (!title || !description) {
     return res
       .status(400)
-      .json({ error: "Title and description are required" });
+      .json({ message: "Title and description are required" });
   }
 
   try {
@@ -74,9 +74,9 @@ const editKingdom = async (req, res) => {
     if (error.code === 11000) {
       return res
         .status(400)
-        .json({ error: "Kingdom with this title already exists" });
+        .json({ message: "Kingdom with this title already exists" });
     }
-    res.status(500).json({ error: "Failed to update kingdom" });
+    res.status(500).json({ message: "Failed to update kingdom" });
   }
 };
 
@@ -84,11 +84,11 @@ const removeKingdom = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await Kingdom.findByIdAndDelete(id);
-    if (!result) return res.status(404).json({ error: "Kingdom not found!" });
+    if (!result) return res.status(404).json({ message: "Kingdom not found!" });
 
     res.status(200).json({ message: "Kingdom removed successfully!" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to remove kingdom" });
+    res.status(500).json({ message: "Failed to remove kingdom" });
   }
 };
 const getAllKingdoms = async (req, res) => {
@@ -102,7 +102,7 @@ const getAllKingdoms = async (req, res) => {
       kingdoms: allKingdoms,
     });
   } catch (error) {
-    res.status(500).json({ error: "Failed to get all kingdom" });
+    res.status(500).json({ message: "Failed to get all kingdom" });
   }
 };
 

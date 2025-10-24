@@ -30,7 +30,7 @@ export const getTopPlayers = async () => {
     if (response.ok) {
       return data
     } else {
-      throw new Error(data.error || 'Failed to fetch top players!')
+      throw new Error(data.message || 'Failed to fetch top players!')
     }
   } catch (err) {
     throw err
@@ -55,7 +55,7 @@ export const getRecentQuizResult = async (userId) => {
       localStorage.setItem('recent-activity', JSON.stringify(data))
       return data
     } else
-      throw new Error(data.error || 'Failed to get the recent quiz results')
+      throw new Error(data.message || 'Failed to get the recent quiz results')
   } catch (err) {
     throw err
   }
@@ -73,7 +73,7 @@ export const fetchMonthlyQuizStats = async () => {
 
     const data = await response.json()
     if (!response.ok)
-      throw new Error(data.error || 'Failed to get monthly user stats')
+      throw new Error(data.message || 'Failed to get monthly user stats')
 
     return data
   } catch (err) {
@@ -93,7 +93,7 @@ export const fetchTopPlayersStats = async () => {
 
     const data = await response.json()
     if (!response.ok)
-      throw new Error(data.error || 'Failed to fetch top players stats')
+      throw new Error(data.message || 'Failed to fetch top players stats')
 
     return data
   } catch (err) {

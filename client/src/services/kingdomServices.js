@@ -16,7 +16,7 @@ export const getKingdomList = async () => {
       localStorage.setItem('kingdoms', JSON.stringify(data?.kingdoms))
       return data.kingdoms || []
     } else {
-      throw new Error(data.error || 'Failed to fetch kingdoms')
+      throw new Error(data.message || 'Failed to fetch kingdoms')
     }
   } catch (err) {
     throw err
@@ -37,7 +37,7 @@ export const addOneKingdom = async (formData) => {
   const result = await response.json()
 
   if (!response.ok) {
-    throw new Error(result.error || 'Failed to add kingdom')
+    throw new Error(result.message || 'Failed to add kingdom')
   }
 
   return result
@@ -60,7 +60,7 @@ export const editOneKingdom = async (formData) => {
     if (response.ok) {
       return updatedKingdom
     } else {
-      throw new Error(updatedKingdom.error || 'Failed to update kingdom!')
+      throw new Error(updatedKingdom.message || 'Failed to update kingdom!')
     }
   } catch (err) {
     throw err
@@ -81,7 +81,7 @@ export const removeOneKingdom = async (id) => {
     if (response.ok) {
       return result.message || `kingdom deleted successfully!`
     } else {
-      throw new Error(result.error || 'Failed to delete kingdom')
+      throw new Error(result.message || 'Failed to delete kingdom')
     }
   } catch (err) {
     throw err

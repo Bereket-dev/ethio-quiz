@@ -6,15 +6,15 @@ const createNewCategory = async (req, res) => {
     req.body;
   const file = req.file;
 
-  if (!title) return res.status(400).json({ error: "A title is required" });
+  if (!title) return res.status(400).json({ message: "A title is required" });
   if (!description)
-    return res.status(400).json({ error: "A description is required" });
-  if (!points) return res.status(400).json({ error: "Points are required" });
+    return res.status(400).json({ message: "A description is required" });
+  if (!points) return res.status(400).json({ message: "Points are required" });
   if (!timeAllowed)
-    return res.status(400).json({ error: "A timeAllowed is required" });
-  if (!color) return res.status(400).json({ error: "A color is required" });
+    return res.status(400).json({ message: "A timeAllowed is required" });
+  if (!color) return res.status(400).json({ message: "A color is required" });
   if (!kingdomId)
-    return res.status(400).json({ error: "A kingdomId is required" });
+    return res.status(400).json({ message: "A kingdomId is required" });
 
   try {
     let image = null;
@@ -25,7 +25,7 @@ const createNewCategory = async (req, res) => {
         alt: `${title} kingdom image`,
       };
     } else {
-      return res.status(400).json({ error: "Image is required" });
+      return res.status(400).json({ message: "Image is required" });
     }
 
     const category = await Category.create({
@@ -42,9 +42,9 @@ const createNewCategory = async (req, res) => {
     if (error.code === 11000) {
       return res
         .status(400)
-        .json({ error: "Category with this title already exists" });
+        .json({ message: "Category with this title already exists" });
     }
-    res.status(500).json({ error: "Failed to create new category" });
+    res.status(500).json({ message: "Failed to create new category" });
   }
 };
 
@@ -54,15 +54,15 @@ const editCategory = async (req, res) => {
     req.body;
   const file = req.file;
 
-  if (!title) return res.status(400).json({ error: "A title is required" });
+  if (!title) return res.status(400).json({ message: "A title is required" });
   if (!description)
-    return res.status(400).json({ error: "A description is required" });
-  if (!points) return res.status(400).json({ error: "Points are required" });
+    return res.status(400).json({ message: "A description is required" });
+  if (!points) return res.status(400).json({ message: "Points are required" });
   if (!timeAllowed)
-    return res.status(400).json({ error: "A timeAllowed is required" });
-  if (!color) return res.status(400).json({ error: "A color is required" });
+    return res.status(400).json({ message: "A timeAllowed is required" });
+  if (!color) return res.status(400).json({ message: "A color is required" });
   if (!kingdomId)
-    return res.status(400).json({ error: "A kingdomId is required" });
+    return res.status(400).json({ message: "A kingdomId is required" });
 
   try {
     const updateData = {
@@ -92,9 +92,9 @@ const editCategory = async (req, res) => {
     if (error.code === 11000) {
       return res
         .status(400)
-        .json({ error: "Category with this title already exists" });
+        .json({ message: "Category with this title already exists" });
     }
-    res.status(500).json({ error: "Failed to update category" });
+    res.status(500).json({ message: "Failed to update category" });
   }
 };
 
@@ -102,11 +102,12 @@ const removeCategory = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await Category.findByIdAndDelete(id);
-    if (!result) return res.status(404).json({ error: "Category not found!" });
+    if (!result)
+      return res.status(404).json({ message: "Category not found!" });
 
     res.status(200).json({ message: "Category removed successfully!" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to remove category" });
+    res.status(500).json({ message: "Failed to remove category" });
   }
 };
 
@@ -121,7 +122,7 @@ const getAllCategories = async (req, res) => {
       categories: allCategories,
     });
   } catch (error) {
-    res.status(500).json({ error: "Failed to get all category" });
+    res.status(500).json({ message: "Failed to get all category" });
   }
 };
 
@@ -137,7 +138,7 @@ const findCategoriesByKingdom = async (req, res) => {
     }
     res.json(categories);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 module.exports = {

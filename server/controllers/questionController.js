@@ -1,5 +1,4 @@
 const { Question } = require("../models/quizModels");
-const bcrypt = require("bcryptjs");
 
 const createNewQuestion = async (req, res) => {
   const { questionText, options, correctAnswer, categoryId, description } =
@@ -34,7 +33,7 @@ const createNewQuestion = async (req, res) => {
     });
     res.status(201).json(question);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -76,7 +75,7 @@ const editQuestion = async (req, res) => {
     );
     res.status(201).json(question);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -84,11 +83,12 @@ const removeQuestion = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await Question.findByIdAndDelete(id);
-    if (!result) return res.status(404).json({ error: "Question not found!" });
+    if (!result)
+      return res.status(404).json({ message: "Question not found!" });
 
     res.status(200).json({ message: "Question removed successfully!" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to remove question" });
+    res.status(500).json({ message: "Failed to remove question" });
   }
 };
 
@@ -104,7 +104,7 @@ const findQuestionsByCategoryForUser = async (req, res) => {
     }
     res.json(questions);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -118,7 +118,7 @@ const findQuestionsByCategoryForAdmin = async (req, res) => {
     }
     res.json(questions);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -135,7 +135,7 @@ const findAllQuestions = async (req, res) => {
       questions: allQuestions,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -179,7 +179,7 @@ const getQuestionStats = async (req, res) => {
 
     res.status(200).json(questionStats);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 

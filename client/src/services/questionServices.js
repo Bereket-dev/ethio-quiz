@@ -13,7 +13,7 @@ export const getQuestionList = async () => {
     const data = await response.json()
     if (response.ok) {
       return data.questions || []
-    } else throw new Error(data.error || 'Failed to fetch questions list')
+    } else throw new Error(data.message || 'Failed to fetch questions list')
   } catch (err) {
     throw err
   }
@@ -39,7 +39,7 @@ export const getQuestionsByCategory = async (categoryId, role) => {
     if (response.ok) {
       return data || []
     } else
-      throw new Error(data.error || 'Failed to fetch questions of a category')
+      throw new Error(data.message || 'Failed to fetch questions of a category')
   } catch (err) {
     throw err
   }
@@ -55,7 +55,7 @@ export const addOneQuestion = async (formData) => {
   const result = await reponse.json()
 
   if (!reponse.ok) {
-    throw new Error(result.error || 'Failed to add question')
+    throw new Error(result.message || 'Failed to add question')
   }
   return result
 }
@@ -74,7 +74,7 @@ export const editOneQuestion = async (formData) => {
     if (response.ok) {
       return updatedQuestion
     } else {
-      throw new Error(updatedQuestion.error || 'Failed to update question!')
+      throw new Error(updatedQuestion.message || 'Failed to update question!')
     }
   } catch (err) {
     throw err
@@ -95,7 +95,7 @@ export const removeOneQuestion = async (id) => {
     if (response.ok) {
       return result.message || `Question deleted successfully!`
     } else {
-      throw new Error(result.error || 'Failed to delete question')
+      throw new Error(result.message || 'Failed to delete question')
     }
   } catch (err) {
     throw err
@@ -114,7 +114,7 @@ export const fetchQuestionStats = async () => {
 
     const data = response.json()
     if (!response.ok)
-      throw new Error(data.error || 'Failed to fetch question stats')
+      throw new Error(data.message || 'Failed to fetch question stats')
 
     return data || []
   } catch (err) {
