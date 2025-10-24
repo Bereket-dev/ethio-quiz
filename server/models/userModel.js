@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     profileImage: { type: String, default: null },
-    isVerified: { type: Boolean, required: true },
+    isVerified: { type: Boolean, required: true, default: false },
   },
   { timestamps: true }
 );
