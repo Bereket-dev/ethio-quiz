@@ -136,7 +136,7 @@ const verifyEmail = async (req, res) => {
     const { token } = req.params;
 
     const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
-    const verificationToken = await Token.findOne({ tokenHash: 1 });
+    const verificationToken = await Token.findOne({ tokenHash });
     if (
       !verificationToken ||
       verificationToken.expiresAt.getTime() < Date.now() ||
