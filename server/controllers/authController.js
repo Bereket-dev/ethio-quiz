@@ -37,7 +37,7 @@ const loginUser = async (req, res) => {
   const user = await User.findOne({ email });
   if (!user) return res.status(404).json({ error: "User not found!" });
 
-  if (!user.isVerified) {
+  if (!user?.isVerified) {
     const confirmEmail = await sendConfirmationEmail(email);
     if (!confirmEmail)
       return res.status(500).json({ message: confirmEmail.message });
