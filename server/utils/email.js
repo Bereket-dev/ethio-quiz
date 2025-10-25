@@ -7,7 +7,7 @@ const sendMail = async (receiver, htmlMessage) => {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     const email = await resend.emails.send({
-      from: "onboarding@resend.dev",
+      from: "bereketdesalegn097@gmail.com",
       to: receiver,
       subject: "Password Reset",
       html: htmlMessage,
