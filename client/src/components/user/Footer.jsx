@@ -7,9 +7,21 @@ import { navList } from '../../Data/NavList'
 
 function Footer() {
   const socialMediaList = [
-    { image: telegramIcon, label: 'Telegram' },
-    { image: linkedinIcon, label: 'LinkedIn' },
-    { image: facebookIcon, label: 'Facebook' },
+    {
+      image: telegramIcon,
+      label: 'Telegram',
+      src: 'https://t.me/freshmanmaterials',
+    },
+    {
+      image: linkedinIcon,
+      label: 'LinkedIn',
+      src: 'https://www.linkedin.com/in/bereket-desalegn-a120a6362',
+    },
+    {
+      image: facebookIcon,
+      label: 'Facebook',
+      src: 'https://web.facebook.com/profile.php?id=100072716504185',
+    },
   ]
 
   const quickLinkList = navList
@@ -54,7 +66,8 @@ function Footer() {
               {socialMediaList.map((media, index) => (
                 <a
                   key={index}
-                  href="#"
+                  href={media.src}
+                  target="_blank"
                   aria-label={media.label}
                   className="transition hover:scale-110"
                 >
