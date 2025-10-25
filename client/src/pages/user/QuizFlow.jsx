@@ -49,12 +49,14 @@ function QuizFlow() {
 
   // Timer effect
   useEffect(() => {
-    let timer = null
-    if (isStarted && !isPaused && timeLeft > 0 && step <= totalSteps) {
-      timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000)
-    } else if (timeLeft === 0 && step < totalSteps) {
-      handleNext() // Auto move to next when time ends
+    if (!isStarted || isPaused) return
+
+    if (timeLeft <= 0) {
+      handleSubmit() // Auto submit when time ends
+      return
     }
+
+    const timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000)
     return () => clearInterval(timer)
   }, [isStarted, isPaused, timeLeft, step])
 
@@ -67,7 +69,6 @@ function QuizFlow() {
   const handleNext = () => {
     if (step < totalSteps) {
       setStep(step + 1)
-      setTimeLeft(minutes * 60 + seconds)
     } else {
       handleSubmit()
     }
@@ -78,16 +79,12 @@ function QuizFlow() {
   }
 
   const handleAnswer = (index) => {
-    if (setAnswers[step] !== undefined) return
     const currentQuestion = questions[step - 1]
 
     setAnswers((prev) => ({
       ...prev,
       [step]: { questionId: currentQuestion._id, selectedAnswer: index },
     }))
-
-    // Move to next after a short delay
-    setTimeout(() => handleNext(), 80000)
   }
 
   const {
@@ -97,16 +94,16 @@ function QuizFlow() {
     returnData,
   } = useScoreUpdate()
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const user = localStorage.getItem('user')
     const userId = user ? JSON.parse(user).id : navigate('/login')
 
+    await handleScoreUpdate(userId, categoryId, answers)
+
     // Reset quiz state
+    setStep(0)
     setIsStarted(false)
     setIsPaused(false)
-
-    handleScoreUpdate(userId, categoryId, answers)
-    setStep(0)
   }
 
   if (scoreUpdateLoading || scoreUpdateErrorMsg) {
