@@ -4,6 +4,7 @@ import { registerUser } from '../../services/authServices'
 import { Formik, Field, ErrorMessage } from 'formik'
 import { signUpSchema } from '../../validation/userSchema'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function SignUpForm() {
   const navigate = useNavigate()
@@ -40,10 +41,11 @@ function SignUpForm() {
               setErrorMsg('')
               try {
                 const data = await registerUser(values)
-                setSuccessMsg(
-                  data.message ||
-                    'We have sent confirmation email! Check your spam folder!',
-                )
+                navigate('/login')
+                // setSuccessMsg(
+                //   data.message ||
+                //     'We have sent confirmation email! Check your spam folder!',
+                // )
               } catch (error) {
                 setErrorMsg(error.message || 'Failed to register user!')
               } finally {
