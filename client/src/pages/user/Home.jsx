@@ -6,6 +6,7 @@ import LeaderBoardTeaser from '../../components/user/leaderboard/LeaderBoardTeas
 import Successes from '../../components/user/score/Successes'
 
 import cupImageBanner from '../../assets/images/cup.png'
+import { Helmet } from 'react-helmet-async'
 
 function Home() {
   const bannerContent = {
@@ -15,21 +16,45 @@ function Home() {
     image: { src: cupImageBanner, alt: 'champion image', direction: 'right' },
   }
   return (
-    <div>
-      <div className="relative min-h-screen w-full overflow-hidden bg-[radial-gradient(circle_400px_at_center_120%,_#30B2AD_0%,_#80AFFB_30%,_#BFD4FA_70%,_#FFFFFF_100%)] md:bg-[radial-gradient(circle_600px_at_center_120%,_#30B2AD_0%,_#80AFFB_30%,_#BFD4FA_70%,_#FFFFFF_100%)]">
-        <Header />
-        <Banner
-          title={bannerContent.title}
-          description={bannerContent.description}
-          image={bannerContent.image}
-          cta={{ to: '/quiz', text: 'Start Quiz Now ->' }}
+    <>
+      <Helmet>
+        <title>Ethio Quiz | Home</title>
+        <meta
+          name="description"
+          content="Challenge yourself with quizzes on science, history, and Ethiopian culture. Join Ethio-Quiz today!"
         />
+        <link rel="canonical" href="https://ethio-quiz.vercel.app/" />
+
+        {/* Structured Data JSON-LD for Home */}
+        <script type="application/ld+json">
+          {`
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Ethio-Quiz",
+        "url": "https://ethio-quiz.vercel.app",
+        "description": "Challenge yourself with quizzes on science, history, and Ethiopian culture. Join Ethio-Quiz today!",
+        "inLanguage": "en"
+      }
+    `}
+        </script>
+      </Helmet>
+      <div>
+        <div className="relative min-h-screen w-full overflow-hidden bg-[radial-gradient(circle_400px_at_center_120%,_#30B2AD_0%,_#80AFFB_30%,_#BFD4FA_70%,_#FFFFFF_100%)] md:bg-[radial-gradient(circle_600px_at_center_120%,_#30B2AD_0%,_#80AFFB_30%,_#BFD4FA_70%,_#FFFFFF_100%)]">
+          <Header />
+          <Banner
+            title={bannerContent.title}
+            description={bannerContent.description}
+            image={bannerContent.image}
+            cta={{ to: '/quiz', text: 'Start Quiz Now ->' }}
+          />
+        </div>
+        <QuizKingdoms title="The Quiz Kingdom" />
+        <LeaderBoardTeaser />
+        <Successes />
+        <Footer className="mt-6" />
       </div>
-      <QuizKingdoms title="The Quiz Kingdom" />
-      <LeaderBoardTeaser />
-      <Successes />
-      <Footer className="mt-6" />
-    </div>
+    </>
   )
 }
 

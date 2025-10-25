@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { getCategoriesByKingdom } from '../../services/categoryServices'
 import { ListCheckIcon } from 'lucide-react'
 import { getRecentQuizResult } from '../../services/quizResultServices'
+import { Helmet } from 'react-helmet-async'
 
 function QuizKingdom() {
   const location = useLocation()
@@ -101,52 +102,82 @@ function QuizKingdom() {
     fetchRecentActivities()
   }, [categories, kingdomId])
 
+  const itemList = categories.map((c, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: c.title,
+  }))
+
   return (
-    <div>
-      <Header />
-      <KingdomBanner
-        title={bannerContent.title}
-        description={bannerContent.description}
-        image={bannerContent.image}
-      />
+    <>
+      <Helmet>
+        <title>
+          {bannerContent.title
+            ? `Ethio Quiz | ${bannerContent.title}`
+            : 'Ethio Quiz | kingdom'}
+        </title>
+        <meta
+          name="description"
+          content="Explore quiz kingdom on Ethio-Quiz. Choose your favorite category and challenge yourself in science, history, culture, and more!"
+        />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: `${bannerContent.title || 'Quiz Kingdom'} Categories`,
+            url: `https://ethio-quiz.vercel.app/quizkingdom/`,
+            description:
+              'Explore quiz kingdom on Ethio-Quiz. Choose your favorite category and challenge yourself in science, history, culture, and more!',
+            itemListElement: itemList,
+          })}
+        </script>
+      </Helmet>
+      <div>
+        <Header />
+        <KingdomBanner
+          title={bannerContent.title}
+          description={bannerContent.description}
+          image={bannerContent.image}
+        />
 
-      {/* Error Display */}
-      {errorMsg && categories.length != 0 && (
-        <div className="mx-auto mt-3 max-w-6xl rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm">
-          {errorMsg}
-        </div>
-      )}
-
-      {/* Loading State */}
-      {loading ? (
-        <p className="mt-20 text-center text-gray-500 italic">
-          Loading categories...
-        </p>
-      ) : (
-        // Category
-        <div>
-          {categories?.length > 0 ? (
-            <Categories title="categories" categoriesList={categories} />
-          ) : (
-            <div className="mt-20 flex flex-col items-center text-gray-500">
-              <ListCheckIcon size={50} className="mb-3 opacity-60" />
-              <p className="text-lg italic">No categories found</p>
-            </div>
-          )}
-        </div>
-      )}
-
-      {recentactivities &&
-        categories &&
-        categories.length > 0 &&
-        recentactivities.length > 0 && (
-          <RecentActivities
-            recentActivities={recentactivities}
-            categories={categories}
-          />
+        {/* Error Display */}
+        {errorMsg && categories.length != 0 && (
+          <div className="mx-auto mt-3 max-w-6xl rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm">
+            {errorMsg}
+          </div>
         )}
-      <Footer />
-    </div>
+
+        {/* Loading State */}
+        {loading ? (
+          <p className="mt-20 text-center text-gray-500 italic">
+            Loading categories...
+          </p>
+        ) : (
+          // Category
+          <div>
+            {categories?.length > 0 ? (
+              <Categories title="categories" categoriesList={categories} />
+            ) : (
+              <div className="mt-20 flex flex-col items-center text-gray-500">
+                <ListCheckIcon size={50} className="mb-3 opacity-60" />
+                <p className="text-lg italic">No categories found</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {recentactivities &&
+          categories &&
+          categories.length > 0 &&
+          recentactivities.length > 0 && (
+            <RecentActivities
+              recentActivities={recentactivities}
+              categories={categories}
+            />
+          )}
+        <Footer />
+      </div>
+    </>
   )
 }
 

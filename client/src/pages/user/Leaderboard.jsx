@@ -3,6 +3,7 @@ import Header from '../../components/user/Header'
 import PlayerCard from '../../components/user/leaderboard/PlayerCard'
 import Footer from '../../components/user/Footer'
 import { getTopPlayers } from '../../services/quizResultServices'
+import { Helmet } from 'react-helmet-async'
 
 function Leaderboard() {
   const [players, setPlayers] = useState([])
@@ -59,43 +60,58 @@ function Leaderboard() {
     }
   }
   return (
-    <div>
-      <Header />
-      <h2 className="mt-10 text-center text-3xl font-semibold capitalize md:text-4xl md:tracking-wide">
-        Leaderboard
-      </h2>
+    <>
+      <Helmet>
+        <title>Ethio Quiz | Leaderboard</title>
+        <meta
+          name="description"
+          content="Check out the top quiz champions on Ethio-Quiz! See the leaderboard and track your ranking among quiz enthusiasts in science, history, and Ethiopian culture."
+        />
+        <link
+          rel="canonical"
+          href="https://ethio-quiz.vercel.app/leaderboard/"
+        />
+        {/* Structured Data JSON-LD for Leaderboard */}
+        <script type="application/ld+json">
+          {`
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": "Ethio-Quiz Leaderboard",
+        "url": "https://ethio-quiz.vercel.app/leaderboard/",
+        "description": "Top quiz champions on Ethio-Quiz. Track your ranking among quiz enthusiasts in science, history, and Ethiopian culture.",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Top Quiz Champion 1"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Top Quiz Champion 2"
+          }
+        ]
+      }
+    `}
+        </script>
+      </Helmet>
+      <div>
+        <Header />
+        <h2 className="mt-10 text-center text-3xl font-semibold capitalize md:text-4xl md:tracking-wide">
+          Leaderboard
+        </h2>
 
-      {errorMsg && (
-        <div className="mx-auto mt-3 max-w-2xl rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm md:max-w-6xl">
-          {errorMsg}
-        </div>
-      )}
-
-      {/* Top 3 Players */}
-      <section className="mt-12">
-        <h3 className="mb-4 text-center text-xl font-medium capitalize md:text-2xl">
-          🏆 Top 3 Players
-        </h3>
-
-        {/* Loading State */}
-        {loading ? (
-          <p className="mt-10 text-center text-gray-500 italic">
-            Loading players...
-          </p>
-        ) : (
-          <ul className="mx-auto max-w-4xl space-y-2">
-            {top3Players.map((player, index) => (
-              <PlayerCard key={player.userId} player={player} index={index} />
-            ))}
-          </ul>
+        {errorMsg && (
+          <div className="mx-auto mt-3 max-w-2xl rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm md:max-w-6xl">
+            {errorMsg}
+          </div>
         )}
-      </section>
 
-      {/* Other Players */}
-      {players.length > 3 && (
-        <section className="mt-10">
+        {/* Top 3 Players */}
+        <section className="mt-12">
           <h3 className="mb-4 text-center text-xl font-medium capitalize md:text-2xl">
-            Other Players
+            🏆 Top 3 Players
           </h3>
 
           {/* Loading State */}
@@ -104,32 +120,54 @@ function Leaderboard() {
               Loading players...
             </p>
           ) : (
-            <ul className="mx-auto max-h-[400px] max-w-[650px] space-y-2 overflow-y-auto scroll-smooth">
-              {otherPlayers.map((player, index) => (
-                <PlayerCard
-                  key={player._id}
-                  player={player}
-                  index={index + 3} // +3 since we're skipping top 3
-                />
+            <ul className="mx-auto max-w-4xl space-y-2">
+              {top3Players.map((player, index) => (
+                <PlayerCard key={player.userId} player={player} index={index} />
               ))}
             </ul>
           )}
         </section>
-      )}
 
-      {/* Current User Position */}
-      {currentUser && (
-        <section className="mt-14">
-          <h3 className="mb-4 text-center text-xl font-medium capitalize md:text-2xl">
-            Your Position
-          </h3>
-          <ul className="mx-auto max-w-4xl">
-            <PlayerCard player={currentUser} index={userRank - 1} />
-          </ul>
-        </section>
-      )}
-      <Footer />
-    </div>
+        {/* Other Players */}
+        {players.length > 3 && (
+          <section className="mt-10">
+            <h3 className="mb-4 text-center text-xl font-medium capitalize md:text-2xl">
+              Other Players
+            </h3>
+
+            {/* Loading State */}
+            {loading ? (
+              <p className="mt-10 text-center text-gray-500 italic">
+                Loading players...
+              </p>
+            ) : (
+              <ul className="mx-auto max-h-[400px] max-w-[650px] space-y-2 overflow-y-auto scroll-smooth">
+                {otherPlayers.map((player, index) => (
+                  <PlayerCard
+                    key={player._id}
+                    player={player}
+                    index={index + 3} // +3 since we're skipping top 3
+                  />
+                ))}
+              </ul>
+            )}
+          </section>
+        )}
+
+        {/* Current User Position */}
+        {currentUser && (
+          <section className="mt-14">
+            <h3 className="mb-4 text-center text-xl font-medium capitalize md:text-2xl">
+              Your Position
+            </h3>
+            <ul className="mx-auto max-w-4xl">
+              <PlayerCard player={currentUser} index={userRank - 1} />
+            </ul>
+          </section>
+        )}
+        <Footer />
+      </div>
+    </>
   )
 }
 
