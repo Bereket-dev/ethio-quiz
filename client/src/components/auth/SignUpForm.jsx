@@ -4,7 +4,6 @@ import { registerUser } from '../../services/authServices'
 import { Formik, Field, ErrorMessage } from 'formik'
 import { signUpSchema } from '../../validation/userSchema'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 function SignUpForm() {
   const navigate = useNavigate()
