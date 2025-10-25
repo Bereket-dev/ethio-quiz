@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /api/
+Allow: /
+
+Sitemap: https://ethio-quiz.vercel.app/sitemap.xml
