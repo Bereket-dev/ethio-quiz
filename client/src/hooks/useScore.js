@@ -40,5 +40,6 @@ export const useScoreUpdate = () => {
     successMsg,
     setSuccessMsg,
     returnData,
+    setIsLoading
   }
 }
