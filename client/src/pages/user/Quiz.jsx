@@ -5,7 +5,7 @@ import Footer from '../../components/user/Footer'
 import kingdomImageBanner from '../../assets/images/kingdom_img.png'
 import { Helmet } from 'react-helmet-async'
 import { useState, useEffect } from 'react'
-import { getKingdomList } from '../../../services/kingdomServices'
+import { getKingdomList } from '../../services/kingdomServices'
 
 function Quiz() {
   const bannerContent = {
