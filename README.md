@@ -68,3 +68,51 @@ ethio-quiz/
 - 🧠 Random & Daily Quiz Modes
 - ✅ Multiple-Choice Answers
 - 🔐 JWT-based Authentication
+
+## 🧩 Core Features (v1.0.0)
+
+### 👤 **User Features**
+
+- **Account Authentication**
+
+  - Secure user registration, login, logout, and password reset via email.
+  - Email verification system for account activation.
+
+- **Quiz Kingdoms**
+
+  - Explore various quiz categories (“Kingdoms”) such as Science, Logic, Math, Psychology, Physics, and Chemistry.
+  - Each category contains dynamic questions fetched from the backend.
+
+- **Quiz Play**
+
+  - Multiple-choice quiz format with point tracking.
+  - Countdown timer and automatic submission when time expires.
+  - Detailed score review with correct answers and explanations.
+
+- **Leaderboard**
+
+  - Displays top-performing players globally.
+  - Real-time updates after each completed quiz.
+
+- **Results and Score Tracking**
+  - Users can view quiz history, score details, and result breakdowns.
+
+---
+
+### 🛠️ **Admin Features**
+
+- **Admin Dashboard**
+  - Secure access to manage kingdoms, categories, and questions.
+- **CRUD Functionality**
+  - Add, edit, and delete quiz categories and questions.
+- **Question Management**
+  - Includes question text, options, correct answers, and explanations.
+- **Real-time Statistics**
+
+  - Admins can monitor quiz activity and total results.
+
+  _React version_
+
+  - changed from 19 to 18 to support react-helmet-async
+
+## v1.0.0 (Oct 25, 2025)
