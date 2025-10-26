@@ -8,6 +8,7 @@ function ResultScore() {
   const resultScore = score ? score : 0
   const resultOutOF = outOf ? outOf : 0
   const resultScorePoints = scorePoints ? scorePoints : 0
+  const user = JSON.parse(localStorage.getItem('user'))?.username || ''
 
   return (
     <>
@@ -29,7 +30,7 @@ function ResultScore() {
               Congratulation!
             </h3>
             <p className="text-primary text-md text-center">
-              Greate Job, Beki! You get{' '}
+              Greate Job{user && `, ${user}`}! You get{' '}
               <span className="font-bold">{resultScorePoints}</span> points!
             </p>
           </div>
