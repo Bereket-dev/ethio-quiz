@@ -69,7 +69,7 @@ function Leaderboard() {
         />
         <link
           rel="canonical"
-          href="https://ethio-quiz.vercel.app/leaderboard/"
+          href="https://ethioquiz.com.et/leaderboard/"
         />
         {/* Structured Data JSON-LD for Leaderboard */}
         <script type="application/ld+json">
