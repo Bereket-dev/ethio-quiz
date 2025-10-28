@@ -48,7 +48,7 @@ function Quiz() {
           name="description"
           content="Explore all quiz kingdoms on Ethio-Quiz. Choose your favorite category and challenge yourself in science, history, culture, and more!"
         />
-        <link rel="canonical" href="https://ethio-quiz.vercel.app/quiz/" />
+        <link rel="canonical" href="https://ethioquiz.com.et/quiz/" />
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
