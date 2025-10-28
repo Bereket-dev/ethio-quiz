@@ -100,13 +100,13 @@ function LoginForm({ onForgot }) {
                 className="text-red-500"
               />
             </div>
-            {/* <button
+            <button
               type="button"
               onClick={onForgot}
               className="flex w-full justify-end text-blue-600 hover:text-blue-700 hover:underline"
             >
               Forgotten password?
-            </button> */}
+            </button>
             <button
               type="submit"
               disabled={isSubmitting}

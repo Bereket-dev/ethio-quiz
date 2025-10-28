@@ -94,7 +94,7 @@ const sendConfirmationEmail = async (email) => {
 </body>
 </html>
 `;
-  await sendMail(user.email, message);
+  await sendMail(user.email, message, "Email Confirmation");
   return { success: true, message: "Verification sent successfully!" };
 };
 
