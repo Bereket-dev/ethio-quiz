@@ -40,11 +40,10 @@ function SignUpForm() {
               setErrorMsg('')
               try {
                 const data = await registerUser(values)
-                navigate('/login')
-                // setSuccessMsg(
-                //   data.message ||
-                //     'We have sent confirmation email! Check your spam folder!',
-                // )
+                setSuccessMsg(
+                  data.message ||
+                    'We have sent confirmation email! Please verify first!',
+                )
               } catch (error) {
                 setErrorMsg(error.message || 'Failed to register user!')
               } finally {

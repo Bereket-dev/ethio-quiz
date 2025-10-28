@@ -23,7 +23,7 @@ function Home() {
           name="description"
           content="Challenge yourself with quizzes on science, history, and Ethiopian culture. Join Ethio-Quiz today!"
         />
-        <link rel="canonical" href="https://ethio-quiz.vercel.app/" />
+        <link rel="canonical" href="https://ethioquiz.com.et/" />
 
         {/* Structured Data JSON-LD for Home */}
         <script type="application/ld+json">
