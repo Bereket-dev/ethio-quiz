@@ -54,7 +54,7 @@ function Quiz() {
             '@context': 'https://schema.org',
             '@type': 'ItemList',
             name: 'Ethio-Quiz Kingdoms',
-            url: 'https://ethio-quiz.vercel.app/quiz/',
+            url: 'https://ethioquiz.com.et/quiz/',
             description:
               'Explore all quiz kingdoms on Ethio-Quiz. Challenge yourself in science, history, culture, and more!',
             itemListElement: itemList,
