@@ -11,7 +11,6 @@ const signUpUser = async (req, res) => {
       username,
       email,
       password: hashed,
-      isVerified: false,
     });
 
     const confirmEmail = await sendConfirmationEmail(email);

@@ -24,8 +24,8 @@ function SideBar({ isShrink, setIsShrink }) {
 
   //admin data from local storage
   const user = JSON.parse(localStorage.getItem('user'))
-  const username = user.username
-  const email = user.email
+  const username = user && user.username
+  const email = user && user.email
 
   const [isClicked, setIsClicked] = useState(false)
 
