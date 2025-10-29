@@ -11,27 +11,40 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.CALL_BACK_URL,
     },
-    async function (accessToken, refreshToken, profile, cb) {
+    async (accessToken, refreshToken, profile, done) => {
       try {
-        let email = profile.emails?.[0]?.value || null;
-        if (!email) throw new Error("Email is not found in the google.");
+        const email = profile.emails?.[0]?.value;
+        const photo = profile.photos?.[0]?.value;
+
+        // Check if user already exists
         let user = await User.findOne({ email });
 
         if (!user) {
+          // Create new user
           user = await User.create({
             googleId: profile.id,
             username: profile.displayName,
-            email,
+            email: email,
+            profileImage: photo,
             isVerified: true,
           });
-        } else if (user && !user.googleId) {
-          user.googleId = profile.id;
+        } else {
+          // User exists → Update googleId if missing
+          if (!user.googleId) {
+            user.googleId = profile.id;
+          }
+          if (!user.profileImage) {
+            user.profileImage = photo;
+          }
+          if (!user.isVerified) {
+            user.isVerified = true;
+          }
           await user.save();
         }
 
-        return cb(null, user);
+        return done(null, user);
       } catch (err) {
-        return cb(err, null);
+        return done(err, null);
       }
     }
   )

@@ -5,6 +5,8 @@ import person from '../../assets/icons/person.svg'
 import { checkUser } from '../../services/authServices'
 import { loginSchema } from '../../validation/userSchema'
 import { Formik, Field, ErrorMessage } from 'formik'
+import { FcGoogle } from 'react-icons/fc'
+const GOOGLE_AUTH_URL = `${import.meta.env.VITE_API_URL}/api/auth/google`
 
 function LoginForm({ onForgot }) {
   const navigate = useNavigate()
@@ -30,23 +32,41 @@ function LoginForm({ onForgot }) {
       {({ isSubmitting, status, setStatus, handleSubmit }) => {
         useEffect(() => {
           if (status) {
-            const timer = setTimeout(() => setStatus(null), 5000)
+            const timer = setTimeout(() => setStatus(null), 10000)
             return () => clearTimeout(timer)
           }
         }, [status, setStatus])
 
         return (
           <form
-            className="mx-auto w-full max-w-sm space-y-5"
+            className="mx-auto w-full max-w-sm space-y-2"
             onSubmit={handleSubmit}
             method="POST"
           >
             {/* Display API Error */}
             {status && (
-              <div className="rounded-lg border-red-300 bg-red-50/70 px-4 py-2 text-center font-medium text-red-700 shadow-sm transition-all duration-200">
+              <div className="mt-2 rounded-lg border-red-300 bg-red-50/70 px-4 py-2 text-center font-medium text-red-700 shadow-sm transition-all duration-200">
                 {status}
               </div>
             )}
+
+            {/* Signin with google Button */}
+            <button
+              type="button"
+              onClick={() => (window.location.href = GOOGLE_AUTH_URL)}
+              className="mt-6 flex w-full items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white px-6 py-3 text-lg font-medium text-gray-700 shadow-sm transition hover:scale-105 hover:bg-gray-50 hover:shadow-md disabled:opacity-70"
+            >
+              <FcGoogle className="h-5 w-5" />
+              <span>Sign in with Google</span>
+            </button>
+
+            {/* Horizontal line with "or" */}
+            <div className="my-2 flex items-center">
+              <span className="h-0.5 w-full bg-gray-300"></span>
+              <span className="mx-2 text-gray-500">or</span>
+              <span className="h-0.5 w-full bg-gray-300"></span>
+            </div>
+
             <div>
               {' '}
               <div className="relative">
@@ -110,20 +130,22 @@ function LoginForm({ onForgot }) {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="bg-primary hover:bg-primary-dark mt-4 w-full rounded-xl px-6 py-3 text-lg text-white transition disabled:opacity-70"
+              className="bg-primary hover:bg-primary-dark mt-1 w-full rounded-xl px-6 py-3 text-lg text-white transition disabled:opacity-70"
             >
               {isSubmitting ? 'Logging in...' : 'Login'}
             </button>
             {/* Create Account Link */}
-            <p className="mt-4 text-center text-sm text-gray-500">
-              Don’t have an account?{' '}
-              <Link
-                to="/signup"
-                className="text-blue-500 hover:text-blue-600 hover:underline"
-              >
-                Create one
-              </Link>
-            </p>
+            {!status && (
+              <p className="mt-2 text-center text-sm text-gray-500">
+                Don’t have an account?{' '}
+                <Link
+                  to="/signup"
+                  className="text-blue-500 hover:text-blue-600 hover:underline"
+                >
+                  Create one
+                </Link>
+              </p>
+            )}
           </form>
         )
       }}
