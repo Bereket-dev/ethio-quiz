@@ -130,11 +130,10 @@ export default function TermsOfService() {
             <div className="mt-6 space-y-4">
               <p className="leading-relaxed text-gray-600">
                 <strong>Legal Contract Formation:</strong> These Terms
-                constitute a legally binding agreement between you ("User") and
-                Ethio Quiz ("Company," "we," "us," or "our"). By accessing,
-                registering for, or using our Services, you acknowledge that you
-                have read, understood, and agree to be bound by all provisions
-                contained herein.
+                constitute a legally binding agreement between you and Ethio
+                Quiz. By accessing, registering for, or using our Services, you
+                acknowledge that you have read, understood, and agree to be
+                bound by all provisions contained herein.
               </p>
               <p className="leading-relaxed text-gray-600">
                 <strong>Capacity to Contract:</strong> You represent and warrant
@@ -380,10 +379,10 @@ export default function TermsOfService() {
                 <p className="mt-2 leading-relaxed text-gray-600">
                   <strong>User-Generated Content:</strong> You retain ownership
                   of any content you create, upload, or submit through our
-                  Services ("User Content"). By submitting User Content, you
-                  grant us a worldwide, royalty-free, sublicensable license to
-                  use, reproduce, modify, and display such content for the
-                  purpose of providing and improving our Services.
+                  Services. By submitting User Content, you grant us a
+                  worldwide, royalty-free, sublicensable license to use,
+                  reproduce, modify, and display such content for the purpose of
+                  providing and improving our Services.
                 </p>
                 <p className="mt-2 leading-relaxed text-gray-600">
                   <strong>Representations and Warranties:</strong> You represent
