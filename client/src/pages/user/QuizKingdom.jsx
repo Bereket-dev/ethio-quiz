@@ -3,7 +3,7 @@ import KingdomBanner from '../../components/user/KingdomBanner'
 import Categories from '../../components/user/categories/Categories'
 import Footer from '../../components/user/Footer'
 import RecentActivities from '../../components/user/recentactivity/RecentActivities'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getCategoriesByKingdom } from '../../services/categoryServices'
 import { ListCheckIcon } from 'lucide-react'
@@ -11,17 +11,44 @@ import { getRecentQuizResult } from '../../services/quizResultServices'
 import { Helmet } from 'react-helmet-async'
 
 function QuizKingdom() {
+  const [kingdom, setKingdom] = useState(null)
   const location = useLocation()
-  const receivedData = location.state
+  const receivedData = location.state || null
 
-  const kingdomId = receivedData?.id
+  useEffect(() => {
+    if (receivedData) setKingdom(receivedData)
+  }, [receivedData])
+
+  const { kingdomId } = useParams()
+
+  useEffect(() => {
+    if (!kingdomId) return
+
+    if (localStorage.getItem('kingdoms')) {
+      const storedKingdoms = JSON.parse(localStorage.getItem('kingdoms'))
+      if (Array.isArray(storedKingdoms) && storedKingdoms.length > 0) {
+        const localKingdom = storedKingdoms.find((kin) => kin._id == kingdomId)
+        setKingdom(localKingdom)
+        return
+      }
+    }
+
+    async function fetchKingdoms() {
+      const result = await getKingdomList()
+      if (Array.isArray(result) && result.length > 0) {
+        const fetchedKingdom = result.find((kin) => kin._id == kingdomId)
+        setKingdom(fetchedKingdom)
+      }
+    }
+    fetchKingdoms()
+  }, [kingdomId])
 
   const bannerContent = {
-    title: receivedData?.title,
-    description: receivedData?.description,
+    title: kingdom?.title,
+    description: kingdom?.description,
     image: {
-      src: receivedData?.image?.src,
-      alt: receivedData?.image?.label,
+      src: kingdom?.image?.src,
+      alt: kingdom?.image?.label,
       direction: 'right',
     },
   }
@@ -59,7 +86,7 @@ function QuizKingdom() {
       }
     }
     fetchCategoriesByKingdom()
-  }, [])
+  }, [kingdomId])
 
   useEffect(() => {
     const fetchRecentActivities = async () => {
@@ -102,10 +129,13 @@ function QuizKingdom() {
     fetchRecentActivities()
   }, [categories, kingdomId])
 
+  // Create dynamic chapter list for structured data
   const itemList = categories.map((c, index) => ({
     '@type': 'ListItem',
     position: index + 1,
     name: c.title,
+    description: c.description || `Practice questions for ${c.title} chapter`,
+    url: `https://ethioquiz.com.et/quizflow/${c._id}`,
   }))
 
   return (
@@ -113,22 +143,65 @@ function QuizKingdom() {
       <Helmet>
         <title>
           {bannerContent.title
-            ? `Ethio Quiz | ${bannerContent.title}`
-            : 'Ethio Quiz | kingdom'}
+            ? `${bannerContent.title} Chapters & Practice Questions | Ethio Quiz`
+            : 'Course Chapters | Ethio Quiz'}
         </title>
         <meta
           name="description"
-          content="Explore quiz kingdom on Ethio-Quiz. Choose your favorite category and challenge yourself in science, history, culture, and more!"
+          content={`Practice ${bannerContent.title} chapters with quizzes. ${bannerContent.description || 'Master each chapter to improve your grades and qualify for competitive departments.'}`}
         />
+        <meta
+          name="keywords"
+          content={`${bannerContent.title} chapters, ${bannerContent.title} practice questions, Ethiopian university ${bannerContent.title}, freshman ${bannerContent.title} quizzes, chapter by chapter practice`}
+        />
+        <link
+          rel="canonical"
+          href={`https://ethioquiz.com.et/quiz-subjects/${kingdomId}`}
+        />
+
+        {/* Open Graph */}
+        <meta
+          property="og:title"
+          content={`${bannerContent.title} Chapters & Practice Questions | Ethio Quiz`}
+        />
+        <meta
+          property="og:description"
+          content={`Practice ${bannerContent.title} chapters with quizzes for Ethiopian university freshman students`}
+        />
+        <meta
+          property="og:url"
+          content={`https://ethioquiz.com.et/quiz-subjects/${kingdomId}`}
+        />
+        {/* Structured Data for Course Chapters */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
-            '@type': 'ItemList',
-            name: `${bannerContent.title || 'Quiz Kingdom'} Categories`,
-            url: `https://ethio-quiz.vercel.app/quizkingdom/`,
+            '@type': 'Course',
+            name: bannerContent.title,
             description:
-              'Explore quiz kingdom on Ethio-Quiz. Choose your favorite category and challenge yourself in science, history, culture, and more!',
-            itemListElement: itemList,
+              bannerContent.description ||
+              `Practice chapters for ${bannerContent.title} course`,
+            courseCode: bannerContent.title,
+            educationalLevel: 'Freshman',
+            provider: {
+              '@type': 'Organization',
+              name: 'Ethio Quiz',
+              url: 'https://ethioquiz.com.et',
+            },
+            hasCourseInstance: {
+              '@type': 'CourseInstance',
+              courseMode: 'self-paced',
+              location: {
+                '@type': 'Country',
+                name: 'Ethiopia',
+              },
+            },
+            about: {
+              '@type': 'ItemList',
+              name: `${bannerContent.title} Chapters`,
+              numberOfItems: categories.length,
+              itemListElement: itemList,
+            },
           })}
         </script>
       </Helmet>

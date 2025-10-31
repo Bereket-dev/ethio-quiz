@@ -59,48 +59,79 @@ function Leaderboard() {
         ) + 1
     }
   }
+
+  // Dynamic structured data for top players
+  const itemListElement = players.slice(0, 10).map((player, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: player.username || `Player ${index + 1}`,
+    description: `Top Ethiopian university student with high quiz scores`,
+    score: player.totalScore || 0,
+  }))
   return (
     <>
       <Helmet>
-        <title>Ethio Quiz | Leaderboard</title>
+        <title>
+          Ethiopian University Freshman Leaderboard | Top Students Ranking -
+          Ethio Quiz
+        </title>
         <meta
           name="description"
-          content="Check out the top quiz champions on Ethio-Quiz! See the leaderboard and track your ranking among quiz enthusiasts in science, history, and Ethiopian culture."
+          content="See the top Ethiopian university freshman students ranked by quiz performance. Track your academic ranking and compete with peers in course subject quizzes."
         />
-        <link
-          rel="canonical"
-          href="https://ethioquiz.com.et/leaderboard/"
+        <meta
+          name="keywords"
+          content="Ethiopian university leaderboard, freshman ranking, top students Ethiopia, academic ranking, quiz scores Ethiopia, university student ranking, competitive students Ethiopia"
         />
+        <link rel="canonical" href="https://ethioquiz.com.et/leaderboard/" />
+
+        {/* Open Graph */}
+        <meta
+          property="og:title"
+          content="Ethiopian University Freshman Leaderboard | Top Students Ranking"
+        />
+        <meta
+          property="og:description"
+          content="See top Ethiopian university freshman students ranked by quiz performance. Track your academic ranking and compete with peers."
+        />
+        <meta
+          property="og:url"
+          content="https://ethioquiz.com.et/leaderboard/"
+        />
+        <meta property="og:type" content="website" />
+
         {/* Structured Data JSON-LD for Leaderboard */}
         <script type="application/ld+json">
-          {`
-      {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": "Ethio-Quiz Leaderboard",
-        "url": "https://ethio-quiz.vercel.app/leaderboard/",
-        "description": "Top quiz champions on Ethio-Quiz. Track your ranking among quiz enthusiasts in science, history, and Ethiopian culture.",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Top Quiz Champion 1"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Top Quiz Champion 2"
-          }
-        ]
-      }
-    `}
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Ethiopian University Freshman Leaderboard',
+            url: 'https://ethioquiz.com.et/leaderboard/',
+            description:
+              'Ranking of top Ethiopian university freshman students based on quiz performance in academic subjects',
+            numberOfItems: players.length > 10 ? 10 : players.length,
+            itemListElement: itemListElement,
+            educationalLevel: 'Freshman',
+            audience: {
+              '@type': 'EducationalAudience',
+              educationalRole: 'Student',
+            },
+            location: {
+              '@type': 'Country',
+              name: 'Ethiopia',
+            },
+          })}
         </script>
       </Helmet>
       <div>
         <Header />
         <h2 className="mt-10 text-center text-3xl font-semibold capitalize md:text-4xl md:tracking-wide">
-          Leaderboard
+          Ethiopian University Freshman Leaderboard
         </h2>
+        <p className="mx-auto mt-4 max-w-2xl text-center text-gray-600">
+          See how you rank among Ethiopian university students in course subject
+          quizzes
+        </p>
 
         {errorMsg && (
           <div className="mx-auto mt-3 max-w-2xl rounded-lg bg-red-100 px-4 py-2 text-sm text-red-700 shadow-sm md:max-w-6xl">
@@ -111,13 +142,13 @@ function Leaderboard() {
         {/* Top 3 Players */}
         <section className="mt-12">
           <h3 className="mb-4 text-center text-xl font-medium capitalize md:text-2xl">
-            🏆 Top 3 Players
+            🏆 Top 3 Students
           </h3>
 
           {/* Loading State */}
           {loading ? (
             <p className="mt-10 text-center text-gray-500 italic">
-              Loading players...
+              Loading leaderboard...
             </p>
           ) : (
             <ul className="mx-auto max-w-4xl space-y-2">
@@ -132,13 +163,13 @@ function Leaderboard() {
         {players.length > 3 && (
           <section className="mt-10">
             <h3 className="mb-4 text-center text-xl font-medium capitalize md:text-2xl">
-              Other Players
+              Top Students Ranking
             </h3>
 
             {/* Loading State */}
             {loading ? (
               <p className="mt-10 text-center text-gray-500 italic">
-                Loading players...
+                Loading leaderboard...
               </p>
             ) : (
               <ul className="mx-auto max-h-[400px] max-w-[650px] space-y-2 overflow-y-auto scroll-smooth">
@@ -158,7 +189,7 @@ function Leaderboard() {
         {currentUser && (
           <section className="mt-14">
             <h3 className="mb-4 text-center text-xl font-medium capitalize md:text-2xl">
-              Your Position
+              Your Ranking
             </h3>
             <ul className="mx-auto max-w-4xl">
               <PlayerCard player={currentUser} index={userRank - 1} />
