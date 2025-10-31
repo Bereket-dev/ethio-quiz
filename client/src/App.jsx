@@ -43,7 +43,7 @@ function App() {
 
           {/* protected routes */}
           <Route element={<ProtectedRoute />}>
-            <Route path="/quizkingdom" element={<QuizKingdom />} />
+            <Route path="/quiz-subjects/:kingdomId" element={<QuizKingdom />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/quizflow/:categoryId" element={<QuizFlow />} />

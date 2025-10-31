@@ -9,12 +9,12 @@ import { getKingdomList } from '../../services/kingdomServices'
 
 function Quiz() {
   const bannerContent = {
-    title: 'Enter the Quiz Kingdoms!',
+    title: 'Freshman Course Practice Subjects',
     description:
-      'Conquer themed realms of knowledge—from Science Citadels to History Empires. Your quest for trivia glory starts here!',
+      'Practice quizzes for all Ethiopian university freshman courses. Improve your grades in Mathematics, Physics, Chemistry, Biology, and more to qualify for competitive departments.',
     image: {
       src: kingdomImageBanner,
-      alt: 'kingdoms image',
+      alt: 'Ethiopian university freshman course subjects',
       direction: 'right',
     },
   }
@@ -38,26 +38,49 @@ function Quiz() {
     '@type': 'ListItem',
     position: index + 1,
     name: k.title,
+    url: `https://ethioquiz.com.et/quiz-subjects/${k._id}`,
   }))
   return (
     <>
       <Helmet>
-        <title>Ethio-Quiz | Explore Quiz Kingdoms</title>
+        <title>
+          Ethiopian University Freshman Course Practice | Ethio-Quiz
+        </title>
 
         <meta
           name="description"
-          content="Explore all quiz kingdoms on Ethio-Quiz. Choose your favorite category and challenge yourself in science, history, culture, and more!"
+          content="Practice quizzes for Ethiopian university freshman courses: Mathematics, Physics, Chemistry, Biology, English, and more. Improve your grades for department qualification."
+        />
+        <meta
+          name="keywords"
+          content="ethiopian university freshman courses, freshman mathematics practice, physics quiz Ethiopia, chemistry practice Ethiopia, biology quizzes, department qualification courses, Ethiopian university subjects"
         />
         <link rel="canonical" href="https://ethioquiz.com.et/quiz/" />
+
+        {/* Open Graph */}
+        <meta
+          property="og:title"
+          content="Ethiopian University Freshman Course Practice | Ethio-Quiz"
+        />
+        <meta
+          property="og:description"
+          content="Practice quizzes for all freshman courses to improve your grades and qualify for competitive departments."
+        />
+        <meta property="og:url" content="https://ethioquiz.com.et/quiz/" />
+
+        {/* Structured Data for Course List */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'ItemList',
-            name: 'Ethio-Quiz Kingdoms',
+            name: 'Ethiopian University Freshman Course Practice',
             url: 'https://ethioquiz.com.et/quiz/',
             description:
-              'Explore all quiz kingdoms on Ethio-Quiz. Challenge yourself in science, history, culture, and more!',
+              'Practice quizzes for Ethiopian university freshman courses to help students improve grades and qualify for desired departments',
             itemListElement: itemList,
+            educationalLevel: 'Freshman',
+            educationalRole: 'Student',
+            country: 'Ethiopia',
           })}
         </script>
       </Helmet>
@@ -68,7 +91,10 @@ function Quiz() {
           description={bannerContent.description}
           image={bannerContent.image}
         />
-        <QuizKingdoms title="Choose Your Kingdom" kingdomList={kingdomList} />
+        <QuizKingdoms
+          title="Choose Your Course Subject"
+          kingdomList={kingdomList}
+        />
 
         <Footer />
       </div>
