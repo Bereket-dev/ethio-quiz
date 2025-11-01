@@ -25,10 +25,17 @@
 
   <!-- Course Subject Pages (Add these as you create them) -->
   <url>
-    <loc>https://ethioquiz.com.et/quiz-subjects/</loc>
+    <loc>https://ethioquiz.com.et/quiz-subjects/68a0999d8ae121969bc0138e</loc>
     <lastmod>2024-10-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+
+    <url>
+    <loc>https://ethioquiz.com.et/quiz-subjects/68a09afa8ae121969bc01392</loc>
+    <lastmod>2024-10-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   
 
