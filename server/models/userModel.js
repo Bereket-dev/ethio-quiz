@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema(
   {
     username: { type: String, required: true, unique: true },
+    googleId: { type: String },
     role: {
       type: String,
       required: true,
@@ -10,9 +11,14 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
     },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: {
+      type: String,
+      required: function () {
+        return !this.googleId;
+      },
+    },
     profileImage: { type: String, default: null },
-    isVerified: { type: Boolean, required: true, default: true },
+    isVerified: { type: Boolean, required: true, default: false },
   },
   { timestamps: true }
 );

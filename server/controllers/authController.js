@@ -11,17 +11,16 @@ const signUpUser = async (req, res) => {
       username,
       email,
       password: hashed,
-      isVerified: false,
     });
 
-    // const confirmEmail = await sendConfirmationEmail(email);
-    // if (!confirmEmail)
-    //   return res.status(500).json({ message: confirmEmail.message });
+    const confirmEmail = await sendConfirmationEmail(email);
+    if (!confirmEmail)
+      return res.status(500).json({ message: confirmEmail.message });
 
     res.status(201).json({
-      message: "You have registered successfully!",
+      message:
+        "We've sent a verification link to your email. Please check your inbox to activate your account.",
     });
-    // "We've sent a verification link to your email. Please check your inbox to activate your account.",
   } catch (error) {
     if (error.code === 11000) {
       return res
@@ -38,23 +37,23 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ error: "User not found!" });
 
-    // if (!user.isVerified) {
-    //   const confirmEmail = await sendConfirmationEmail(email);
-    //   if (!confirmEmail)
-    //     return res.status(500).json({ message: confirmEmail.message });
+    if (!user.isVerified) {
+      const confirmEmail = await sendConfirmationEmail(email);
+      if (!confirmEmail)
+        return res.status(500).json({ message: confirmEmail.message });
 
-    //   return res.status(403).json({
-    //     message:
-    //       "Your email is not verified. A verification email has been sent.",
-    //   });
-    // }
+      return res.status(403).json({
+        message:
+          "Your email is not verified. A verification email has been sent.",
+      });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
       return res.status(401).json({ message: "Invalid Credentials!" });
 
     const token = jwt.sign(
-      { id: user._id, role: user.role ,username:user.username},
+      { id: user._id, role: user.role, username: user.username },
       process.env.JWT_SECRET,
       {
         expiresIn: "1d",

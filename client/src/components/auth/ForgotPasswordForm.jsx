@@ -16,7 +16,9 @@ function ForgotPasswordForm({ onSubmit, onBack }) {
         setSuccessMsg('')
         try {
           const data = await forgotPasswordAPI(values.email)
-          setSuccessMsg("We've sent a password reset link to your email. Please check your inbox.")
+          setSuccessMsg(
+            "We've sent a password reset link to your email. Please check your inbox.",
+          )
         } catch (error) {
           setErrorMsg(error.message || 'An error occurred during reset.')
         } finally {
@@ -42,19 +44,19 @@ function ForgotPasswordForm({ onSubmit, onBack }) {
           >
             {/* Display API Error */}
             {errorMsg && (
-              <div className="rounded-lg border-red-300 bg-red-50/70 px-4 py-2 text-center font-medium text-red-700 shadow-sm transition-all duration-200">
+              <div className="mt-2 rounded-lg border-red-300 bg-red-50/70 px-4 py-2 text-center font-medium text-red-700 shadow-sm transition-all duration-200">
                 {errorMsg}
               </div>
             )}
             {/* Display API Success */}
             {successMsg && (
-              <div className="rounded-lg border-green-300 bg-green-50/70 px-4 py-2 text-center font-medium text-green-700 shadow-sm transition-all duration-200">
+              <div className="mt-2 rounded-lg border-green-300 bg-green-50/70 px-4 py-2 text-center font-medium text-green-700 shadow-sm transition-all duration-200">
                 {successMsg}
               </div>
             )}
             <div>
               {' '}
-              <div className="relative">
+              <div className="relative mt-16">
                 <label htmlFor="emailInput" className="sr-only">
                   Email
                 </label>

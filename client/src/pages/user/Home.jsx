@@ -10,20 +10,37 @@ import { Helmet } from 'react-helmet-async'
 
 function Home() {
   const bannerContent = {
-    title: 'Daily Quiz, Daily Win!',
+    title: 'Get Your Dream Department!',
     description:
-      'Challenge yourself with fun trivia, earn badges, and climb the leader board! Perfect for students, trivia lovers, and curious minds.',
+      'Ace your freshman courses with practice quizzes. Score higher grades to qualify for competitive departments like Medicine, Engineering, and Law.',
     image: { src: cupImageBanner, alt: 'champion image', direction: 'right' },
   }
   return (
     <>
       <Helmet>
-        <title>Ethio Quiz | Home</title>
+        <title>
+          Ethio Quiz | Ethiopian University Freshman Course Practice &
+          Department Preparation
+        </title>
         <meta
           name="description"
-          content="Challenge yourself with quizzes on science, history, and Ethiopian culture. Join Ethio-Quiz today!"
+          content="Practice quizzes for Ethiopian university freshman students. Improve your grades in freshman courses to qualify for competitive departments like Medicine, Engineering, IT, and Law."
         />
-        <link rel="canonical" href="https://ethio-quiz.vercel.app/" />
+        <meta
+          name="keywords"
+          content="ethiopian university freshman, freshman courses Ethiopia, department qualification, university grades Ethiopia, freshman practice tests, Ethiopian university departments, competitive majors Ethiopia, academic preparation Ethiopia"
+        />
+        <link rel="canonical" href="https://ethioquiz.com.et/" />
+
+        {/* Open Graph */}
+        <meta
+          property="og:title"
+          content="Ethio Quiz | Ethiopian University Freshman Department Preparation"
+        />
+        <meta
+          property="og:description"
+          content="Ace your freshman courses and qualify for competitive departments. Practice quizzes for Ethiopian university students."
+        />
 
         {/* Structured Data JSON-LD for Home */}
         <script type="application/ld+json">
@@ -31,10 +48,11 @@ function Home() {
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": "Ethio-Quiz",
-        "url": "https://ethio-quiz.vercel.app",
-        "description": "Challenge yourself with quizzes on science, history, and Ethiopian culture. Join Ethio-Quiz today!",
-        "inLanguage": "en"
+        "name": "Ethio-Quiz - Ethiopian University Freshman Department Preparation",
+        "url": "https://ethioquiz.com.et",
+        "description": "Practice quizzes for Ethiopian university freshman students to improve grades and qualify for competitive departments",
+        "inLanguage": "en",
+        "keywords": "ethiopian university freshman, department qualification, freshman courses Ethiopia"
       }
     `}
         </script>
@@ -46,10 +64,10 @@ function Home() {
             title={bannerContent.title}
             description={bannerContent.description}
             image={bannerContent.image}
-            cta={{ to: '/quiz', text: 'Start Quiz Now ->' }}
+            cta={{ to: '/quiz', text: 'Start Practicing Now ->' }}
           />
         </div>
-        <QuizKingdoms title="The Quiz Kingdom" />
+        <QuizKingdoms title="Freshman Courses" />
         <LeaderBoardTeaser />
         <Successes />
         <Footer className="mt-6" />

@@ -22,6 +22,8 @@ import TokenChecker from './pages/TokenChecker'
 import ResetPassword from './pages/ResetPassword'
 import ResultPage from './pages/user/ResultDetail'
 import ScorePage from './pages/user/ResultScore'
+import PrivacyPolicy from './pages/user/PrivacyPolicy'
+import TermsOfService from './pages/user/TermsOfService'
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/signup" element={<SignUpForm />} />
           <Route path="/login" element={<LogInPage />} />
           <Route path="/reset-password/:token" element={<TokenChecker />} />
@@ -39,7 +43,7 @@ function App() {
 
           {/* protected routes */}
           <Route element={<ProtectedRoute />}>
-            <Route path="/quizkingdom" element={<QuizKingdom />} />
+            <Route path="/quiz-subjects/:kingdomId" element={<QuizKingdom />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/quizflow/:categoryId" element={<QuizFlow />} />

@@ -16,6 +16,7 @@ function AdminRoute() {
         logginData.loggedIn &&
         logginData.user.role === 'admin'
       ) {
+        localStorage.setItem('user', JSON.stringify(logginData.user))
         setStatus({ loading: false, isAdmin: true })
       } else setStatus({ loading: false, isAdmin: false })
     }

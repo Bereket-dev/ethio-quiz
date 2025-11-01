@@ -9,7 +9,7 @@ function LoginPage() {
 
   return (
     <div className="mx-auto flex h-screen w-full max-w-6xl items-center justify-center px-4 md:px-14">
-      <div className="flex w-full max-w-5xl overflow-hidden rounded-xl bg-white shadow-2xl transition-all duration-300 hover:shadow-xl">
+      <div className="flex w-full max-w-4xl overflow-hidden rounded-xl bg-white shadow-2xl transition-all duration-300 hover:shadow-xl">
         {/* Left Image */}
         <div className="hidden w-1/2 md:block">
           <img
@@ -20,13 +20,13 @@ function LoginPage() {
         </div>
 
         {/* Right Form */}
-        <div className="w-full px-6 py-10 md:w-1/2 md:px-10 md:py-12">
+        <div className="w-full px-6 py-5 md:w-1/2 md:px-10 md:py-8">
           {/* Avatar */}
-          <div className="my-6 flex justify-center">
+          <div className="flex justify-center">
             <img
               src={personCircle}
               alt="person avatar"
-              className="h-[180px] w-[180px] rounded-full"
+              className="h-[150px] w-[150px] rounded-full"
             />
           </div>
           {view == 'login' && <LoginForm onForgot={() => setView('forgot')} />}

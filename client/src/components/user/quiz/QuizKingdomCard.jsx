@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
 
 function QuizKingdomCard({ image, title, description, id }) {
-  const dataToPass = { image, title, description, id }
+  const dataToPass = { image, title, description }
   return (
     <Link
-      to={`/quizkingdom`}
+      to={`/quiz-subjects/${id}`}
       state={dataToPass}
       className="block transition-transform duration-300 hover:scale-[1.03]"
     >

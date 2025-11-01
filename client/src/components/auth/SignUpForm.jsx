@@ -4,6 +4,8 @@ import { registerUser } from '../../services/authServices'
 import { Formik, Field, ErrorMessage } from 'formik'
 import { signUpSchema } from '../../validation/userSchema'
 import { useEffect, useState } from 'react'
+import { FcGoogle } from 'react-icons/fc'
+const GOOGLE_AUTH_URL = `${import.meta.env.VITE_API_URL}/api/auth/google`
 
 function SignUpForm() {
   const navigate = useNavigate()
@@ -40,11 +42,10 @@ function SignUpForm() {
               setErrorMsg('')
               try {
                 const data = await registerUser(values)
-                navigate('/login')
-                // setSuccessMsg(
-                //   data.message ||
-                //     'We have sent confirmation email! Check your spam folder!',
-                // )
+                setSuccessMsg(
+                  data.message ||
+                    'We have sent confirmation email! Please verify first!',
+                )
               } catch (error) {
                 setErrorMsg(error.message || 'Failed to register user!')
               } finally {
@@ -53,6 +54,15 @@ function SignUpForm() {
             }}
           >
             {({ isSubmitting, handleSubmit }) => {
+              useEffect(() => {
+                if (successMsg || errorMsg) {
+                  const timer = setTimeout(() => {
+                    setSuccessMsg(null)
+                    setErrorMsg(null)
+                  }, 10000)
+                  return () => clearTimeout(timer)
+                }
+              }, [successMsg, errorMsg])
               return (
                 <form
                   className="mt-10 w-full max-w-md space-y-5"
@@ -71,6 +81,23 @@ function SignUpForm() {
                       {successMsg}
                     </div>
                   )}
+
+                  {/* Signin with google Button */}
+                  <button
+                    type="button"
+                    onClick={() => (window.location.href = GOOGLE_AUTH_URL)}
+                    className="mt-6 flex w-full items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white px-6 py-3 text-lg font-medium text-gray-700 shadow-sm transition hover:scale-105 hover:bg-gray-50 hover:shadow-md disabled:opacity-70"
+                  >
+                    <FcGoogle className="h-5 w-5" />
+                    <span>Sign in with Google</span>
+                  </button>
+
+                  {/* Horizontal line with "or" */}
+                  <div className="my-2 flex items-center">
+                    <span className="h-0.5 w-full bg-gray-300"></span>
+                    <span className="mx-2 text-gray-500">or</span>
+                    <span className="h-0.5 w-full bg-gray-300"></span>
+                  </div>
 
                   {/* Username */}
                   <div>
@@ -127,7 +154,7 @@ function SignUpForm() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-primary hover:bg-primary-dark mt-8 w-full rounded-xl px-6 py-3 text-lg text-white transition disabled:opacity-70"
+                    className="bg-primary hover:bg-primary-dark mt-6 w-full rounded-xl px-6 py-3 text-lg text-white transition disabled:opacity-70"
                   >
                     {isSubmitting ? 'Submitting...' : 'Sign Up'}
                   </button>
