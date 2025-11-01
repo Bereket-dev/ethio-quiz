@@ -116,3 +116,7 @@ ethio-quiz/
   - changed from 19 to 18 to support react-helmet-async
 
 ## v1.0.0 (Oct 25, 2025)
+## v1.1.0 (Nov 1, 2025)
+- fix: email verification
+- feat: signin with google
+- feat: legal docs
