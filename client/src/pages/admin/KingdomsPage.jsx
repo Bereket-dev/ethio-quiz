@@ -110,7 +110,7 @@ function KingdomsPage() {
               </p>
             ) : kingdoms.length > 0 ? (
               <div
-                className="mt-6 grid gap-8"
+                className="mt-6 grid gap-8 justify-items-center"
                 style={{
                   gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
                 }}
