@@ -8,7 +8,7 @@ function QuizKingdoms({ title, kingdomList = [] }) {
           <h2 className="pb-3 text-xl leading-snug font-semibold md:text-4xl md:tracking-wide">
             {title}
           </h2>
-          <div className="grid w-fit grid-cols-1 gap-x-10 gap-y-12 justify-self-center sm:grid-cols-2">
+          <div className="grid w-full grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:justify-items-center">
             {kingdomList.map((kingdom, index) => (
               <QuizKingdomCard
                 key={index}
